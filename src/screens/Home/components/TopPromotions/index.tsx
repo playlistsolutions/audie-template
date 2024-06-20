@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import {usePromotions} from '@/services/api/get-promotions';
+import {usePromotions} from '../../../../services/api/get-promotions';
 import {isBefore, isEqual} from 'date-fns';
 
 interface TopPromotionsProps {

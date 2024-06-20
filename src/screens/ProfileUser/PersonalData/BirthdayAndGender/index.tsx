@@ -10,13 +10,13 @@ import {
   View,
 } from 'react-native';
 import {BirthdayAndGenderForm} from './components';
-import {editBirthdayAndGenderSchema} from '@/schemas/personData/personDataFormSchema';
+import {editBirthdayAndGenderSchema} from '../../../../schemas/personData/personDataFormSchema';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
-import storage from '@/services/storage';
-import {Person} from '@/services/api/get-account-by-auth-id';
+import storage from '../../../../services/storage';
+import {Person} from '../../../../services/api/get-account-by-auth-id';
 import Toast from 'react-native-toast-message';
-import {updatePerson} from '@/services/api/post-edit-person';
+import {updatePerson} from '../../../../services/api/post-edit-person';
 import {useState} from 'react';
 
 interface BirthdayAndGenderProps {

@@ -83,8 +83,8 @@ export const BirthdayAndGenderForm: React.FC<BirthdayAndGenderFormProps> = ({
             render={({field: {onChange, value}}) => (
               <RNPickerSelect
                 style={{
-                  inputAndroid: {color: colorScheme ? 'black' : 'white'},
-                  inputIOS: {color: colorScheme ? 'black' : 'white'},
+                  inputAndroid: {color: colorScheme ? 'white' : 'black', height: 55},
+                  inputIOS: {color: colorScheme ? 'white' : 'black', height: 55},
                 }}
                 placeholder={{label: 'Informe seu gênero', value: null}}
                 onValueChange={value => onChange(value)}

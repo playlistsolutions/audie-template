@@ -46,7 +46,7 @@ export const OptionsModal: React.FC<OptionsModalProps> = ({
             <View>
               <Image
                 className="flex h-8 w-14"
-                source={require('@/assets/logo.png')}
+                source={require('../../../../assets/logo.png')}
               />
             </View>
             <View className="flex flex-col">

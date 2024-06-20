@@ -10,14 +10,14 @@ import {
 } from 'react-native';
 import {format} from 'date-fns';
 import HTMLView from 'react-native-htmlview';
-import storage from '@/services/storage';
+import storage from './../../services/storage';
 import {
   GetParticipantResponse,
   getParticipant,
   useParticipants,
-} from '@/services/api/get-participants-by-id';
+} from '../../services/api/get-participants-by-id';
 import {useEffect, useState} from 'react';
-import {postParticipant} from '@/services/api/post-participant';
+import {postParticipant} from '../../services/api/post-participant';
 import {useColorScheme} from 'nativewind';
 
 interface SheetPromotionProps {

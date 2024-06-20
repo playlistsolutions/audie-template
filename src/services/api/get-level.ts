@@ -1,5 +1,4 @@
-import {api} from '@/config/axios';
-import {useQuery} from '@tanstack/react-query';
+import {api} from '../../config/axios';
 
 interface Level {
   id: number;

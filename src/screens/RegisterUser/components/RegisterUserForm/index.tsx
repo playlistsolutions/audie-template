@@ -43,7 +43,7 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
             control={control}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                className="px-2 py-1.5 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
+                className="px-2 py-1.5 h-12 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
                 onBlur={onBlur}
                 onChangeText={value => onChange(value)}
                 value={value}
@@ -66,7 +66,7 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
             control={control}
             render={({field: {onChange, onBlur, value}}) => (
               <TextInput
-                className="px-2 py-1.5 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
+                className="px-2 py-1.5 h-12 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
                 onBlur={onBlur}
                 onChangeText={value => onChange(value)}
                 value={value}
@@ -89,7 +89,7 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
         <View>
           <TextInput
             readOnly
-            className="px-2 py-1.5 text-xs text-black bg-white rounded-lg dark:text-white opacity-60 border-gray-100 dark:bg-background-darkLight"
+            className="px-2 py-1.5 h-12 text-xs text-black bg-white rounded-lg dark:text-white opacity-60 border-gray-100 dark:bg-background-darkLight"
             value={phoneNumber}
             keyboardType="phone-pad"
           />

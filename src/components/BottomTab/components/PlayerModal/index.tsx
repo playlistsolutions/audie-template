@@ -144,7 +144,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
           <View className="flex flex-col items-center justify-center w-full px-3 gap-y-3">
             <Image
               className="h-[200px] w-full flex rounded-md"
-              source={require('@/assets/logo.png')}
+              source={require('../../../../assets/logo.png')}
             />
             <View className="flex flex-col items-center justify-center w-full">
               {infoMusic.title === '' ? (

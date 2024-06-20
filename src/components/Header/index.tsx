@@ -49,7 +49,7 @@ export const Header: React.FC<HeaderProps> = ({onFilterNewsByCategory}) => {
       }`}>
       <Text className="text-base font-normal text-black uppercase font-QuickExpress dark:text-white">
         103 FM{' '}
-        <Text className="text-base font-normal text-[#8257E5]">Aracaju</Text>
+        <Text className="text-base font-normal text-[#8257E5]">News</Text>
       </Text>
       {route.name == 'News' && (
         <View>

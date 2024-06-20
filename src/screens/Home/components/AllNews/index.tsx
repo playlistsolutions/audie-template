@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import { useNews } from '@/services/api/get-news';
+import { useNews } from '../../../../services/api/get-news';
 
 interface AllNewsProps {
   navigation: NavigationProp<RootTabParamList>;
@@ -28,7 +28,7 @@ export const AllNews: React.FC<AllNewsProps> = ({ navigation }) => {
       <View className="flex flex-row items-center justify-between">
         <View className="flex flex-row items-center space-x-2">
           <View className="h-7 p-0.5 bg-[#8257E5] rounded-full" />
-          <Text className="text-base text-black font-Poppins-Medium dark:text-white">
+          <Text className="text-base font-semibold text-black dark:text-white">
             Últimas notícias
           </Text>
         </View>

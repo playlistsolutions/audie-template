@@ -14,7 +14,7 @@ import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
 import storage from '../../services/storage';
 import {DarkModeModal} from './components';
 import {RouteProp} from '@react-navigation/native';
-import {getAccountByAuthId} from '@/services/api/get-account-by-auth-id';
+import {getAccountByAuthId} from '../../services/api/get-account-by-auth-id';
 import Toast from 'react-native-toast-message';
 
 interface ProfileUserScreenProps {

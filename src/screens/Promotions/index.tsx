@@ -64,7 +64,7 @@ export const Promotions: React.FC<PromorionScreenProps> = ({navigation}) => {
               />
             </View>
             <TextInput
-              className="text-xs text-black dark:text-white"
+              className="h-12 text-xs text-black dark:text-white"
               onChangeText={handleFilterInputData}
               value={input}
               placeholderTextColor={colorScheme === 'dark' ? 'white' : 'black'}

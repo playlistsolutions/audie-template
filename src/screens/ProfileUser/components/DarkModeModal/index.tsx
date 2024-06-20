@@ -1,6 +1,6 @@
 import {Text, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
-import storage from '@/services/storage';
+import storage from '../../../../services/storage';
 import {useColorScheme} from 'nativewind';
 
 interface DarkModeModalProps {

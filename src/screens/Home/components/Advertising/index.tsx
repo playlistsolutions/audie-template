@@ -8,7 +8,7 @@ import {
 import {
   GetPromotionsResponse,
   usePromotions,
-} from '@/services/api/get-promotions';
+} from '../../../../services/api/get-promotions';
 import {useEffect, useState} from 'react';
 
 export const Advertising: React.FC = () => {

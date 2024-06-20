@@ -1,5 +1,5 @@
-import {GetLevelResponse, getLevel} from '@/services/api/get-level';
-import storage from '@/services/storage';
+import {GetLevelResponse, getLevel} from '../../../services/api/get-level';
+import storage from '../../../services/storage';
 import {NavigationProp} from '@react-navigation/native';
 import {AddCircle, ArrowLeft2, TickCircle} from 'iconsax-react-native';
 import {useColorScheme} from 'nativewind';

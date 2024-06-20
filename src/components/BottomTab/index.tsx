@@ -17,8 +17,7 @@ import TrackPlayer, {
 } from 'react-native-track-player';
 import xmlJs from 'xml-js';
 import { PlayerModal } from './components/PlayerModal';
-import { getXML } from '@/services/api/get-xml';
-import { useUrls } from '@/services/api/get-url';
+import { useUrls } from '../../services/api/get-url';
 import axios from 'axios';
 
 export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
@@ -83,7 +82,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
         } else {
           setInfoMusic(state => ({
             ...state,
-            coverImg: '@/assets/logo.png',
+            coverImg: '../../assets/logo.png',
           }));
         }
       })
@@ -234,7 +233,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
             <View className="relative w-20 h-20">
               <Image
                 className="absolute w-20 h-12 rounded-md top-4"
-                source={require('@/assets/logo.png')}
+                source={require('../../assets/logo.png')}
               />
             </View>
             {isComercial ? (

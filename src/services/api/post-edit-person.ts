@@ -1,4 +1,4 @@
-import {api} from '@/config/axios';
+import {api} from '../../config/axios';
 
 export interface UpdatePersonPayload {
   name: string;

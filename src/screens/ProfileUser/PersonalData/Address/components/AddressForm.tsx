@@ -1,4 +1,4 @@
-import {getViaCep} from '@/services/api/get-via-cep';
+import {getViaCep} from '../../../../../services/api/get-via-cep';
 import {useColorScheme} from 'nativewind';
 import {
   Control,
@@ -75,7 +75,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               <TextInput
                 maxLength={8}
                 keyboardType="numeric"
-                className="px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
+                className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
                 onBlur={() => getInfoByCep(value)}
                 onChangeText={value => onChange(value)}
                 value={value}
@@ -102,7 +102,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
                   keyboardType="default"
-                  className="px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
+                  className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
                   onBlur={onBlur}
                   onChangeText={value => onChange(value)}
                   value={value}
@@ -126,8 +126,8 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               render={({field: {onChange, value}}) => (
                 <RNPickerSelect
                   style={{
-                    inputAndroid: {color: colorScheme ? 'black' : 'white'},
-                    inputIOS: {color: colorScheme ? 'black' : 'white'},
+                    inputAndroid: {color: colorScheme ? 'black' : 'white' },
+                    inputIOS: {color: colorScheme ? 'white' : 'black', height: 55},
                   }}
                   placeholder={{label: 'UF', value: null}}
                   onValueChange={value => onChange(value)}
@@ -161,7 +161,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
                   keyboardType="default"
-                  className="px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
+                  className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
                   onBlur={onBlur}
                   onChangeText={value => onChange(value)}
                   value={value}
@@ -185,7 +185,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
                   keyboardType="default"
-                  className="px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
+                  className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
                   onBlur={onBlur}
                   onChangeText={value => onChange(value)}
                   value={value}
@@ -213,7 +213,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
                   keyboardType="default"
-                  className="px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
+                  className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
                   onBlur={onBlur}
                   onChangeText={value => onChange(value)}
                   value={value}
@@ -239,7 +239,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               render={({field: {onChange, onBlur, value}}) => (
                 <TextInput
                   keyboardType="default"
-                  className="px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
+                  className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
                   onBlur={onBlur}
                   onChangeText={value => onChange(value)}
                   value={value}

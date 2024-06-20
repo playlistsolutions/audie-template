@@ -2,7 +2,7 @@ import {NavigationProp} from '@react-navigation/native';
 import {ArrowLeft2, ArrowRight2} from 'iconsax-react-native';
 import {useColorScheme} from 'nativewind';
 import {Text, TouchableOpacity, View} from 'react-native';
-import storage from '@/services/storage';
+import storage from '../../../services/storage';
 import {format} from 'date-fns';
 import {ptBR} from 'date-fns/locale';
 

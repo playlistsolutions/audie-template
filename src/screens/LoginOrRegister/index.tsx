@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import {TouchableOpacity, View} from 'react-native';
 import {TextInputMask} from 'react-native-masked-text';
-import {getVerificationCode} from '@/services/api/get-verification-code';
+import {getVerificationCode} from '../../services/api/get-verification-code';
 
 interface LoginOrRegisterProps {
   navigation: NavigationProp<RootTabParamList>;
@@ -68,7 +68,7 @@ export const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({
           <View className="flex items-center justify-center">
             <Image
               className="w-48 h-48"
-              source={require('@/assets/otpVerification.png')}
+              source={require('../../assets/otpVerification.png')}
             />
           </View>
           <View className="flex flex-col items-center justify-center flex-1 space-y-5">

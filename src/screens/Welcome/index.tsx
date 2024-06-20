@@ -23,7 +23,7 @@ export const Welcome: React.FC<WelcomeProps> = ({navigation}) => {
       <View />
       <Image
         className="w-80 h-80"
-        source={require('@/assets/illustration.png')}
+        source={require('../../assets/illustration.png')}
       />
       <View className="flex flex-col w-full space-y-10">
         <View className="flex flex-col items-center justify-center">

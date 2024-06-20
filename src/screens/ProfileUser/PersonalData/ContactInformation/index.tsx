@@ -10,14 +10,14 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {editPersonFormSchema} from '@/schemas/personData/personDataFormSchema';
+import {editPersonFormSchema} from '../../../../schemas/personData/personDataFormSchema';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
 import {ContactInformationForm} from './components';
-import storage from '@/services/storage';
-import {updatePerson} from '@/services/api/post-edit-person';
+import storage from '../../../../services/storage';
+import {updatePerson} from '../../../../services/api/post-edit-person';
 import Toast from 'react-native-toast-message';
-import {Person} from '@/services/api/get-account-by-auth-id';
+import {Person} from '../../../../services/api/get-account-by-auth-id';
 import {useState} from 'react';
 
 interface ContracInformationProps {

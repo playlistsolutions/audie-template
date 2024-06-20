@@ -9,12 +9,12 @@ import {
 } from 'react-native';
 import {RegisterUserForm} from './components';
 import {z} from 'zod';
-import {registerFormSchema} from '@/schemas/registerUser/registerUserFormSchema';
+import {registerFormSchema} from '../../schemas/registerUser/registerUserFormSchema';
 import {SubmitHandler, useForm} from 'react-hook-form';
 import {zodResolver} from '@hookform/resolvers/zod';
-import {postAccountInfo} from '@/services/api/post-account-info';
+import {postAccountInfo} from '../../services/api/post-account-info';
 import {RouteProp} from '@react-navigation/native';
-import storage from '@/services/storage';
+import storage from '../../services/storage';
 import {useState} from 'react';
 
 interface RegisterUserProps {
