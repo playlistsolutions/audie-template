@@ -5,7 +5,8 @@ type RouteName =
   | 'Promotions'
   | 'News'
   | 'ProfileUser'
-  | 'SheetPromotion';
+  | 'SheetPromotion'
+  | 'Television';
 
 type RootTabParamList = {
   MainScreen: undefined;

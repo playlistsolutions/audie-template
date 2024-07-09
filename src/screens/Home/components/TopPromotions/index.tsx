@@ -38,11 +38,11 @@ export const TopPromotions: React.FC<TopPromotionsProps> = ({navigation}) => {
       <View className="flex flex-row items-center gap-x-2">
         <View className="h-7 p-0.5 bg-[#8257E5] rounded-full" />
         <Text className="text-base text-black font-Poppins-Medium dark:text-white">
-          Destaque
+          Promoções
         </Text>
       </View>
       {isFetching ? (
-        <View className="flex items-center justify-center px-2 py-3 bg-white rounded-b-lg dark:bg-background-darkLight h-44 w-[90vw]">
+        <View className="flex items-center justify-center px-2 py-3 bg-white rounded-lg dark:bg-background-darkLight h-44 w-[90vw]">
           <ActivityIndicator size="large" color="#FFF" />
         </View>
       ) : (
@@ -50,6 +50,7 @@ export const TopPromotions: React.FC<TopPromotionsProps> = ({navigation}) => {
           className="flex max-h-44"
           showsButtons={false}
           showsPagination={false}
+          autoplay
           showsHorizontalScrollIndicator={false}>
           {promotions.map(promotiom => {
             return (
@@ -57,14 +58,9 @@ export const TopPromotions: React.FC<TopPromotionsProps> = ({navigation}) => {
                 key={promotiom.id}
                 onPress={() => goToSheetPromotion(promotiom)}>
                 <Image
-                  className="h-32 rounded-t-md"
+                  className="h-full rounded-md"
                   source={{uri: promotiom.imageUrl}}
                 />
-                <View className="relative flex flex-col px-2 py-3 space-y-2 bg-white rounded-b-lg dark:bg-background-darkLight">
-                  <Text className="text-sm text-gray-500 font-Poppins-Medium dark:text-gray-200">
-                    {promotiom.title}
-                  </Text>
-                </View>
               </TouchableOpacity>
             );
           })}

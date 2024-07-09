@@ -76,7 +76,7 @@ android {
 
     namespace "com.audietemplate"
     defaultConfig {
-        applicationId "com.audietemplate"
+        applicationId "com.playlistsolutions.fm103aracaju"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

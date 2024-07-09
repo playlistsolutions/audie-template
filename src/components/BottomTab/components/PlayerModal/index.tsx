@@ -143,25 +143,12 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
           </View>
           <View className="flex flex-col items-center justify-center w-full px-3 gap-y-3">
             <Image
-              className="h-[200px] w-full flex rounded-md"
+              className="h-[50%] w-full flex rounded-md"
               source={require('../../../../assets/logo.png')}
             />
             <View className="flex flex-col items-center justify-center w-full">
-              {infoMusic.title === '' ? (
-                <Text className="text-xl font-medium text-black dark:text-white">
-                  103 FM Aracaju
-                </Text>
-              ) : (
-                <Text
-                  numberOfLines={1}
-                  className="text-sm font-semibold text-black dark:text-white">
-                  {infoMusic.title}
-                </Text>
-              )}
-              <Text
-                numberOfLines={1}
-                className="text-sm font-normal text-neutral-800 dark:text-neutral-400">
-                {infoMusic.artist}
+              <Text className="text-xl font-medium text-black dark:text-white">
+                103 FM Aracaju
               </Text>
             </View>
           </View>

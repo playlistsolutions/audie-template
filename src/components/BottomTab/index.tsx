@@ -1,4 +1,4 @@
-import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
+import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
 import {
   DiscountShape,
   Home,
@@ -7,22 +7,23 @@ import {
   PlayCircle,
   ProfileCircle,
 } from 'iconsax-react-native';
-import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
+import {Animated, Image, Text, TouchableOpacity, View} from 'react-native';
 import useBottomTabAnimation from '../../hooks/useBottomTabAnimation';
-import { useEffect, useState } from 'react';
-import { WaveIndicator } from 'react-native-indicators';
+import {useEffect, useState} from 'react';
+import {WaveIndicator} from 'react-native-indicators';
 import TrackPlayer, {
   AppKilledPlaybackBehavior,
   Capability,
 } from 'react-native-track-player';
 import xmlJs from 'xml-js';
-import { PlayerModal } from './components/PlayerModal';
-import { useUrls } from '../../services/api/get-url';
+import {PlayerModal} from './components/PlayerModal';
+import {useUrls} from '../../services/api/get-url';
 import axios from 'axios';
+import {Tv} from 'lucide-react-native';
 
-export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
-  const { data } = useUrls();
-  const { translateValue } = useBottomTabAnimation();
+export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
+  const {data} = useUrls();
+  const {translateValue} = useBottomTabAnimation();
   const [isShowPlayer, setShowPlayer] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -33,7 +34,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
     title: string;
     artist: string;
     coverImg: string;
-  }>({ artist: '', title: '', coverImg: '' });
+  }>({artist: '', title: '', coverImg: ''});
 
   useEffect(() => {
     if (data) {
@@ -95,7 +96,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
     try {
       const response = await fetch(URL);
       const xmlText = await response.text();
-      const parsed = xmlJs.xml2js(xmlText, { compact: true });
+      const parsed = xmlJs.xml2js(xmlText, {compact: true});
       if (parsed.Playlist) {
         if (parsed.Playlist.OnAir.Break.Id._text != 'Comercial') {
           const title = parsed.Playlist.OnAir.CurMusic.Title._text;
@@ -155,6 +156,14 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
     setShowPlayer(!isShowPlayer);
   }
 
+  function goTo(route: string) {
+    if (route != 'Television') {
+      navigation.navigate(route);
+    } else {
+      navigation.navigate('TV');
+    }
+  }
+
   const getIconComponent = (routeName: RouteName, isCurrentRoute: boolean) => {
     switch (routeName) {
       case 'Home':
@@ -166,8 +175,9 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
-              className={`text-xs ${isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
-                }`}>
+              className={`text-xs ${
+                isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
+              }`}>
               Início
             </Text>
           </View>
@@ -181,9 +191,22 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
-              className={`text-xs ${isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
-                }`}>
+              className={`text-xs ${
+                isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
+              }`}>
               Promoções
+            </Text>
+          </View>
+        );
+      case 'Television':
+        return (
+          <View className="flex flex-col items-center justify-center space-y-1">
+            <Tv size={32} color={isCurrentRoute ? '#8257E5' : 'grey'} />
+            <Text
+              className={`text-xs ${
+                isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
+              }`}>
+              TV
             </Text>
           </View>
         );
@@ -196,8 +219,9 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
-              className={`text-xs ${isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
-                }`}>
+              className={`text-xs ${
+                isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
+              }`}>
               Notícias
             </Text>
           </View>
@@ -211,8 +235,9 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
-              className={`text-xs ${isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
-                }`}>
+              className={`text-xs ${
+                isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
+              }`}>
               Ouvinte
             </Text>
           </View>
@@ -223,37 +248,24 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   return (
     <>
       <Animated.View
-        style={{ transform: [{ translateY: translateValue }] }}
+        style={{transform: [{translateY: translateValue}]}}
         className={`absolute bg-white bottom-2 left-5 right-5 rounded-xl shadow-2xl shadow-slate-300 dark:shadow-transparent dark:bg-background-dark2`}>
         <TouchableOpacity
           disabled={isLoading}
           onPress={handlerShowPlayer}
           activeOpacity={1}>
-          <View className="flex flex-row items-center justify-between w-full px-2">
+          <View className="flex flex-row items-center w-full px-2 space-x-2">
             <View className="relative w-20 h-20">
               <Image
                 className="absolute w-20 h-12 rounded-md top-4"
                 source={require('../../assets/logo.png')}
               />
             </View>
-            {isComercial ? (
-              <View className="flex flex-col w-[60%] overflow-hidden">
-                <Text className="text-base font-medium text-black dark:text-white">
-                  103 FM Aracaju
-                </Text>
-              </View>
-            ) : (
-              <View className="flex flex-col w-[60%] overflow-hidden">
-                <Text className="text-sm font-medium text-black dark:text-white">
-                  {infoMusic?.title}
-                </Text>
-                <Text
-                  numberOfLines={2}
-                  className="text-xs font-normal text-neutral-400">
-                  {infoMusic?.artist}
-                </Text>
-              </View>
-            )}
+            <View className="flex flex-col w-[60%] overflow-hidden">
+              <Text className="text-base font-medium text-black dark:text-white">
+                103 FM Aracaju
+              </Text>
+            </View>
             {isLoading ? (
               <View>
                 <WaveIndicator
@@ -264,11 +276,15 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
                 />
               </View>
             ) : isPlaying ? (
-              <TouchableOpacity onPress={PauseAudio}>
+              <TouchableOpacity
+                className="absolute right-3"
+                onPress={PauseAudio}>
                 <PauseCircle size="40" color={'grey'} variant="Bulk" />
               </TouchableOpacity>
             ) : (
-              <TouchableOpacity onPress={PlayAudio}>
+              <TouchableOpacity
+                className="absolute right-3"
+                onPress={PlayAudio}>
                 <PlayCircle size="40" color={'grey'} variant="Bulk" />
               </TouchableOpacity>
             )}
@@ -280,7 +296,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
             return (
               <View key={route.key}>
                 <TouchableOpacity
-                  onPress={() => navigation.navigate(route.name)}
+                  onPress={() => goTo(route.name)}
                   className="items-center justify-center flex-1">
                   {getIconComponent(route.name as RouteName, isCurrentRoute)}
                 </TouchableOpacity>

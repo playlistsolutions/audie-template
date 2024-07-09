@@ -50,24 +50,9 @@ export const OptionsModal: React.FC<OptionsModalProps> = ({
               />
             </View>
             <View className="flex flex-col">
-              {infoMusic.title === '' ? (
-                <Text className="text-base font-medium text-black dark:text-white">
-                  103 FM Aracaju
-                </Text>
-              ) : (
-                <Text
-                  numberOfLines={1}
-                  className="text-sm font-semibold text-black dark:text-white">
-                  {infoMusic.title}
-                </Text>
-              )}
-              {infoMusic.title != '' && (
-                <Text
-                  numberOfLines={1}
-                  className="text-xs font-normal text-neutral-800 dark:text-neutral-400">
-                  {infoMusic.artist}
-                </Text>
-              )}
+              <Text className="text-base font-medium text-black dark:text-white">
+                103 FM Aracaju
+              </Text>
             </View>
           </View>
           <View className="flex items-center justify-center">

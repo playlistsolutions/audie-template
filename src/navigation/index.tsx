@@ -27,6 +27,10 @@ const Navigation = () => {
   const Stack = createNativeStackNavigator();
   const Tab = createBottomTabNavigator();
 
+  const Television: React.FC = () => {
+    return <></>;
+  };
+
   const TabsNavigation: React.FC = () => {
     return (
       <Tab.Navigator
@@ -38,6 +42,7 @@ const Navigation = () => {
         }}>
         <Tab.Screen name="Home" component={Home} />
         <Tab.Screen name="Promotions" component={Promotions} />
+        <Tab.Screen name="Television" component={Television} />
         <Tab.Screen name="News" component={News} />
         <Tab.Screen name="ProfileUser" component={ProfileUser} />
       </Tab.Navigator>

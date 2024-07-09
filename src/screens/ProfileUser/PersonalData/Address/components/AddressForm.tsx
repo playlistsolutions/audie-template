@@ -126,8 +126,11 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               render={({field: {onChange, value}}) => (
                 <RNPickerSelect
                   style={{
-                    inputAndroid: {color: colorScheme ? 'black' : 'white' },
-                    inputIOS: {color: colorScheme ? 'white' : 'black', height: 55},
+                    inputAndroid: {color: colorScheme ? 'black' : 'white'},
+                    inputIOS: {
+                      color: colorScheme ? 'white' : 'black',
+                      height: 55,
+                    },
                   }}
                   placeholder={{label: 'UF', value: null}}
                   onValueChange={value => onChange(value)}
