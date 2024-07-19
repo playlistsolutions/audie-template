@@ -1,10 +1,9 @@
-import {useQuery} from '@tanstack/react-query';
 import {api} from '../../config/axios';
 
 export interface Person {
   addresses: Addresses[];
   authId: number;
-  birthDate: Date;
+  birthDate: string;
   cellPhone: string;
   civilState: number;
   contacts: any[];

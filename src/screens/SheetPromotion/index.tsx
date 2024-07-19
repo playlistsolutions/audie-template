@@ -1,5 +1,5 @@
-import {NavigationProp, RouteProp} from '@react-navigation/native';
-import {ArrowCircleLeft, TicketDiscount} from 'iconsax-react-native';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { ArrowCircleLeft, TicketDiscount } from 'iconsax-react-native';
 import {
   ActivityIndicator,
   Image,
@@ -8,17 +8,16 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {format} from 'date-fns';
+import { format } from 'date-fns';
 import HTMLView from 'react-native-htmlview';
 import storage from './../../services/storage';
 import {
   GetParticipantResponse,
   getParticipant,
-  useParticipants,
 } from '../../services/api/get-participants-by-id';
-import {useEffect, useState} from 'react';
-import {postParticipant} from '../../services/api/post-participant';
-import {useColorScheme} from 'nativewind';
+import { useEffect, useState } from 'react';
+import { postParticipant } from '../../services/api/post-participant';
+import { useColorScheme } from 'nativewind';
 
 interface SheetPromotionProps {
   navigation: NavigationProp<RootTabParamList>;
@@ -29,8 +28,9 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
   navigation,
   route,
 }) => {
-  const {colorScheme} = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const [isParticipant, setIsParticipant] = useState<boolean>(false);
+  const [isFetching, setIsFetching] = useState(false);
   const [infoParticipant, setInfoParticipant] =
     useState<GetParticipantResponse>();
   const person = storage.getPerson();
@@ -41,19 +41,26 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
     description,
     id: promotionId,
   } = route.params.promotiom;
-  const {data, isFetching} = useParticipants(promotionId.toString());
 
   useEffect(() => {
-    getParticipant(promotionId.toString());
-    if (data) {
-      data.filter(item => {
-        if (item.personId == person?.id && item.promotionId == promotionId) {
-          setIsParticipant(true);
-          setInfoParticipant(item);
+    getParticipant(promotionId.toString())
+      .then((response) => {
+        setIsFetching(true)
+        if (response) {
+          response.filter(item => {
+            if (item.personId == person?.id && item.promotionId == promotionId) {
+              setIsParticipant(true);
+              setInfoParticipant(item);
+            }
+            setIsFetching(false)
+          });
         }
-      });
-    }
-  }, [data, promotionId]);
+      })
+      .catch((error) => {
+        setIsFetching(true)
+        console.log(error)
+      })
+  }, [promotionId]);
 
   function goBack() {
     navigation.goBack();
@@ -69,6 +76,7 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
       personId: person!.id,
       promotionId,
     };
+    console.log(payload)
     postParticipant(payload)
       .then(response => {
         setIsParticipant(true);
@@ -89,7 +97,7 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
         </View>
         <Image
           className="object-cover w-full h-full"
-          source={{uri: imageUrl}}
+          source={{ uri: imageUrl }}
         />
         <View className="absolute bottom-0 flex flex-col items-start px-4 py-4 gap-y-3">
           <View className="flex flex-row items-center pr-4 gap-x-2">
@@ -112,7 +120,7 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
             </View>
             <HTMLView
               textComponentProps={{
-                style: {color: colorScheme === 'dark' ? '#FFF' : '#000'},
+                style: { color: colorScheme === 'dark' ? '#FFF' : '#000' },
               }}
               value={description}
             />

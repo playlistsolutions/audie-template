@@ -51,6 +51,7 @@ export const TopPromotions: React.FC<TopPromotionsProps> = ({navigation}) => {
           showsButtons={false}
           showsPagination={false}
           autoplay
+          autoplayTimeout={5}
           showsHorizontalScrollIndicator={false}>
           {promotions.map(promotiom => {
             return (

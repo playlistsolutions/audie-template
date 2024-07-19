@@ -68,7 +68,7 @@ export const Header: React.FC<HeaderProps> = ({onFilterNewsByCategory}) => {
                     className={`${
                       selectedCategory == category.id
                         ? 'text-[#8257E5]'
-                        : 'text-gray-200'
+                        : 'text-gray-300'
                     } font-Poppins-Medium text-sm`}>
                     {category.name.charAt(0) +
                       category.name.slice(1).toLowerCase()}

@@ -37,15 +37,8 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
   }>({artist: '', title: '', coverImg: ''});
 
   useEffect(() => {
-    if (data) {
-      const urlMetadata = data.filter(item => {
-        if (item.typeId == 4) {
-          return item;
-        }
-      })[0].url;
-      LoadMetadata(urlMetadata);
-    }
-  }, [data]);
+    LoadAudio();
+  }, []);
 
   async function getInfoMusic(title: string, artistName: string) {
     const key = 'TVckWiLVGVPQtuPGnOXy';
@@ -112,7 +105,6 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
       }
 
       setIsComercial(true);
-      LoadAudio();
     } catch (error) {
       console.error('Error fetching XML:', error);
     }

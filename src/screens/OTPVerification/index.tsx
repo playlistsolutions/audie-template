@@ -1,7 +1,7 @@
-import {NavigationProp, RouteProp} from '@react-navigation/native';
-import {ArrowLeft2} from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
-import {useEffect, useRef, useState} from 'react';
+import { NavigationProp, RouteProp } from '@react-navigation/native';
+import { ArrowLeft2 } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
+import { useEffect, useRef, useState } from 'react';
 import {
   ActivityIndicator,
   ScrollView,
@@ -14,9 +14,10 @@ import {
   PostVerifyCodePayload,
   verifyCode,
 } from '../../services/api/verify-code';
-import {getAccountByAuthId} from '../../services/api/get-account-by-auth-id';
+import { getAccountByAuthId, Person } from '../../services/api/get-account-by-auth-id';
 import storage from '../../services/storage';
 import Toast from 'react-native-toast-message';
+import { postActiveUser } from '@/services/api/post-active-user';
 
 interface OTPVerificationProps {
   navigation: NavigationProp<RootTabParamList>;
@@ -27,12 +28,12 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
   navigation,
   route,
 }) => {
-  const {colorScheme} = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const [OTP, setOTP] = useState<string[]>(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isError, setIsError] = useState<boolean>(false);
   const inputs = useRef<TextInput[]>([]);
-  const {phoneNumber} = route.params;
+  const { phoneNumber } = route.params;
 
   function validateCode() {
     var Code = OTP.join('');
@@ -50,7 +51,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
       Url: '',
     };
     verifyCode(Payload, Code)
-      .then(({object: Id}) => {
+      .then(({ object: Id }) => {
         setIsError(false);
         AccountByAuthId(Id);
       })
@@ -68,7 +69,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
 
   function AccountByAuthId(Id: string) {
     getAccountByAuthId(Id)
-      .then(({person, socialAccount}) => {
+      .then(({ person, socialAccount }) => {
         setIsLoading(false);
         storage.saveUserInfo(socialAccount);
         storage.savePerson(person);
@@ -85,10 +86,20 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
             Toast.show({
               type: 'warning',
               text1: 'Usuario Desativado',
-              text2: 'Seu usuário foi desativado, deseja ativa-la novamente ?.',
+              text2: 'Seu usuário foi desativado, reativando usuario..',
             });
+            postActiveUser(Id)
+              .then(() => {
+               return AccountByAuthId(Id)
+              })
+              .catch((error) => {
+                console.log(error)
+                setOTP(['', '', '', '', '', '']);
+                setIsLoading(false);
+                setIsError(false);
+              })
           } else if (error.response.data.codeError === 'registerNotFound') {
-            navigation.navigate('RegisterUser', {phoneNumber});
+            navigation.navigate('RegisterUser', { phoneNumber });
           }
         } else {
           setIsLoading(false);
@@ -102,7 +113,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
   }
 
   function goToHome() {
-    navigation.navigate('ProfileUser', {refresh: true});
+    navigation.navigate('ProfileUser', { refresh: true });
   }
 
   function selectInput(index: number) {
@@ -157,9 +168,8 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
                 value={OTP[index]}
                 onChangeText={value => handleInput(value, index)}
                 keyboardType="number-pad"
-                className={`flex items-center h-12 justify-center w-12 text-center text-white transition-colors ease-in rounded-lg bg-background-darkLight focus:border-2 focus:border-neutral-300 ${
-                  isError && 'border-2 border-red-500'
-                }`}
+                className={`flex items-center h-12 justify-center w-12 text-center text-white transition-colors ease-in rounded-lg bg-background-darkLight focus:border-2 focus:border-neutral-300 ${isError && 'border-2 border-red-500'
+                  }`}
               />
             ))}
           </View>
@@ -168,9 +178,8 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
           onPress={() => validateCode()}
           activeOpacity={0.5}
           disabled={isLoading}
-          className={`flex items-center justify-center w-full rounded-md bg-[#8257E5] py-2 ${
-            isLoading && 'bg-[#8257E5]/60'
-          }`}>
+          className={`flex items-center justify-center w-full rounded-md bg-[#8257E5] py-2 ${isLoading && 'bg-[#8257E5]/60'
+            }`}>
           {isLoading ? (
             <View className="py-1">
               <ActivityIndicator size="small" color="#FFF" />

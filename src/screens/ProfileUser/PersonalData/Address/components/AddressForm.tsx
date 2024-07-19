@@ -1,3 +1,4 @@
+import { states } from '@/utils';
 import {getViaCep} from '../../../../../services/api/get-via-cep';
 import {useColorScheme} from 'nativewind';
 import {
@@ -135,11 +136,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                   placeholder={{label: 'UF', value: null}}
                   onValueChange={value => onChange(value)}
                   value={value}
-                  items={[
-                    {label: 'MG', value: 'MG'},
-                    {label: 'BA', value: 'BA'},
-                    {label: 'SP', value: 'SP'},
-                  ]}
+                  items={states}
                 />
               )}
               name="state"

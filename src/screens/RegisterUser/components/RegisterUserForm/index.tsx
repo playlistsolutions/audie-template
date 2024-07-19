@@ -1,5 +1,6 @@
 import {format} from 'date-fns';
 import {ptBR} from 'date-fns/locale';
+import { useColorScheme } from 'nativewind';
 import {useState} from 'react';
 import {Control, Controller, FieldErrors} from 'react-hook-form';
 import {Text, TextInput, TouchableOpacity, View} from 'react-native';
@@ -32,6 +33,7 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
   errors,
   phoneNumber,
 }) => {
+  const {colorScheme} = useColorScheme();
   const [open, setOpen] = useState(false);
 
   return (
@@ -148,10 +150,20 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
       <View className="flex flex-col space-y-2">
         <Text className="font-semibold dark:text-white">Gênero</Text>
         <View className="text-xs text-black rounded-lg dark:text-white dark:bg-background-darkLight">
-          <Controller
+        <Controller
             control={control}
             render={({field: {onChange, value}}) => (
               <RNPickerSelect
+                style={{
+                  inputAndroid: {
+                    color: colorScheme ? 'white' : 'black',
+                    height: 55,
+                  },
+                  inputIOS: {
+                    color: colorScheme ? 'white' : 'black',
+                    height: 55,
+                  },
+                }}
                 placeholder={{label: 'Informe seu gênero', value: null}}
                 onValueChange={value => onChange(value)}
                 value={value}

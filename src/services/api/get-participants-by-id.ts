@@ -15,9 +15,3 @@ export async function getParticipant(promotionId: string) {
 
   return response.data;
 }
-
-export const useParticipants = (promotionId: string) =>
-  useQuery({
-    queryKey: ['participants'],
-    queryFn: () => getParticipant(promotionId),
-  });
