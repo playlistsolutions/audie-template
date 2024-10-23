@@ -1,4 +1,4 @@
-import {BottomTabBarProps} from '@react-navigation/bottom-tabs';
+import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
 import {
   DiscountShape,
   Home,
@@ -7,71 +7,55 @@ import {
   PlayCircle,
   ProfileCircle,
 } from 'iconsax-react-native';
-import {Animated, Image, Text, TouchableOpacity, View} from 'react-native';
+import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
 import useBottomTabAnimation from '../../hooks/useBottomTabAnimation';
-import {useEffect, useState} from 'react';
-import {WaveIndicator} from 'react-native-indicators';
-import TrackPlayer, {
-  AppKilledPlaybackBehavior,
-  Capability,
-} from 'react-native-track-player';
-import xmlJs from 'xml-js';
-import {PlayerModal} from './components/PlayerModal';
-import {useUrls} from '../../services/api/get-url';
+import { useEffect, useState } from 'react';
+import { WaveIndicator } from 'react-native-indicators';
+import TrackPlayer, { AppKilledPlaybackBehavior, Capability } from 'react-native-track-player';
+import { PlayerModal } from './components/PlayerModal';
+import { useUrls } from '../../services/api/get-url';
 import axios from 'axios';
-import {Tv} from 'lucide-react-native';
+import { Tv } from 'lucide-react-native';
+import { useMetadata } from '@/services/api/get-metadata';
 
-export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
-  const {data} = useUrls();
-  const {translateValue} = useBottomTabAnimation();
+export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
+  const { data } = useUrls();
+  const { data: xmlData } = useMetadata()
+  const { translateValue } = useBottomTabAnimation();
   const [isShowPlayer, setShowPlayer] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isOnLive, setIsOnLive] = useState<boolean>(true);
-  const [isComercial, setIsComercial] = useState<boolean>(false);
-  const [infoMusic, setInfoMusic] = useState<{
-    title: string;
-    artist: string;
-    coverImg: string;
-  }>({artist: '', title: '', coverImg: ''});
+  const [isComercial, setIsComercial] = useState<boolean>(true);
+  const [infoMusic, setInfoMusic] = useState<{ title: string; artist: string; coverImg: string; }>({ artist: '', title: '', coverImg: '' });
 
   useEffect(() => {
-    LoadAudio();
-  }, []);
+    if (data) {
+      const urlStream = data.find((item) => item.typeId == 1).url;
+      LoadAudio(urlStream);
+    }
+    if (xmlData) {
+      LoadMetadata()
+    }
+  }, [data]);
 
-  async function getInfoMusic(title: string, artistName: string) {
-    const key = 'TVckWiLVGVPQtuPGnOXy';
-    const secret = 'NvptTAmnzoSCvWzvDUXaIHORhbznqvft';
-    const releaseTitle = title;
-    const artist = artistName;
-    const perPage = 1;
-    const page = 1;
-    const baseUrl = 'https://api.discogs.com/database/search';
+  async function getInfoMusic(albumTitle: string, artistName: string) {
+    const artist = encodeURIComponent(artistName);
+    const album = encodeURIComponent(albumTitle);
+    const DISCOGS_BASE_URL= 'https://api.discogs.com/database/search'
+    const DISCOGS_KEY= 'TVckWiLVGVPQtuPGnOXy'
+    const DISCOGS_SECRET= 'NvptTAmnzoSCvWzvDUXaIHORhbznqvft'
 
-    const url =
-      baseUrl +
-      '?release_title=' +
-      releaseTitle +
-      '&artist=' +
-      artist +
-      '&per_page= ' +
-      perPage +
-      '&page=' +
-      page +
-      '&key=' +
-      key +
-      '&secret=' +
-      secret;
+    const url = `${DISCOGS_BASE_URL}?q=${album}&artist=${artist}&type=release&key=${DISCOGS_KEY}&secret=${DISCOGS_SECRET}`;
 
-    await axios
-      .get(url)
-      .then(response => {
-        const result = response.data.results[0];
-        if (result) {
+    await axios.get(url)
+      .then(({ data }) => {
+        if (data) {
+          const coverImg = data.results[0].cover_image
           setInfoMusic(state => ({
             ...state,
-            coverImg: result.cover_image,
+            coverImg
           }));
         } else {
           setInfoMusic(state => ({
@@ -85,32 +69,32 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
       });
   }
 
-  async function LoadMetadata(URL: string) {
+  async function LoadMetadata() {
     try {
-      const response = await fetch(URL);
-      const xmlText = await response.text();
-      const parsed = xmlJs.xml2js(xmlText, {compact: true});
-      if (parsed.Playlist) {
-        if (parsed.Playlist.OnAir.Break.Id._text != 'Comercial') {
-          const title = parsed.Playlist.OnAir.CurMusic.Title._text;
-          const artist = parsed.Playlist.OnAir.CurMusic.Artist._text;
-          await getInfoMusic(title, artist);
+      if (xmlData.Playlist) {
+        if (xmlData.Playlist.OnAir.Break.Id._text != 'Comercial') {
+          const currentMusic = xmlData.Playlist.OnAir.CurMusic
+          const title = currentMusic.Title
+          const artist = currentMusic.Artist
+          const album = currentMusic.Album
+          await getInfoMusic(album, artist);
           setIsComercial(false);
           return setInfoMusic(state => ({
             ...state,
-            artist,
             title,
+            artist,
           }));
         }
       }
 
       setIsComercial(true);
     } catch (error) {
-      console.error('Error fetching XML:', error);
+      console.log(error)
+      setIsComercial(true);
     }
   }
 
-  async function LoadAudio() {
+  async function LoadAudio(urlStream: string) {
     setIsLoading(true);
     try {
       await TrackPlayer.setupPlayer();
@@ -122,8 +106,8 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
         },
       });
       await TrackPlayer.add({
-        url: 'https://radio.voxcast.com.br:7030/;?type=http&nocache=19',
         title: '103 FM Aracaju',
+        url: urlStream,
       });
       setIsLoading(false);
       setIsLoaded(true);
@@ -167,9 +151,8 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
-              className={`text-xs ${
-                isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
-              }`}>
+              className={`text-xs ${isCurrentRoute ? 'text-base-primary' : 'text-neutral-500'
+                }`}>
               Início
             </Text>
           </View>
@@ -183,9 +166,8 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
-              className={`text-xs ${
-                isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
-              }`}>
+              className={`text-xs ${isCurrentRoute ? 'text-base-primary' : 'text-neutral-500'
+                }`}>
               Promoções
             </Text>
           </View>
@@ -195,9 +177,8 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
           <View className="flex flex-col items-center justify-center space-y-1">
             <Tv size={32} color={isCurrentRoute ? '#8257E5' : 'grey'} />
             <Text
-              className={`text-xs ${
-                isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
-              }`}>
+              className={`text-xs ${isCurrentRoute ? 'text-base-primary' : 'text-neutral-500'
+                }`}>
               TV
             </Text>
           </View>
@@ -211,9 +192,8 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
-              className={`text-xs ${
-                isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
-              }`}>
+              className={`text-xs ${isCurrentRoute ? 'text-base-primary' : 'text-neutral-500'
+                }`}>
               Notícias
             </Text>
           </View>
@@ -227,9 +207,8 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
-              className={`text-xs ${
-                isCurrentRoute ? 'text-[#8257E5]' : 'text-neutral-500'
-              }`}>
+              className={`text-xs ${isCurrentRoute ? 'text-base-primary' : 'text-neutral-500'
+                }`}>
               Ouvinte
             </Text>
           </View>
@@ -240,24 +219,47 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
   return (
     <>
       <Animated.View
-        style={{transform: [{translateY: translateValue}]}}
+        style={{ transform: [{ translateY: translateValue }] }}
         className={`absolute bg-white bottom-2 left-5 right-5 rounded-xl shadow-2xl shadow-slate-300 dark:shadow-transparent dark:bg-background-dark2`}>
         <TouchableOpacity
           disabled={isLoading}
           onPress={handlerShowPlayer}
           activeOpacity={1}>
           <View className="flex flex-row items-center w-full px-2 space-x-2">
-            <View className="relative w-20 h-20">
-              <Image
-                className="absolute w-20 h-12 rounded-md top-4"
-                source={require('../../assets/logo.png')}
-              />
-            </View>
-            <View className="flex flex-col w-[60%] overflow-hidden">
-              <Text className="text-base font-medium text-black dark:text-white">
-                103 FM Aracaju
-              </Text>
-            </View>
+            {isComercial ? (
+              <>
+                <View className="relative w-20 h-20">
+                  <Image
+                    className="absolute rounded-md left-2 h-14 w-14 top-4"
+                    source={require('../../assets/logo.png')}
+                  />
+                </View>
+                <View className="flex flex-col w-[60%] overflow-hidden">
+                  <Text className="text-base font-medium text-black dark:text-white">
+                  103 FM Aracaju
+                  </Text>
+                </View>
+              </>
+            ) : (
+              <>
+                <View className="relative w-20 h-20">
+                  <Image
+                    className="absolute rounded-md left-2 h-14 w-14 top-4"
+                    source={{ uri: infoMusic.coverImg }}
+                  />
+                </View>
+                <View className="flex flex-col w-[60%] overflow-hidden">
+                  <Text className="text-sm font-medium text-black dark:text-white">
+                    {infoMusic.title}
+                  </Text>
+                  <Text
+                    numberOfLines={2}
+                    className="text-xs font-normal text-neutral-400">
+                    {infoMusic.artist}
+                  </Text>
+                </View>
+              </>
+            )}
             {isLoading ? (
               <View>
                 <WaveIndicator
@@ -312,6 +314,7 @@ export const BottomTab = ({navigation, state}: BottomTabBarProps) => {
         setIsOnLive={setIsOnLive}
         navigation={navigation}
         infoMusic={infoMusic}
+        isComercial={isComercial}
       />
     </>
   );

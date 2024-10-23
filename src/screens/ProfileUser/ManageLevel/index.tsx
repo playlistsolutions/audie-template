@@ -1,9 +1,9 @@
-import {GetLevelResponse, getLevel} from '../../../services/api/get-level';
+import { GetLevelResponse, getLevel } from '../../../services/api/get-level';
 import storage from '../../../services/storage';
-import {NavigationProp} from '@react-navigation/native';
-import {AddCircle, ArrowLeft2, TickCircle} from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
-import {useEffect, useState} from 'react';
+import { NavigationProp } from '@react-navigation/native';
+import { AddCircle, ArrowLeft2, TickCircle } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
+import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   FlatList,
@@ -18,9 +18,9 @@ interface ManageLevelProps {
   navigation: NavigationProp<RootTabParamList>;
 }
 
-export const ManageLevel: React.FC<ManageLevelProps> = ({navigation}) => {
+export const ManageLevel: React.FC<ManageLevelProps> = ({ navigation }) => {
   const person = storage.getPerson();
-  const {colorScheme} = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const [criteriaMet, setCriteriaMet] = useState<string[]>([]);
   const [maxLevel, setMaxLevel] = useState<boolean>(false);
   const [criteria, setCriteria] = useState<string[]>([]);
@@ -38,8 +38,7 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({navigation}) => {
   };
 
   function handleImage(image: string | undefined) {
-    const baseURL = 'https://app-aires-studio.s3.amazonaws.com/media/image/';
-    return baseURL + image;
+    return 'https://app-aires-studio.s3.amazonaws.com/media/image/' + image;
   }
 
   useEffect(() => {
@@ -214,7 +213,7 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({navigation}) => {
                 <FlatList
                   data={criteria}
                   keyExtractor={item => item}
-                  renderItem={({item}) => {
+                  renderItem={({ item }) => {
                     return (
                       <View className="flex flex-row items-center my-0.5 space-x-2">
                         {criteriaMet.includes(item) ? (

@@ -1,17 +1,21 @@
-import {useEffect, useRef, useState} from 'react';
-import {Text, TouchableOpacity, View} from 'react-native';
-import Video, {LoadError, OnBufferData} from 'react-native-video';
+import { useEffect, useRef, useState } from 'react';
+import { Text, TouchableOpacity, View } from 'react-native';
+import Video, { LoadError, OnBufferData } from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
-import {ChevronLeft, Volume2, VolumeX} from 'lucide-react-native';
-import {NavigationProp} from '@react-navigation/native';
+import { ChevronLeft, Volume2, VolumeX } from 'lucide-react-native';
+import { NavigationProp } from '@react-navigation/native';
+import { useUrls } from '@/services/api/get-url';
 
 interface TVProps {
   navigation: NavigationProp<RootTabParamList>;
 }
 
-export const TV: React.FC<TVProps> = ({navigation}) => {
+export const TV: React.FC<TVProps> = ({ navigation }) => {
+  const { data, isFetched, isError } = useUrls();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
+  const [enableVideo, setEnableVideo] = useState<boolean>(false);
+  const [urlStream, setUrlStream] = useState<string>('')
   const videoRef = useRef<any>(null);
 
   useEffect(() => {
@@ -21,6 +25,14 @@ export const TV: React.FC<TVProps> = ({navigation}) => {
       Orientation.lockToPortrait();
     };
   }, []);
+
+  useEffect(() => {
+    if (data) {
+      const urlStream = data.find((item) => item.typeId == 12).url;
+      setUrlStream(urlStream)
+      setEnableVideo(true)
+    }
+  }, [data]);
 
   function onBuffer(data: OnBufferData) {
     console.log(data);
@@ -42,9 +54,8 @@ export const TV: React.FC<TVProps> = ({navigation}) => {
     <>
       <View className="relative flex items-center justify-center w-full h-full">
         <View
-          className={`absolute z-10 flex items-center justify-center w-full h-full bg-black/50 ${
-            isLoading && 'hidden'
-          }`}>
+          className={`absolute z-10 flex items-center justify-center w-full h-full bg-black/50 ${isLoading && 'hidden'
+            }`}>
           <View className="">
             <Text className="text-black">Carregando...</Text>
           </View>
@@ -78,19 +89,21 @@ export const TV: React.FC<TVProps> = ({navigation}) => {
               </View>
             </>
           )}
-          <Video
-            source={{
-              uri: 'https://cdn.live.br1.jmvstream.com/w/LVW-10917/LVW10917_ydwhM106H2/playlist.m3u8',
-            }}
-            onBuffer={onBuffer}
-            onError={onError}
-            onLoad={handleLoad}
-            ref={videoRef}
-            muted={isMuted}
-            fullscreen
-            resizeMode="stretch"
-            className="w-full h-full"
-          />
+          {
+            enableVideo
+            &&
+            <Video
+              source={{ uri: urlStream }}
+              onBuffer={onBuffer}
+              onError={onError}
+              onLoad={handleLoad}
+              ref={videoRef}
+              muted={isMuted}
+              fullscreen
+              resizeMode="stretch"
+              className="w-full h-full"
+            />
+          }
         </View>
       </View>
     </>

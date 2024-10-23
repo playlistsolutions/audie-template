@@ -44,7 +44,7 @@ export const SheetNews: React.FC<SheetNewsProps> = ({navigation, route}) => {
           source={{uri: imageUrl}}
         />
         <View className="absolute bottom-0 flex flex-col items-start px-4 py-4 gap-y-3">
-          <View className="bg-[#8257E5] py-0.5 px-4 rounded-md flex">
+          <View className="bg-base-primary py-0.5 px-4 rounded-md flex">
             <Text className="font-medium text-white">
               {category.charAt(0) + category.slice(1).toLowerCase()}
             </Text>

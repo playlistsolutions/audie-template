@@ -1,9 +1,9 @@
-import {format} from 'date-fns';
-import {ptBR} from 'date-fns/locale';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 import { useColorScheme } from 'nativewind';
-import {useState} from 'react';
-import {Control, Controller, FieldErrors} from 'react-hook-form';
-import {Text, TextInput, TouchableOpacity, View} from 'react-native';
+import { useState } from 'react';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { Text, TextInput, TouchableOpacity, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import RNPickerSelect from 'react-native-picker-select';
 
@@ -28,12 +28,13 @@ interface RegisterUserFormProps {
   }>;
 }
 
+
 export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
   control,
   errors,
   phoneNumber,
 }) => {
-  const {colorScheme} = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const [open, setOpen] = useState(false);
 
   return (
@@ -43,7 +44,7 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
         <View>
           <Controller
             control={control}
-            render={({field: {onChange, onBlur, value}}) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
                 className="px-2 py-1.5 h-12 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
                 onBlur={onBlur}
@@ -52,7 +53,7 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
               />
             )}
             name="name"
-            rules={{required: true}}
+            rules={{ required: true }}
           />
         </View>
         {errors.name && (
@@ -66,7 +67,7 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
         <View>
           <Controller
             control={control}
-            render={({field: {onChange, onBlur, value}}) => (
+            render={({ field: { onChange, onBlur, value } }) => (
               <TextInput
                 className="px-2 py-1.5 h-12 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
                 onBlur={onBlur}
@@ -75,7 +76,7 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
               />
             )}
             name="email"
-            rules={{required: true}}
+            rules={{ required: true }}
           />
         </View>
         {errors.email && (
@@ -109,14 +110,14 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
         <View>
           <Controller
             control={control}
-            render={({field: {onChange, value}}) => {
+            render={({ field: { onChange, value } }) => {
               return (
                 <>
                   <TouchableOpacity
                     className="text-xs text-black rounded-lg px-2 py-3.5 dark:text-white dark:bg-background-darkLight"
                     onPress={() => setOpen(true)}>
                     <Text>
-                      {format(value, "dd 'de' MMMM 'de' yyyy", {locale: ptBR})}
+                      {format(value, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
                     </Text>
                   </TouchableOpacity>
                   <DatePicker
@@ -138,7 +139,7 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
               );
             }}
             name="birthdate"
-            rules={{required: true}}
+            rules={{ required: true }}
           />
         </View>
         {errors.birthdate && (
@@ -150,9 +151,9 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
       <View className="flex flex-col space-y-2">
         <Text className="font-semibold dark:text-white">Gênero</Text>
         <View className="text-xs text-black rounded-lg dark:text-white dark:bg-background-darkLight">
-        <Controller
+          <Controller
             control={control}
-            render={({field: {onChange, value}}) => (
+            render={({ field: { onChange, value } }) => (
               <RNPickerSelect
                 style={{
                   inputAndroid: {
@@ -164,18 +165,17 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
                     height: 55,
                   },
                 }}
-                placeholder={{label: 'Informe seu gênero', value: null}}
+                placeholder={{label: 'Prefiro não informar', value: 3}}
                 onValueChange={value => onChange(value)}
                 value={value}
                 items={[
                   {label: 'Masculino', value: 1},
                   {label: 'Feminino', value: 2},
-                  {label: 'Prefiro não informar', value: 3},
                 ]}
               />
             )}
             name="gender"
-            rules={{required: true}}
+            rules={{ required: true }}
           />
         </View>
         {errors.gender && (

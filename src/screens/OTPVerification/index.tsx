@@ -14,7 +14,7 @@ import {
   PostVerifyCodePayload,
   verifyCode,
 } from '../../services/api/verify-code';
-import { getAccountByAuthId, Person } from '../../services/api/get-account-by-auth-id';
+import { getAccountByAuthId, Person, SocialAccount } from '../../services/api/get-account-by-auth-id';
 import storage from '../../services/storage';
 import Toast from 'react-native-toast-message';
 import { postActiveUser } from '@/services/api/post-active-user';
@@ -69,9 +69,13 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
 
   function AccountByAuthId(Id: string) {
     getAccountByAuthId(Id)
-      .then(({ person, socialAccount }) => {
+      .then(({ person }) => {
         setIsLoading(false);
-        storage.saveUserInfo(socialAccount);
+        const saveSocialAccount = {
+          id: person.id,
+          extraData: { phoneNumber: person.cellPhone }
+        }
+        storage.saveUserInfo(saveSocialAccount as SocialAccount);
         storage.savePerson(person);
         goToHome();
         setOTP(['', '', '', '', '', '']);
@@ -178,7 +182,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
           onPress={() => validateCode()}
           activeOpacity={0.5}
           disabled={isLoading}
-          className={`flex items-center justify-center w-full rounded-md bg-[#8257E5] py-2 ${isLoading && 'bg-[#8257E5]/60'
+          className={`flex items-center justify-center w-full rounded-md bg-base-primary py-2 ${isLoading && 'bg-base-primary/60'
             }`}>
           {isLoading ? (
             <View className="py-1">

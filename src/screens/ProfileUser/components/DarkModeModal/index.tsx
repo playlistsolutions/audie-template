@@ -65,9 +65,9 @@ export const DarkModeModal: React.FC<DarkModeModalProps> = ({
                 <Text className="text-lg font-normal text-black dark:text-white">
                   Desativado
                 </Text>
-                <View className="flex justify-center items-center rounded-full w-5 h-5 bg-transparent border-2 border-[#8257E5]">
+                <View className="flex justify-center items-center rounded-full w-5 h-5 bg-transparent border-2 border-base-primary">
                   {currentDarkMode == 'light' && (
-                    <View className="bg-[#8257E5] w-2.5 h-2.5 rounded-full" />
+                    <View className="bg-base-primary w-2.5 h-2.5 rounded-full" />
                   )}
                 </View>
               </TouchableOpacity>
@@ -78,9 +78,9 @@ export const DarkModeModal: React.FC<DarkModeModalProps> = ({
                 <Text className="text-lg font-normal text-black dark:text-white">
                   Ativado
                 </Text>
-                <View className="flex justify-center items-center rounded-full w-5 h-5 bg-transparent border-2 border-[#8257E5]">
+                <View className="flex justify-center items-center rounded-full w-5 h-5 bg-transparent border-2 border-base-primary">
                   {currentDarkMode == 'dark' && (
-                    <View className="bg-[#8257E5] w-2.5 h-2.5 rounded-full" />
+                    <View className="bg-base-primary w-2.5 h-2.5 rounded-full" />
                   )}
                 </View>
               </TouchableOpacity>
@@ -91,9 +91,9 @@ export const DarkModeModal: React.FC<DarkModeModalProps> = ({
                 <Text className="text-lg font-normal text-black dark:text-white">
                   Padrão do sistema
                 </Text>
-                <View className="flex justify-center items-center rounded-full w-5 h-5 bg-transparent border-2 border-[#8257E5]">
+                <View className="flex justify-center items-center rounded-full w-5 h-5 bg-transparent border-2 border-base-primary">
                   {currentDarkMode == 'system' && (
-                    <View className="bg-[#8257E5] w-2.5 h-2.5 rounded-full" />
+                    <View className="bg-base-primary w-2.5 h-2.5 rounded-full" />
                   )}
                 </View>
               </TouchableOpacity>

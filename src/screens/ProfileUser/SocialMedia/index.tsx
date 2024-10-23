@@ -1,26 +1,33 @@
-import {useUrls} from '../../../services/api/get-url';
-import {NavigationProp} from '@react-navigation/native';
-import {ArrowLeft2, Instagram, Whatsapp, Youtube} from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
-import {Image, Linking, Text, TouchableOpacity, View} from 'react-native';
+import { useUrls } from '../../../services/api/get-url';
+import { NavigationProp } from '@react-navigation/native';
+import { ArrowLeft2, Instagram, Whatsapp, Youtube } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
+import { Image, Linking, Text, TouchableOpacity, View } from 'react-native';
 
 interface SocialMediaProps {
   navigation: NavigationProp<RootTabParamList>;
 }
 
-export const SocialMedia: React.FC<SocialMediaProps> = ({navigation}) => {
-  const {data, isLoading, error} = useUrls();
-  const {colorScheme} = useColorScheme();
+export const SocialMedia: React.FC<SocialMediaProps> = ({ navigation }) => {
+  const { data } = useUrls();
+  const { colorScheme } = useColorScheme();
+
+  const hasUrlTikTok = data?.find(item => item.typeId == 10)
+  const hasUrlFacebook = data?.find(item => item.typeId == 5)
+  const hasUrlTwitter = data?.find(item => item.typeId == 6)
+  const hasUrlYoutube = data?.find(item => item.typeId == 8)
+  const hasUrlInstagram = data?.find(item => item.typeId == 7)
+  const hasUrlWhatsApp = data?.find(item => item.typeId == 9)
 
   function openWhatsApp() {
     if (data) {
-      const urlWhats = data.filter(item => {
+      const urlWhats = data.find(item => {
         if (item.typeId == 9) {
           return item;
         }
-      })[0].url;
+      }).url;
 
-      Linking.openURL(`https://wa.me/${urlWhats.url}`);
+      Linking.openURL(`https://wa.me/${urlWhats}`);
     }
   }
 
@@ -52,91 +59,109 @@ export const SocialMedia: React.FC<SocialMediaProps> = ({navigation}) => {
           </Text>
         </View>
         <View className="flex flex-col space-y-6">
-          <TouchableOpacity
-            onPress={() => goTo(10)}
-            className="flex flex-row items-center space-x-2">
-            {colorScheme === 'dark' ? (
-              <Image
-                className="w-8 h-8"
-                source={require('../../../assets/icons/tiktokIconDark.png')}
+          {
+            hasUrlTikTok &&
+            <TouchableOpacity
+              onPress={() => goTo(10)}
+              className="flex flex-row items-center space-x-2">
+              {colorScheme === 'dark' ? (
+                <Image
+                  className="w-8 h-8"
+                  source={require('../../../assets/icons/tiktokIconDark.png')}
+                />
+              ) : (
+                <Image
+                  className="w-8 h-8"
+                  source={require('../../../assets/icons/tiktokIcon.png')}
+                />
+              )}
+              <Text className="text-base font-bold text-black dark:text-white">
+                Tik Tok
+              </Text>
+            </TouchableOpacity>
+          }
+          {
+            hasUrlFacebook &&
+            <TouchableOpacity
+              onPress={() => goTo(5)}
+              className="flex flex-row items-center space-x-2">
+              {colorScheme === 'dark' ? (
+                <Image
+                  className="w-8 h-8"
+                  source={require('../../../assets/icons/facebookIconDark.png')}
+                />
+              ) : (
+                <Image
+                  className="w-8 h-8"
+                  source={require('../../../assets/icons/facebookIcon.png')}
+                />
+              )}
+              <Text className="text-base font-bold text-black dark:text-white">
+                Facebook
+              </Text>
+            </TouchableOpacity>
+          }
+          {
+            hasUrlTwitter &&
+            <TouchableOpacity
+              onPress={() => goTo(6)}
+              className="flex flex-row items-center space-x-2">
+              {colorScheme === 'dark' ? (
+                <Image
+                  className="w-8 h-8"
+                  source={require('../../../assets/icons/twitterIconDark.png')}
+                />
+              ) : (
+                <Image
+                  className="w-8 h-8"
+                  source={require('../../../assets/icons/twitterIcon.png')}
+                />
+              )}
+              <Text className="text-base font-bold text-black dark:text-white">
+                Twitter
+              </Text>
+            </TouchableOpacity>
+          }
+          {
+            hasUrlYoutube &&
+            <TouchableOpacity
+              onPress={() => goTo(8)}
+              className="flex flex-row items-center space-x-2">
+              <Youtube
+                size={32}
+                color={colorScheme === 'dark' ? '#FFF' : '#000'}
+                variant="Bold"
               />
-            ) : (
-              <Image
-                className="w-8 h-8"
-                source={require('../../../assets/icons/tiktokIcon.png')}
+              <Text className="text-base font-bold text-black dark:text-white">
+                Youtube
+              </Text>
+            </TouchableOpacity>
+          }
+          {
+            hasUrlInstagram &&
+            <TouchableOpacity
+              onPress={() => goTo(7)}
+              className="flex flex-row items-center space-x-2">
+              <Instagram
+                size={32}
+                color={colorScheme === 'dark' ? '#FFF' : '#000'}
+                variant="Bold"
               />
-            )}
-            <Text className="text-base font-bold text-black dark:text-white">
-              Tik Tok
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => goTo(5)}
-            className="flex flex-row items-center space-x-2">
-            {colorScheme === 'dark' ? (
-              <Image
-                className="w-8 h-8"
-                source={require('../../../assets/icons/facebookIconDark.png')}
-              />
-            ) : (
-              <Image
-                className="w-8 h-8"
-                source={require('../../../assets/icons/facebookIcon.png')}
-              />
-            )}
-            <Text className="text-base font-bold text-black dark:text-white">
-              Facebook
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => goTo(6)}
-            className="flex flex-row items-center space-x-2">
-            {colorScheme === 'dark' ? (
-              <Image
-                className="w-8 h-8"
-                source={require('../../../assets/icons/twitterIconDark.png')}
-              />
-            ) : (
-              <Image
-                className="w-8 h-8"
-                source={require('../../../assets/icons/twitterIcon.png')}
-              />
-            )}
-            <Text className="text-base font-bold text-black dark:text-white">
-              Twitter
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => goTo(8)}
-            className="flex flex-row items-center space-x-2">
-            <Youtube
-              size={32}
-              color={colorScheme === 'dark' ? '#FFF' : '#000'}
-              variant="Bold"
-            />
-            <Text className="text-base font-bold text-black dark:text-white">
-              Youtube
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => goTo(7)}
-            className="flex flex-row items-center space-x-2">
-            <Instagram
-              size={32}
-              color={colorScheme === 'dark' ? '#FFF' : '#000'}
-              variant="Bold"
-            />
-            <Text className="text-base font-bold text-black dark:text-white">
-              Instagram
-            </Text>
-          </TouchableOpacity>
+              <Text className="text-base font-bold text-black dark:text-white">
+                Instagram
+              </Text>
+            </TouchableOpacity>
+          }
         </View>
       </View>
-      <TouchableOpacity
-        onPress={openWhatsApp}
-        className="absolute flex items-center justify-center rounded-full bottom-10 right-8">
-        <Whatsapp size="50" color="#25D366" variant="Bold" />
-      </TouchableOpacity>
+      {
+        hasUrlWhatsApp &&
+        <TouchableOpacity
+          onPress={openWhatsApp}
+          className="absolute flex items-center justify-center rounded-full bottom-10 right-8">
+          <Whatsapp size="50" color="#25D366" variant="Bold" />
+        </TouchableOpacity>
+      }
     </View>
   );
 };

@@ -1,8 +1,8 @@
-import {useEffect, useState} from 'react';
-import {FlatList, ScrollView, Text, TouchableOpacity, View} from 'react-native';
-import {useRoute} from '@react-navigation/native';
-import {useColorScheme} from 'nativewind';
-import {useNews} from '../../services/api/get-news';
+import { useEffect, useState } from 'react';
+import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
+import { useRoute } from '@react-navigation/native';
+import { useColorScheme } from 'nativewind';
+import { useNews } from '../../services/api/get-news';
 
 interface Categories {
   id: number;
@@ -13,10 +13,10 @@ interface HeaderProps {
   onFilterNewsByCategory?: (categoryId: number) => void;
 }
 
-export const Header: React.FC<HeaderProps> = ({onFilterNewsByCategory}) => {
-  const {data} = useNews();
+export const Header: React.FC<HeaderProps> = ({ onFilterNewsByCategory }) => {
+  const { data } = useNews();
   const [categories, setCategories] = useState<Categories[]>([
-    {id: -1, name: 'Todas'},
+    { id: -1, name: 'Todas' },
   ]);
   const [selectedCategory, setSelectedCategory] = useState<number>(-1);
   const route = useRoute();
@@ -33,7 +33,7 @@ export const Header: React.FC<HeaderProps> = ({onFilterNewsByCategory}) => {
         new Set(newsCategories.map(category => JSON.stringify(category))),
       ).map(category => JSON.parse(category));
 
-      setCategories([{id: -1, name: 'Todas'}, ...uniqueCategories]);
+      setCategories([{ id: -1, name: 'Todas' }, ...uniqueCategories]);
     }
   }, [data]);
 
@@ -44,12 +44,11 @@ export const Header: React.FC<HeaderProps> = ({onFilterNewsByCategory}) => {
 
   return (
     <View
-      className={`w-full flex flex-col justify-between bg-white dark:bg-background-dark2 ${
-        route.name == 'News' ? 'h-28 px-5 pt-5' : 'p-5'
-      }`}>
+      className={`w-full flex flex-col justify-between bg-white dark:bg-background-dark2 ${route.name == 'News' ? 'h-28 px-5 pt-5' : 'p-5'
+        }`}>
       <Text className="text-base font-normal text-black uppercase font-QuickExpress dark:text-white">
-        103 FM{' '}
-        <Text className="text-base font-normal text-[#8257E5]">Aracaju</Text>
+        103 FM {' '}
+        <Text className="text-base font-normal text-base-primary">Aracaju</Text>
       </Text>
       {route.name == 'News' && (
         <View>
@@ -58,23 +57,22 @@ export const Header: React.FC<HeaderProps> = ({onFilterNewsByCategory}) => {
             data={categories}
             keyExtractor={category => category.id.toString()}
             horizontal
-            renderItem={({item: category}) => {
+            renderItem={({ item: category }) => {
               return (
                 <TouchableOpacity
                   onPress={() => FilterNewsByCategory(category.id)}
                   className="flex flex-col items-center ml-2 gap-y-3"
                   key={category.id}>
                   <Text
-                    className={`${
-                      selectedCategory == category.id
-                        ? 'text-[#8257E5]'
+                    className={`${selectedCategory == category.id
+                        ? 'text-base-primary'
                         : 'text-gray-300'
-                    } font-Poppins-Medium text-sm`}>
+                      } font-Poppins-Medium text-sm`}>
                     {category.name.charAt(0) +
                       category.name.slice(1).toLowerCase()}
                   </Text>
                   {selectedCategory == category.id && (
-                    <View className="p-0.5 rounded-full w-8 bg-[#8257E5]" />
+                    <View className="p-0.5 rounded-full w-8 bg-base-primary" />
                   )}
                 </TouchableOpacity>
               );

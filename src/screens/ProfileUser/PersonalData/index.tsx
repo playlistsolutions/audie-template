@@ -63,7 +63,7 @@ export const PersonalData: React.FC<PersonDataProps> = ({navigation}) => {
             Dados Pessoais
           </Text>
           <Text className="text-sm font-normal text-black dark:text-white">
-            O Playlist News utiliza essas informações para verificar sua
+            O 103 FM Aracaju utiliza essas informações para verificar sua
             identidade e criar relatórios visando aprimorar sua experiência com
             o aplicativo.
           </Text>

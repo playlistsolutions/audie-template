@@ -27,13 +27,13 @@ export const AllNews: React.FC<AllNewsProps> = ({navigation}) => {
     <View className="flex flex-col gap-y-0.5">
       <View className="flex flex-row items-center justify-between">
         <View className="flex flex-row items-center space-x-2">
-          <View className="h-7 p-0.5 bg-[#8257E5] rounded-full" />
+          <View className="h-7 p-0.5 bg-base-primary rounded-full" />
           <Text className="text-base font-semibold text-black dark:text-white">
             Últimas notícias
           </Text>
         </View>
         <TouchableOpacity onPress={goToNews}>
-          <Text className="font-Poppins-Regular text-xs text-[#8257E5]">
+          <Text className="font-Poppins-Regular text-xs text-base-primary">
             Veja mais
           </Text>
         </TouchableOpacity>

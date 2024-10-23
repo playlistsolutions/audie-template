@@ -92,13 +92,12 @@ export const BirthdayAndGenderForm: React.FC<BirthdayAndGenderFormProps> = ({
                     height: 55,
                   },
                 }}
-                placeholder={{label: 'Informe seu gênero', value: null}}
+                placeholder={{label: 'Prefiro não informar', value: 3}}
                 onValueChange={value => onChange(value)}
                 value={value}
                 items={[
                   {label: 'Masculino', value: 1},
                   {label: 'Feminino', value: 2},
-                  {label: 'Prefiro não informar', value: 3},
                 ]}
               />
             )}

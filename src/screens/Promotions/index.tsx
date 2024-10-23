@@ -6,21 +6,21 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
-import {Filter, SearchNormal1} from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
-import {useState} from 'react';
-import {Header} from '../../components/Header';
-import {usePromotions} from '../../services/api/get-promotions';
-import {isBefore, isEqual} from 'date-fns';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
+import { Filter, SearchNormal1 } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
+import { useState } from 'react';
+import { Header } from '../../components/Header';
+import { usePromotions } from '../../services/api/get-promotions';
+import { isBefore, isEqual } from 'date-fns';
 
 interface PromorionScreenProps {
   navigation: BottomTabNavigationProp<RootTabParamList>;
 }
 
-export const Promotions: React.FC<PromorionScreenProps> = ({navigation}) => {
-  const {data} = usePromotions();
-  const {colorScheme} = useColorScheme();
+export const Promotions: React.FC<PromorionScreenProps> = ({ navigation }) => {
+  const { data } = usePromotions();
+  const { colorScheme } = useColorScheme();
   const [input, setInput] = useState<string>('');
 
   const promotions = data.filter(item => {
@@ -46,7 +46,15 @@ export const Promotions: React.FC<PromorionScreenProps> = ({navigation}) => {
       const titleMatch = item.title.toLowerCase().includes(value.toLowerCase());
       return titleMatch;
     });
-    setFilterData(filteredResult);
+    const promotions = filteredResult.filter(item => {
+      const endDate = new Date(item.endDate);
+      const today = new Date();
+      const promotionFinished = isBefore(endDate, today) || isEqual(endDate, today);
+      if (item.isAd != true && promotionFinished == false) {
+        return item;
+      }
+    })
+    setFilterData(promotions);
     setInput(value);
   }
 
@@ -77,7 +85,7 @@ export const Promotions: React.FC<PromorionScreenProps> = ({navigation}) => {
             data={filterData}
             showsVerticalScrollIndicator={false}
             keyExtractor={filterData => filterData.id.toString()}
-            renderItem={({item: promotiom}) => {
+            renderItem={({ item: promotiom }) => {
               return (
                 <TouchableOpacity
                   className="my-2"
@@ -85,7 +93,7 @@ export const Promotions: React.FC<PromorionScreenProps> = ({navigation}) => {
                   key={promotiom.id}>
                   <Image
                     className="h-32 rounded-t-md"
-                    source={{uri: promotiom.imageUrl}}
+                    source={{ uri: promotiom.imageUrl }}
                   />
                   <View className="relative flex flex-col px-2 py-3 space-y-2 bg-white rounded-b-lg dark:bg-background-darkLight">
                     <Text className="text-sm font-Poppins-Medium text-neutral-700 dark:text-gray-200">

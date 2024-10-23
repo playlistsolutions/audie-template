@@ -1,7 +1,7 @@
-import {z} from 'zod';
-import {NavigationProp} from '@react-navigation/native';
-import {ArrowLeft2} from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
+import { z } from 'zod';
+import { NavigationProp } from '@react-navigation/native';
+import { ArrowLeft2 } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
 import {
   ActivityIndicator,
   ScrollView,
@@ -9,42 +9,42 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {AddressForm} from './components';
-import {editAddressSchema} from '../../../../schemas/personData/personDataFormSchema';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
+import { AddressForm } from './components';
+import { editAddressSchema } from '../../../../schemas/personData/personDataFormSchema';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import storage from '../../../../services/storage';
-import {Person} from '../../../../services/api/get-account-by-auth-id';
-import {updatePerson} from '../../../../services/api/post-edit-person';
+import { Person } from '../../../../services/api/get-account-by-auth-id';
+import { updatePerson } from '../../../../services/api/post-edit-person';
 import Toast from 'react-native-toast-message';
-import {useState} from 'react';
+import { useState } from 'react';
 
 interface AddressProps {
   navigation: NavigationProp<RootTabParamList>;
 }
 
-export const Address: React.FC<AddressProps> = ({navigation}) => {
+export const Address: React.FC<AddressProps> = ({ navigation }) => {
   type EditAddressFormData = z.infer<typeof editAddressSchema>;
   const [isLoading, setIsLoading] = useState<boolean>(false);
-  const {colorScheme} = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const person = storage.getPerson();
   const address = person!.addresses[0];
 
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
     setValue,
   } = useForm<EditAddressFormData>({
     resolver: zodResolver(editAddressSchema),
     defaultValues: {
-      cep: address.zip ? address.zip : '',
-      city: address.city ? address.city : '',
-      complement: address.complement ? address.complement : '',
-      number: address.number ? address.number : '',
-      state: address.state ? address.state : 'UF',
-      street: address.street ? address.street : '',
-      neighborhood: address.neighborhood ? address.neighborhood : '',
+      cep: address?.zip ? address.zip : '',
+      city: address?.city ? address.city : '',
+      complement: address?.complement ? address.complement : '',
+      number: address?.number ? address.number : '',
+      state: address?.state ? address.state : 'UF',
+      street: address?.street ? address.street : '',
+      neighborhood: address?.neighborhood ? address.neighborhood : '',
     },
   });
 
@@ -85,7 +85,7 @@ export const Address: React.FC<AddressProps> = ({navigation}) => {
           text2: 'Alteração realizada com sucesso!',
         });
         storage.savePerson(updatePersonData);
-        navigation.navigate('PersonalData', {refresh: true});
+        navigation.navigate('PersonalData', { refresh: true });
         setIsLoading(false);
       })
       .catch(error => {
@@ -132,7 +132,7 @@ export const Address: React.FC<AddressProps> = ({navigation}) => {
           </View>
           <View>
             <TouchableOpacity
-              onPress={handleSubmit(onSubmit)}
+              onPress={() => handleSubmit(onSubmit)}
               disabled={isLoading}
               className="flex items-center justify-center py-3 bg-white rounded-md dark:bg-background-darkLight">
               {isLoading ? (

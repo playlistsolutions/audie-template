@@ -1,5 +1,4 @@
 import { NavigationProp } from '@react-navigation/native';
-import { useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import storage from '../../services/storage';
 
@@ -35,7 +34,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ navigation }) => {
       <TouchableOpacity
         onPress={goToLoginOrRegister}
         activeOpacity={0.5}
-        className="flex items-center justify-center w-full rounded-md bg-[#8257E5] py-2">
+        className="flex items-center justify-center w-full py-2 rounded-md bg-base-primary">
         <Text className="flex text-xl text-white font-Poppins-Medium">
           Iniciar
         </Text>

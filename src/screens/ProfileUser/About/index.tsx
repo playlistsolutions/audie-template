@@ -1,14 +1,14 @@
-import {NavigationProp} from '@react-navigation/native';
-import {ArrowLeft2, ArrowRight2, UserSquare} from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
-import {Linking, Text, TouchableOpacity, View} from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
+import { ArrowLeft2, ArrowRight2, UserSquare } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
+import { Linking, Text, TouchableOpacity, View } from 'react-native';
 
 interface AboutProps {
   navigation: NavigationProp<RootTabParamList>;
 }
 
-export const About: React.FC<AboutProps> = ({navigation}) => {
-  const {colorScheme} = useColorScheme();
+export const About: React.FC<AboutProps> = ({ navigation }) => {
+  const { colorScheme } = useColorScheme();
 
   function goToPrivacyPolicy() {
     Linking.openURL(`https://fm103.com.br/privacidade-e-seguranca/`);
@@ -36,7 +36,7 @@ export const About: React.FC<AboutProps> = ({navigation}) => {
               className="flex flex-row items-center justify-between mt-5">
               <View className="flex flex-row items-center gap-x-2">
                 <Text className="font-medium text-black dark:text-white">
-                  Politicas de Privacidade
+                  Políticas de Privacidade
                 </Text>
               </View>
               <ArrowRight2

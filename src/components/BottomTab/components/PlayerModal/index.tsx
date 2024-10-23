@@ -1,19 +1,14 @@
-import {ArrowDown2, PauseCircle, PlayCircle} from 'iconsax-react-native';
-import {Image, Text, TouchableOpacity, View} from 'react-native';
+import { ArrowDown2, PauseCircle, PlayCircle } from 'iconsax-react-native';
+import { Image, Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
-import {MoreVertical} from 'lucide-react-native';
-import {useColorScheme} from 'nativewind';
+import { MoreVertical } from 'lucide-react-native';
+import { useColorScheme } from 'nativewind';
 import TrackPlayer from 'react-native-track-player';
-import {useState} from 'react';
-import xmlJs from 'xml-js';
-import {WaveIndicator} from 'react-native-indicators';
-import {
-  NavigationHelpers,
-  NavigationProp,
-  ParamListBase,
-} from '@react-navigation/native';
-import {BottomTabNavigationEventMap} from '@react-navigation/bottom-tabs';
-import {OptionsModal} from '../OptionsModal';
+import { useState } from 'react';
+import { WaveIndicator } from 'react-native-indicators';
+import { NavigationHelpers, ParamListBase } from '@react-navigation/native';
+import { BottomTabNavigationEventMap } from '@react-navigation/bottom-tabs';
+import { OptionsModal } from '../OptionsModal';
 import axios from 'axios';
 
 interface PlayerModalProps {
@@ -33,7 +28,9 @@ interface PlayerModalProps {
   infoMusic: {
     title: string;
     artist: string;
+    coverImg: string;
   };
+  isComercial: boolean
 }
 
 export const PlayerModal: React.FC<PlayerModalProps> = ({
@@ -51,8 +48,9 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
   setIsOnLive,
   navigation,
   infoMusic,
+  isComercial
 }) => {
-  const {colorScheme} = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const [showOptionsPlayer, setShowOptionsPlayer] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string>('A SEGUIR');
   const [letter, setLetter] = useState<string>('');
@@ -87,18 +85,14 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
   }
 
   async function getLetter() {
-    await axios
-      .get(
-        'https://api.vagalume.com.br/search.php' +
-          '?art=' +
-          infoMusic.artist +
-          '&mus=' +
-          infoMusic.title +
-          '&apikey=e9c839b8f17971df258e205c44e1314b',
-      )
-      .then(response => {
-        if (response.data) {
-          setLetter(response.data.mus[0].text.replace(/\n/g, '</br>'));
+    const VAGALUME_BASE_URL = 'https://api.vagalume.com.br/search.php'
+    const VAGALUME_KEY = 'e9c839b8f17971df258e205c44e1314b'
+
+    const url = `${VAGALUME_BASE_URL}?art=${infoMusic.artist}&mus=${infoMusic.title}&apikey=${VAGALUME_KEY}`
+    await axios.get(url)
+      .then(({ data }) => {
+        if (data) {
+          setLetter(data.mus[0].text)
         }
       })
       .catch(error => {
@@ -137,25 +131,54 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
                 </Text>
               </TouchableOpacity>
             </View>
-            <TouchableOpacity>
+            <TouchableOpacity className='opacity-0'>
               <MoreVertical size={20} color="white" />
             </TouchableOpacity>
           </View>
           <View className="flex flex-col items-center justify-center w-full px-3 gap-y-3">
-            <Image
-              className="h-[50%] w-full flex rounded-md"
-              source={require('../../../../assets/logo.png')}
-            />
+            {
+              isComercial
+                ?
+                <Image
+                  className="h-[50%] w-full flex rounded-md"
+                  source={require('../../../../assets/logo.png')}
+                />
+                :
+                <Image
+                  className="h-[60%] w-full flex rounded-md"
+                  source={{ uri: infoMusic.coverImg }}
+                />
+            }
             <View className="flex flex-col items-center justify-center w-full">
-              <Text className="text-xl font-medium text-black dark:text-white">
-                103 FM Aracaju
-              </Text>
+              {
+                isComercial ?
+                  (
+                    <Text className="text-xl font-medium text-black dark:text-white">
+                      103 FM Aracaju
+                    </Text>
+                  )
+                  :
+                  (
+                    <>
+                      <Text
+                        numberOfLines={1}
+                        className="text-xl font-semibold text-black dark:text-white">
+                        {infoMusic.title}
+                      </Text>
+                      <Text
+                        numberOfLines={1}
+                        className="text-sm font-normal text-neutral-800 dark:text-neutral-400">
+                        {infoMusic.artist}
+                      </Text>
+                    </>
+                  )
+              }
             </View>
           </View>
           <View className="relative flex items-center justify-center w-full">
             {isLoading ? (
               <WaveIndicator
-                style={{position: 'absolute'}}
+                style={{ position: 'absolute' }}
                 size={100}
                 count={2}
                 waveFactor={0.3}
@@ -181,9 +204,8 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
               onPress={handleLiveAudio}
               className="flex flex-row items-center justify-center w-full mt-3 gap-x-1">
               <View
-                className={`p-1 rounded-full ${
-                  isOnLive ? 'bg-red-600 animate-ping' : 'bg-neutral-600'
-                }`}
+                className={`p-1 rounded-full ${isOnLive ? 'bg-red-600 animate-ping' : 'bg-neutral-600'
+                  }`}
               />
               <Text className="font-medium text-neutral-700 dark:text-white">
                 AO VIVO
@@ -210,6 +232,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
         selectedOptions={selectedOptions}
         infoMusic={infoMusic}
         letter={letter}
+        isComercial={isComercial}
       />
     </>
   );

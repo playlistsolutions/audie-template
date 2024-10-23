@@ -31,28 +31,32 @@ export const ProfileUser: React.FC<ProfileUserScreenProps> = ({
   const [isDarkModeModal, setDarkModeModal] = useState<boolean>(false);
   const [currentDarkMode, setCurrentDarkMode] = useState<string>(colorScheme);
   const [isLogged, setIsLogged] = useState<boolean>(false);
-  const refreshData = () => setIsLogged(userInfo ? true : false);
+  const refreshData = () => setIsLogged(person ? true : false);
 
   const theme = storage.getDarkMode();
-  const userInfo = storage.getUserInfo();
+  const person = storage.getPerson();
 
   useEffect(() => {
     setCurrentDarkMode(theme ? theme : 'system');
   }, [theme]);
 
   useEffect(() => {
-    if (route.params?.refresh || userInfo) {
+    if (route.params?.refresh || person) {
       void refreshData();
     }
-    if (userInfo) {
-      AccountByAuthId(userInfo.id.toString());
+    if (person) {
+      AccountByAuthId(person.id.toString());
     }
-  }, [route.params, userInfo]);
+  }, [route.params, person]);
 
   function AccountByAuthId(Id: string) {
     getAccountByAuthId(Id)
-      .then(({person, socialAccount}) => {
-        storage.saveUserInfo(socialAccount);
+      .then(({ person }) => {
+        const saveSocialAccount = {
+          id: person.id,
+          extraData: { phoneNumber: person.cellPhone }
+        }
+        storage.saveUserInfo(saveSocialAccount as SocialAccount);
         storage.savePerson(person);
       })
       .catch(error => {

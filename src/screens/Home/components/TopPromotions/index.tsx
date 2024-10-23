@@ -1,4 +1,4 @@
-import {NavigationProp} from '@react-navigation/native';
+import { NavigationProp } from '@react-navigation/native';
 import {
   Text,
   View,
@@ -7,24 +7,41 @@ import {
   ActivityIndicator,
 } from 'react-native';
 import Swiper from 'react-native-swiper';
-import {usePromotions} from '../../../../services/api/get-promotions';
-import {isBefore, isEqual} from 'date-fns';
+import { GetPromotionsResponse, usePromotions } from '../../../../services/api/get-promotions';
 
 interface TopPromotionsProps {
   navigation: NavigationProp<RootTabParamList>;
 }
 
-export const TopPromotions: React.FC<TopPromotionsProps> = ({navigation}) => {
-  const {data, isFetching} = usePromotions();
 
-  const promotions = data.filter(item => {
-    const endDate = new Date(item.endDate);
-    const today = new Date();
-    const promotionFinished =
-      isBefore(endDate, today) || isEqual(endDate, today);
-    if (item.isAd != true && promotionFinished == false) {
-      return item;
+export const TopPromotions: React.FC<TopPromotionsProps> = ({ navigation }) => {
+  const { data, isFetching } = usePromotions();
+  
+  const shuffleArray = (arr: GetPromotionsResponse[]): GetPromotionsResponse[] => {
+    const shuffled = [...arr];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
+    return shuffled;
+  };
+  
+  const sortedPromotions = data?.sort((a, b) => a.position - b.position) || [];
+
+  const groupedPromotions = sortedPromotions.reduce((acc: { [key: number]: GetPromotionsResponse[] }, promotion) => {
+    acc[promotion.position] = acc[promotion.position] || [];
+    acc[promotion.position].push(promotion);
+    return acc;
+  }, {});
+
+  const organizedPromotions = Object.values(groupedPromotions)
+    .map(group => shuffleArray(group))
+    .flat();
+
+  const promotions = organizedPromotions.filter(item => {
+    const today = new Date();
+    const endDate = new Date(item.endDate);
+    return item.isAd !== true && endDate > today &&  item.isActive;
   });
 
   function goToSheetPromotion(promotiom: Promotiom) {
@@ -36,7 +53,7 @@ export const TopPromotions: React.FC<TopPromotionsProps> = ({navigation}) => {
   return (
     <View className="flex flex-col gap-y-3">
       <View className="flex flex-row items-center gap-x-2">
-        <View className="h-7 p-0.5 bg-[#8257E5] rounded-full" />
+        <View className="h-7 p-0.5 bg-base-primary rounded-full" />
         <Text className="text-base text-black font-Poppins-Medium dark:text-white">
           Promoções
         </Text>
@@ -60,7 +77,7 @@ export const TopPromotions: React.FC<TopPromotionsProps> = ({navigation}) => {
                 onPress={() => goToSheetPromotion(promotiom)}>
                 <Image
                   className="h-full rounded-md"
-                  source={{uri: promotiom.imageUrl}}
+                  source={{ uri: promotiom.imageUrl }}
                 />
               </TouchableOpacity>
             );

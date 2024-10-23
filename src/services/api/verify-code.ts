@@ -1,4 +1,4 @@
-import {api} from '../../config/axios';
+import { api } from '../../config/axios';
 
 export interface PostVerifyCodePayload {
   Sid: string;
@@ -14,10 +14,7 @@ export interface PostVerifyCodePayload {
 }
 
 export async function verifyCode(payload: PostVerifyCodePayload, code: string) {
-  const response = await api.post(
-    '/api/v1/doLogin/VerifyCode/' + code,
-    payload,
-  );
+  const response = await api.post('/api/v1/doLogin/VerifyCode/' + code, payload,);
 
   return response.data;
 }

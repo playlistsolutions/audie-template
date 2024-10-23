@@ -104,8 +104,8 @@ export const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({
               disabled={isLoading}
               onPress={validateCellPhoneInSubmit}
               activeOpacity={0.5}
-              className={`flex items-center justify-center w-full rounded-md bg-[#8257E5] py-2 ${
-                isLoading && 'bg-[#8257E5]/60'
+              className={`flex items-center justify-center w-full rounded-md bg-base-primary py-2 ${
+                isLoading && 'bg-base-primary/60'
               }`}>
               {isLoading ? (
                 <View className="py-1">
@@ -122,7 +122,7 @@ export const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({
                 Ao continuar, eu concordo com os
               </Text>
               <TouchableOpacity onPress={goToPrivacyPolicy}>
-                <Text className="text-black text-xs font-bold dark:text-[#8257E5]">
+                <Text className="text-xs font-bold text-black dark:text-base-primary">
                   Políticas de Privacidade
                 </Text>
               </TouchableOpacity>

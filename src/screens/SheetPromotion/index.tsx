@@ -160,7 +160,7 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
             ) : (
               <View className="flex flex-row items-center">
                 <View className="flex flex-col w-[70%]">
-                  <View className="p-4 bg-[#8257E5] rounded-tl-lg">
+                  <View className="p-4 bg-base-primary rounded-tl-lg">
                     <Text className="text-xs text-white font-Poppins-SemiBold">
                       Ticket da Promoção
                     </Text>
@@ -197,7 +197,7 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
                   </View>
                 </View>
                 <View className="flex flex-col w-[30%] h-full border-l-2 border-dashed border-black dark:border-white">
-                  <View className="flex py-2 justify-center items-center bg-[#8257E5] rounded-tr-lg">
+                  <View className="flex py-2 justify-center items-center bg-base-primary rounded-tr-lg">
                     <TicketDiscount size="35" color="#FFFF" variant="Outline" />
                   </View>
                   <View className="flex flex-col items-center justify-center flex-1 p-4 bg-white rounded-br-lg dark:bg-background-darkLight">
