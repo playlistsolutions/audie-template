@@ -230,7 +230,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
               <>
                 <View className="relative w-20 h-20">
                   <Image
-                    className="absolute rounded-md left-2 h-14 w-14 top-4"
+                    className="absolute w-16 rounded-md h-9 left-2 top-6"
                     source={require('../../assets/logo.png')}
                   />
                 </View>

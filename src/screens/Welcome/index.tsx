@@ -34,7 +34,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ navigation }) => {
       <TouchableOpacity
         onPress={goToLoginOrRegister}
         activeOpacity={0.5}
-        className="flex items-center justify-center w-full py-2 rounded-md bg-base-primary">
+        className="flex items-center justify-center w-full py-2 rounded-md bg-[#8257E5]">
         <Text className="flex text-xl text-white font-Poppins-Medium">
           Iniciar
         </Text>

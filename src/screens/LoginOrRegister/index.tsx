@@ -104,8 +104,8 @@ export const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({
               disabled={isLoading}
               onPress={validateCellPhoneInSubmit}
               activeOpacity={0.5}
-              className={`flex items-center justify-center w-full rounded-md bg-base-primary py-2 ${
-                isLoading && 'bg-base-primary/60'
+              className={`flex items-center justify-center w-full rounded-md bg-[#8257E5] py-2 ${
+                isLoading && 'bg-[#8257E5]/60'
               }`}>
               {isLoading ? (
                 <View className="py-1">

@@ -140,7 +140,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
               isComercial
                 ?
                 <Image
-                  className="h-[50%] w-full flex rounded-md"
+                  className="h-[47%] w-full flex rounded-md"
                   source={require('../../../../assets/logo.png')}
                 />
                 :
