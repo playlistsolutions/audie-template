@@ -21,5 +21,5 @@ interface PostAccountInfoPayload {
 export async function postAccountInfo(payload: PostAccountInfoPayload) {
   const response = await api.post('/api/v1/AuthAccount', payload);
 
-  return response.data;
+  return response.data.data;
 }

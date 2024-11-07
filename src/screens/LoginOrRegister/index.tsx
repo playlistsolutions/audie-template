@@ -32,7 +32,7 @@ export const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({
     const hex = /[^a-z0-9]/gi;
     const number = '+55' + phoneNumber.replace(hex, '');
     setIsLoading(true);
-    getVerificationCode({To: number, Message: ''})
+    getVerificationCode({To: number})
       .then(() => {
         goToOTPVerification(number);
         setIsLoading(false);
@@ -49,7 +49,7 @@ export const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({
   }
 
   function goToPrivacyPolicy() {
-    Linking.openURL(`https://fm103.com.br/privacidade-e-seguranca/`);
+    Linking.openURL(`https://playlistsolutions.com/pt/privacy/`);
   }
 
   return (
@@ -104,8 +104,8 @@ export const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({
               disabled={isLoading}
               onPress={validateCellPhoneInSubmit}
               activeOpacity={0.5}
-              className={`flex items-center justify-center w-full rounded-md bg-[#8257E5] py-2 ${
-                isLoading && 'bg-[#8257E5]/60'
+              className={`flex items-center justify-center w-full rounded-md bg-base-primary py-2 ${
+                isLoading && 'bg-base-primary/60'
               }`}>
               {isLoading ? (
                 <View className="py-1">

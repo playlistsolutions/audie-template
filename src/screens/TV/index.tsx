@@ -28,9 +28,8 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
 
   useEffect(() => {
     if (data) {
-      const urlStream = data.find((item) => item.typeId == 12).url;
+      const urlStream = data.find(({ urls }: any) => urls.typeId == 12).urls.url;
       setUrlStream(urlStream)
-      setEnableVideo(true)
     }
   }, [data]);
 
@@ -42,7 +41,8 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
     console.log(error);
   }
 
-  function handleLoad() {
+  function handleLoad(load: any) {
+    console.log(load)
     setIsLoading(true);
   }
 
@@ -90,7 +90,7 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
             </>
           )}
           {
-            enableVideo
+            urlStream != ''
             &&
             <Video
               source={{ uri: urlStream }}

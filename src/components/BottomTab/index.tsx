@@ -32,7 +32,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
 
   useEffect(() => {
     if (data) {
-      const urlStream = data.find((item) => item.typeId == 1).url;
+      const urlStream = data.find(({ urls }: any) => urls.typeId == 1).urls.url;
       LoadAudio(urlStream);
     }
     if (xmlData) {
@@ -43,9 +43,9 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   async function getInfoMusic(albumTitle: string, artistName: string) {
     const artist = encodeURIComponent(artistName);
     const album = encodeURIComponent(albumTitle);
-    const DISCOGS_BASE_URL= 'https://api.discogs.com/database/search'
-    const DISCOGS_KEY= 'TVckWiLVGVPQtuPGnOXy'
-    const DISCOGS_SECRET= 'NvptTAmnzoSCvWzvDUXaIHORhbznqvft'
+    const DISCOGS_BASE_URL = 'https://api.discogs.com/database/search'
+    const DISCOGS_KEY = 'TVckWiLVGVPQtuPGnOXy'
+    const DISCOGS_SECRET = 'NvptTAmnzoSCvWzvDUXaIHORhbznqvft'
 
     const url = `${DISCOGS_BASE_URL}?q=${album}&artist=${artist}&type=release&key=${DISCOGS_KEY}&secret=${DISCOGS_SECRET}`;
 
@@ -106,7 +106,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
         },
       });
       await TrackPlayer.add({
-        title: '103 FM Aracaju',
+        title: 'Playlist News',
         url: urlStream,
       });
       setIsLoading(false);
@@ -147,7 +147,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
           <View className="flex flex-col items-center justify-center space-y-1">
             <Home
               size={32}
-              color={isCurrentRoute ? '#8257E5' : 'grey'}
+              color={isCurrentRoute ? '#005CC7' : 'grey'}
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
@@ -162,7 +162,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
           <View className="flex flex-col items-center justify-center space-y-1">
             <DiscountShape
               size={32}
-              color={isCurrentRoute ? '#8257E5' : 'grey'}
+              color={isCurrentRoute ? '#005CC7' : 'grey'}
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
@@ -175,7 +175,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
       case 'Television':
         return (
           <View className="flex flex-col items-center justify-center space-y-1">
-            <Tv size={32} color={isCurrentRoute ? '#8257E5' : 'grey'} />
+            <Tv size={32} color={isCurrentRoute ? '#005CC7' : 'grey'} />
             <Text
               className={`text-xs ${isCurrentRoute ? 'text-base-primary' : 'text-neutral-500'
                 }`}>
@@ -188,7 +188,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
           <View className="flex flex-col items-center justify-center space-y-1">
             <Notepad2
               size={32}
-              color={isCurrentRoute ? '#8257E5' : 'grey'}
+              color={isCurrentRoute ? '#005CC7' : 'grey'}
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
@@ -203,7 +203,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
           <View className="flex flex-col items-center justify-center space-y-1">
             <ProfileCircle
               size={32}
-              color={isCurrentRoute ? '#8257E5' : 'grey'}
+              color={isCurrentRoute ? '#005CC7' : 'grey'}
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
@@ -230,13 +230,13 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
               <>
                 <View className="relative w-20 h-20">
                   <Image
-                    className="absolute w-16 rounded-md h-9 left-2 top-6"
+                    className="absolute rounded-md left-2 h-14 w-14 top-4"
                     source={require('../../assets/logo.png')}
                   />
                 </View>
                 <View className="flex flex-col w-[60%] overflow-hidden">
                   <Text className="text-base font-medium text-black dark:text-white">
-                  103 FM Aracaju
+                    Playlist News
                   </Text>
                 </View>
               </>

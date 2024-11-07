@@ -25,7 +25,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ navigation }) => {
       />
       <View className="flex flex-col items-center justify-center">
         <Text className="flex text-lg text-black dark:text-white font-Poppins-Medium">
-          Bem-Vindo ao 103 FM Aracaju
+          Bem-Vindo ao Playlist News
         </Text>
         <Text className="flex text-xs text-center text-gray-300 font-Poppins-Regular">
           Músicas, Noticias, Promoções e muito mais, tudo em um só lugar.
@@ -34,7 +34,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ navigation }) => {
       <TouchableOpacity
         onPress={goToLoginOrRegister}
         activeOpacity={0.5}
-        className="flex items-center justify-center w-full py-2 rounded-md bg-[#8257E5]">
+        className="flex items-center justify-center w-full py-2 rounded-md bg-base-primary">
         <Text className="flex text-xl text-white font-Poppins-Medium">
           Iniciar
         </Text>

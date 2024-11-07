@@ -4,7 +4,7 @@ import {useQuery} from '@tanstack/react-query';
 export async function getMetadata() {
   const response = await api.get('/api/v1/Xml');
 
-  return response.data;
+  return response.data.data;
 }
 
 export const useMetadata = () =>

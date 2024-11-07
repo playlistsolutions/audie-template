@@ -1,4 +1,14 @@
-import {api} from '../../config/axios';
+import { api } from '../../config/axios';
+
+export interface PromotionPagination {
+  page: string,
+  lastId: string | undefined
+}
+
+export interface AdvertisingPagination {
+  page: string,
+  lastId: string | undefined
+}
 
 export interface Person {
   addresses: Addresses[];
@@ -74,15 +84,21 @@ export interface SocialAccount {
   userId: string;
 }
 
-export interface GetAccountResponse {
+export interface Account {
   person: Person;
   socialAccount: SocialAccount;
 }
 
+interface AccountResponse {
+  data: Account
+  message: string
+  errors: object[]
+}
+
 export async function getAccountByAuthId(Id: string) {
-  const response = await api.get<GetAccountResponse>(
+  const response = await api.get<AccountResponse>(
     'api/v1/AuthAccount/authId/' + Id,
   );
 
-  return response.data;
+  return response.data.data;
 }

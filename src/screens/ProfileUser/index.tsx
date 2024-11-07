@@ -1,4 +1,4 @@
-import {BottomTabNavigationProp} from '@react-navigation/bottom-tabs';
+import { BottomTabNavigationProp } from '@react-navigation/bottom-tabs';
 import {
   ArrowRight2,
   InfoCircle,
@@ -8,13 +8,13 @@ import {
   Sun1,
   UserSquare,
 } from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
-import {useEffect, useState} from 'react';
-import {ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import { useColorScheme } from 'nativewind';
+import { useEffect, useState } from 'react';
+import { ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import storage from '../../services/storage';
-import {DarkModeModal} from './components';
-import {RouteProp} from '@react-navigation/native';
-import {getAccountByAuthId} from '../../services/api/get-account-by-auth-id';
+import { DarkModeModal } from './components';
+import { RouteProp } from '@react-navigation/native';
+import { getAccountByAuthId, SocialAccount } from '../../services/api/get-account-by-auth-id';
 import Toast from 'react-native-toast-message';
 
 interface ProfileUserScreenProps {
@@ -22,11 +22,8 @@ interface ProfileUserScreenProps {
   route: RouteProp<RootTabParamList, 'ProfileUser'>;
 }
 
-export const ProfileUser: React.FC<ProfileUserScreenProps> = ({
-  navigation,
-  route,
-}) => {
-  const {colorScheme} = useColorScheme();
+export const ProfileUser: React.FC<ProfileUserScreenProps> = ({ navigation, route }) => {
+  const { colorScheme } = useColorScheme();
 
   const [isDarkModeModal, setDarkModeModal] = useState<boolean>(false);
   const [currentDarkMode, setCurrentDarkMode] = useState<string>(colorScheme);

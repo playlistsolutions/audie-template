@@ -1,12 +1,8 @@
 import axios from 'axios';
 
 const api = axios.create({
-  baseURL: 'https://api-audie.playlistsolutions.com',
-  headers: {
-    'X-StationId': 'f8dd520c-f689-4f56-bc38-be810dea0fbb',
-    'x-type': 'cellphone',
-    'Content-Type': 'application/json; charset=utf-8',
-  },
+  baseURL: 'https://audieappapi.playlistsolutions.com/',
+  headers: { 'X-Api-Key': 'AU-cklLn7pGtlW32HNcaI6x1VqNjW4UT' },
 });
 
-export {api};
+export { api };

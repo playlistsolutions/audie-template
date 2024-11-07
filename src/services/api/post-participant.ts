@@ -9,5 +9,5 @@ export interface PostParticipantPayload {
 export async function postParticipant(payload: PostParticipantPayload) {
   const response = await api.post('/api/v1/Participant', payload);
 
-  return response.data;
+  return response.data.data;
 }

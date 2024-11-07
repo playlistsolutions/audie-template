@@ -24,10 +24,7 @@ interface OTPVerificationProps {
   route: RouteProp<RootTabParamList, 'OTPVerification'>;
 }
 
-export const OTPVerification: React.FC<OTPVerificationProps> = ({
-  navigation,
-  route,
-}) => {
+export const OTPVerification: React.FC<OTPVerificationProps> = ({ navigation, route }) => {
   const { colorScheme } = useColorScheme();
   const [OTP, setOTP] = useState<string[]>(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -39,21 +36,14 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
     var Code = OTP.join('');
     setIsLoading(true);
     var Payload: PostVerifyCodePayload = {
-      Sid: '',
-      ServiceSid: '',
-      AccountSid: '',
       To: phoneNumber,
-      Channel: '',
       Code,
-      Message: '',
-      Status: '',
       Valid: true,
-      Url: '',
     };
-    verifyCode(Payload, Code)
-      .then(({ object: Id }) => {
+    verifyCode(Payload)
+      .then((response) => {
         setIsError(false);
-        AccountByAuthId(Id);
+        AccountByAuthId(response);
       })
       .catch(error => {
         setIsError(true);
@@ -94,7 +84,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
             });
             postActiveUser(Id)
               .then(() => {
-               return AccountByAuthId(Id)
+                return AccountByAuthId(Id)
               })
               .catch((error) => {
                 console.log(error)
@@ -182,8 +172,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({
           onPress={() => validateCode()}
           activeOpacity={0.5}
           disabled={isLoading}
-          className={`flex items-center justify-center w-full rounded-md bg-[#8257E5] py-2 ${isLoading && 'bg-[#8257E5]/60'
-            }`}>
+          className={`flex items-center justify-center w-full rounded-md bg-base-primary py-2 ${isLoading && 'bg-base-primary/60'}`}>
           {isLoading ? (
             <View className="py-1">
               <ActivityIndicator size="small" color="#FFF" />

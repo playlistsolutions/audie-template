@@ -12,7 +12,7 @@ import { format } from 'date-fns';
 import HTMLView from 'react-native-htmlview';
 import storage from './../../services/storage';
 import {
-  GetParticipantResponse,
+  Participant,
   getParticipant,
 } from '../../services/api/get-participants-by-id';
 import { useEffect, useState } from 'react';
@@ -31,16 +31,9 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
   const { colorScheme } = useColorScheme();
   const [isParticipant, setIsParticipant] = useState<boolean>(false);
   const [isFetching, setIsFetching] = useState(false);
-  const [infoParticipant, setInfoParticipant] =
-    useState<GetParticipantResponse>();
+  const [infoParticipant, setInfoParticipant] = useState<Participant>();
   const person = storage.getPerson();
-  const {
-    imageUrl,
-    title,
-    endDate,
-    description,
-    id: promotionId,
-  } = route.params.promotiom;
+  const { imageUrl, title, endDate, description, id: promotionId, } = route.params.promotiom;
 
   useEffect(() => {
     getParticipant(promotionId.toString())
@@ -57,7 +50,7 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
         }
       })
       .catch((error) => {
-        setIsFetching(true)
+        setIsFetching(false)
         console.log(error)
       })
   }, [promotionId]);
@@ -76,7 +69,6 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
       personId: person!.id,
       promotionId,
     };
-    console.log(payload)
     postParticipant(payload)
       .then(response => {
         setIsParticipant(true);
@@ -160,7 +152,7 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
             ) : (
               <View className="flex flex-row items-center">
                 <View className="flex flex-col w-[70%]">
-                  <View className="p-4 bg-base-primary rounded-tl-lg">
+                  <View className="p-4 rounded-tl-lg bg-base-primary">
                     <Text className="text-xs text-white font-Poppins-SemiBold">
                       Ticket da Promoção
                     </Text>
@@ -197,7 +189,7 @@ export const SheetPromotion: React.FC<SheetPromotionProps> = ({
                   </View>
                 </View>
                 <View className="flex flex-col w-[30%] h-full border-l-2 border-dashed border-black dark:border-white">
-                  <View className="flex py-2 justify-center items-center bg-base-primary rounded-tr-lg">
+                  <View className="flex items-center justify-center py-2 rounded-tr-lg bg-base-primary">
                     <TicketDiscount size="35" color="#FFFF" variant="Outline" />
                   </View>
                   <View className="flex flex-col items-center justify-center flex-1 p-4 bg-white rounded-br-lg dark:bg-background-darkLight">

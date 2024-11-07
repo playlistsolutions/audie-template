@@ -1,7 +1,7 @@
-import {z} from 'zod';
-import {NavigationProp} from '@react-navigation/native';
-import {ArrowLeft2} from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
+import { z } from 'zod';
+import { NavigationProp } from '@react-navigation/native';
+import { ArrowLeft2 } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
 import {
   ActivityIndicator,
   ScrollView,
@@ -9,60 +9,42 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {BirthdayAndGenderForm} from './components';
-import {editBirthdayAndGenderSchema} from '../../../../schemas/personData/personDataFormSchema';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
+import { BirthdayAndGenderForm } from './components';
+import { editBirthdayAndGenderSchema } from '../../../../schemas/personData/personDataFormSchema';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import storage from '../../../../services/storage';
-import {Person} from '../../../../services/api/get-account-by-auth-id';
+import { Person } from '../../../../services/api/get-account-by-auth-id';
 import Toast from 'react-native-toast-message';
-import {updatePerson} from '../../../../services/api/post-edit-person';
-import {useState} from 'react';
+import { updatePerson } from '../../../../services/api/post-edit-person';
+import { useState } from 'react';
 
 interface BirthdayAndGenderProps {
   navigation: NavigationProp<RootTabParamList>;
 }
 
-export const BirthdayAndGender: React.FC<BirthdayAndGenderProps> = ({
-  navigation,
-}) => {
-  type EditBirthdayAndGenderFormData = z.infer<
-    typeof editBirthdayAndGenderSchema
-  >;
-  const {colorScheme} = useColorScheme();
+export const BirthdayAndGender: React.FC<BirthdayAndGenderProps> = ({ navigation }) => {
+  type EditBirthdayAndGenderFormData = z.infer<typeof editBirthdayAndGenderSchema>;
+  const { colorScheme } = useColorScheme();
   const person = storage.getPerson();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm<EditBirthdayAndGenderFormData>({
+  const { control, handleSubmit, formState: { errors } } = useForm<EditBirthdayAndGenderFormData>({
     resolver: zodResolver(editBirthdayAndGenderSchema),
     defaultValues: {
-      birthdate: person?.birthDate ? new Date(person.birthDate) : new Date(''),
+      birthdate: person?.birthDate ? new Date(person.birthDate) : new Date(),
       gender: person?.gender ? person.gender : 3,
     },
   });
 
-  const onSubmit: SubmitHandler<EditBirthdayAndGenderFormData> = ({
-    birthdate,
-    gender,
-  }) => {
+  const onSubmit: SubmitHandler<EditBirthdayAndGenderFormData> = ({ birthdate, gender }) => {
     setIsLoading(true);
-    const updatePersonData: Person = {...person!, birthDate: birthdate, gender};
-    updatePerson(person!.id, {
-      ...updatePersonData,
-      cellphone: person!.cellPhone,
-    })
+    const updatePersonData: Person = { ...person!, birthDate: birthdate.toISOString(), gender };
+    updatePerson(person!.id, { ...updatePersonData, cellphone: person!.cellPhone })
       .then(() => {
-        Toast.show({
-          type: 'success',
-          text1: 'Sucesso!',
-          text2: 'Alteração realizada com sucesso!',
-        });
+        Toast.show({ type: 'success', text1: 'Sucesso!', text2: 'Alteração realizada com sucesso!' });
         storage.savePerson(updatePersonData);
-        navigation.navigate('PersonalData', {refresh: true});
+        navigation.navigate('PersonalData', { refresh: true });
         setIsLoading(false);
       })
       .catch(error => {

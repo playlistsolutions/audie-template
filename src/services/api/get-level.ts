@@ -9,9 +9,15 @@ interface Level {
   stationId: number;
 }
 
-export interface GetLevelResponse {
-  currentLevel: Level;
-  nextPromotionCriteria: number;
+export interface LevelResponse {
+  level: Level;
+  promotionCriterias: number;
+}
+
+interface GetLevelResponse {
+  data: LevelResponse
+  message: string
+  errors: object[]
 }
 
 export async function getLevel(personId: number) {
@@ -19,5 +25,5 @@ export async function getLevel(personId: number) {
     '/api/v1/Level/setLevel/' + personId,
   );
 
-  return response.data;
+  return response.data.data;
 }

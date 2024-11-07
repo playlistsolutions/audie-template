@@ -1,17 +1,17 @@
-import {NavigationProp} from '@react-navigation/native';
-import {ArrowLeft2, ArrowRight2} from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
-import {Text, TouchableOpacity, View} from 'react-native';
+import { NavigationProp } from '@react-navigation/native';
+import { ArrowLeft2, ArrowRight2 } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
+import { Text, TouchableOpacity, View } from 'react-native';
 import storage from '../../../services/storage';
-import {format} from 'date-fns';
-import {ptBR} from 'date-fns/locale';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
 
 interface PersonDataProps {
   navigation: NavigationProp<RootTabParamList>;
 }
 
-export const PersonalData: React.FC<PersonDataProps> = ({navigation}) => {
-  const {colorScheme} = useColorScheme();
+export const PersonalData: React.FC<PersonDataProps> = ({ navigation }) => {
+  const { colorScheme } = useColorScheme();
   const userInfo = storage.getUserInfo();
   const person = storage.getPerson();
 
@@ -63,7 +63,7 @@ export const PersonalData: React.FC<PersonDataProps> = ({navigation}) => {
             Dados Pessoais
           </Text>
           <Text className="text-sm font-normal text-black dark:text-white">
-            O 103 FM Aracaju utiliza essas informações para verificar sua
+            O Playlist News utiliza essas informações para verificar sua
             identidade e criar relatórios visando aprimorar sua experiência com
             o aplicativo.
           </Text>
@@ -102,10 +102,10 @@ export const PersonalData: React.FC<PersonDataProps> = ({navigation}) => {
               </Text>
               <View>
                 <Text className="text-sm font-normal text-neutral-500 dark:text-neutral-400">
-                  {handleBirthdate(person!.birthDate)}
+                  {handleBirthdate(new Date(person!.birthDate))}
                 </Text>
                 <Text className="text-sm font-normal text-neutral-500 dark:text-neutral-400">
-                  {genderType(userInfo!.extraData.gender)}
+                  {genderType(person!.gender)}
                 </Text>
               </View>
             </View>

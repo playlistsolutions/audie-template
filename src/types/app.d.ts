@@ -12,12 +12,12 @@ type RootTabParamList = {
   MainScreen: undefined;
   WelcomeScreen: undefined;
   Home: undefined;
-  News: {categoryId?: number};
+  News: { categoryId?: number };
   Promotions: undefined;
-  ProfileUser: {refresh: boolean};
+  ProfileUser: { refresh: boolean };
   SheetNews: any;
-  SheetPromotion: {promotiom: Promotiom};
-  PersonalData: {refresh: boolean} | undefined;
+  SheetPromotion: { promotiom: Promotiom };
+  PersonalData: { refresh: boolean } | undefined;
   ManageLevel: undefined;
   SocialMedia: undefined;
   About: undefined;
@@ -25,9 +25,9 @@ type RootTabParamList = {
   BirthdayAndGender: undefined;
   Address: undefined;
   Welcome: undefined;
-  RegisterUser: {phoneNumber: string};
+  RegisterUser: { phoneNumber: string };
   LoginOrRegister: undefined;
-  OTPVerification: {phoneNumber: string};
+  OTPVerification: { phoneNumber: string };
 };
 
 interface UserPreferences {

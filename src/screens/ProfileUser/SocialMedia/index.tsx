@@ -12,31 +12,31 @@ export const SocialMedia: React.FC<SocialMediaProps> = ({ navigation }) => {
   const { data } = useUrls();
   const { colorScheme } = useColorScheme();
 
-  const hasUrlTikTok = data?.find(item => item.typeId == 10)
-  const hasUrlFacebook = data?.find(item => item.typeId == 5)
-  const hasUrlTwitter = data?.find(item => item.typeId == 6)
-  const hasUrlYoutube = data?.find(item => item.typeId == 8)
-  const hasUrlInstagram = data?.find(item => item.typeId == 7)
-  const hasUrlWhatsApp = data?.find(item => item.typeId == 9)
+  const hasUrlTikTok = data?.find(({ urls }: any) => urls.typeId == 10)
+  const hasUrlFacebook = data?.find(({ urls }: any) => urls.typeId == 5)
+  const hasUrlTwitter = data?.find(({ urls }: any) => urls.typeId == 6)
+  const hasUrlYoutube = data?.find(({ urls }: any) => urls.typeId == 8)
+  const hasUrlInstagram = data?.find(({ urls }: any) => urls.typeId == 7)
+  const hasUrlWhatsApp = data?.find(({ urls }: any) => urls.typeId == 9)
 
   function openWhatsApp() {
     if (data) {
-      const urlWhats = data.find(item => {
-        if (item.typeId == 9) {
+      const urlWhats = data.find((item: any) => {
+        if (item.urls.typeId == 9) {
           return item;
         }
-      }).url;
+      }).urls.url
 
       Linking.openURL(`https://wa.me/${urlWhats}`);
     }
   }
 
   function goTo(type: number) {
-    const socialMediaUrl = data.filter(item => {
-      if (item.typeId == type) {
+    const socialMediaUrl = data.find((item: any) => {
+      if (item.urls.typeId == type) {
         return item;
       }
-    })[0].url;
+    }).urls.url
 
     Linking.openURL(`https://${socialMediaUrl}`);
   }

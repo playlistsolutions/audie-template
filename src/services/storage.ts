@@ -1,6 +1,6 @@
-import {ColorSchemeSystem} from 'nativewind/dist/style-sheet/color-scheme';
-import {MMKV} from 'react-native-mmkv';
-import {Person} from './api/get-account-by-auth-id';
+import { ColorSchemeSystem } from 'nativewind/dist/style-sheet/color-scheme';
+import { MMKV } from 'react-native-mmkv';
+import { AdvertisingPagination, Person, PromotionPagination } from './api/get-account-by-auth-id';
 
 class StorageService {
   private storage: MMKV;
@@ -10,6 +10,28 @@ class StorageService {
       id: 'storage-audie',
     });
   }
+
+  // Advertising Pagination
+
+  saveAdvertisingPagination = (advertisingPagination: AdvertisingPagination) => {
+    this.storage.set('advertisingPagination', JSON.stringify(advertisingPagination));
+  };
+
+  getAdvertisingPagination = (): AdvertisingPagination => {
+    const advertisingPagination = this.storage.getString('advertisingPagination');
+    return advertisingPagination ? JSON.parse(advertisingPagination) : { page: '1', lastId: undefined };
+  };
+
+  // Promotion Pagination
+
+  savePromotionPagination = (promotionPagination: PromotionPagination) => {
+    this.storage.set('promotionPagination', JSON.stringify(promotionPagination));
+  };
+
+  getPromotionPagination = (): PromotionPagination => {
+    const promotionPagination = this.storage.getString('promotionPagination');
+    return promotionPagination ? JSON.parse(promotionPagination) : { page: '1', lastId: undefined };
+  };
 
   // Person
 
@@ -72,7 +94,7 @@ class StorageService {
         themeMode: type,
       };
     } else {
-      preferences = {...preferences, themeMode: type};
+      preferences = { ...preferences, themeMode: type };
     }
     this.saveUserPreferences(preferences);
   };

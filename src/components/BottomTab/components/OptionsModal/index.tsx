@@ -48,13 +48,13 @@ export const OptionsModal: React.FC<OptionsModalProps> = ({
               <View className="flex flex-row items-center space-x-2">
                 <View>
                   <Image
-                    className="flex h-8 w-14"
+                    className="flex h-[45px] w-[45px]"
                     source={require('../../../../assets/logo.png')}
                   />
                 </View>
                 <View className="flex flex-col">
                   <Text className="text-base font-medium text-black dark:text-white">
-                    103 FM Aracaju
+                    Playlist News
                   </Text>
                 </View>
               </View>

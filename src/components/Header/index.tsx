@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { FlatList, ScrollView, Text, TouchableOpacity, View } from 'react-native';
 import { useRoute } from '@react-navigation/native';
 import { useColorScheme } from 'nativewind';
-import { useNews } from '../../services/api/get-news';
+import { getNews, News } from '@/services/api/get-news';
 
 interface Categories {
   id: number;
@@ -14,28 +14,33 @@ interface HeaderProps {
 }
 
 export const Header: React.FC<HeaderProps> = ({ onFilterNewsByCategory }) => {
-  const { data } = useNews();
-  const [categories, setCategories] = useState<Categories[]>([
-    { id: -1, name: 'Todas' },
-  ]);
+  const [categories, setCategories] = useState<Categories[]>([{ id: -1, name: 'Todas' },]);
   const [selectedCategory, setSelectedCategory] = useState<number>(-1);
   const route = useRoute();
+  const [isFetching, setIsFetching] = useState<boolean>(true)
+  const [data, setData] = useState<News[]>([])
 
   useEffect(() => {
-    if (data && data.length > 0) {
-      const newsCategories = data.map(item => {
-        return {
-          id: item.categoryId,
-          name: item.category,
-        };
-      });
-      const uniqueCategories = Array.from(
-        new Set(newsCategories.map(category => JSON.stringify(category))),
-      ).map(category => JSON.parse(category));
+    getNews("1", undefined)
+      .then((response) => {
+        if (response && response.length > 0) {
+          const newsCategories = response.map(item => {
+            return {
+              id: item.newsCategory.id,
+              name: item.newsCategory.name,
+            };
+          });
 
-      setCategories([{ id: -1, name: 'Todas' }, ...uniqueCategories]);
-    }
-  }, [data]);
+          const uniqueCategories = Array.from(
+            new Map(newsCategories.map(item => [item.id, { id: item.id, name: item.name }])).values()
+          );
+          setCategories([{ id: -1, name: 'Todas' }, ...uniqueCategories]);
+        }
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }, [])
 
   function FilterNewsByCategory(categoryId: number) {
     setSelectedCategory(categoryId);
@@ -44,18 +49,17 @@ export const Header: React.FC<HeaderProps> = ({ onFilterNewsByCategory }) => {
 
   return (
     <View
-      className={`w-full flex flex-col justify-between bg-white dark:bg-background-dark2 ${route.name == 'News' ? 'h-28 px-5 pt-5' : 'p-5'
-        }`}>
+      className={`w-full flex flex-col justify-between bg-white dark:bg-background-dark2 ${route.name == 'News' ? 'h-28 px-5 pt-5' : 'p-5'}`}>
       <Text className="text-base font-normal text-black uppercase font-QuickExpress dark:text-white">
-        103 FM {' '}
-        <Text className="text-base font-normal text-base-primary">Aracaju</Text>
+        Playlist{' '}
+        <Text className="text-base font-normal text-base-primary">News</Text>
       </Text>
       {route.name == 'News' && (
         <View>
           <FlatList
             showsHorizontalScrollIndicator={false}
             data={categories}
-            keyExtractor={category => category.id.toString()}
+            keyExtractor={(item) => item.id.toString()}
             horizontal
             renderItem={({ item: category }) => {
               return (
@@ -65,8 +69,8 @@ export const Header: React.FC<HeaderProps> = ({ onFilterNewsByCategory }) => {
                   key={category.id}>
                   <Text
                     className={`${selectedCategory == category.id
-                        ? 'text-base-primary'
-                        : 'text-gray-300'
+                      ? 'text-base-primary'
+                      : 'text-gray-300'
                       } font-Poppins-Medium text-sm`}>
                     {category.name.charAt(0) +
                       category.name.slice(1).toLowerCase()}

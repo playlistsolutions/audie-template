@@ -1,0 +1,1 @@
+export { PromotionsSkeleton } from "./PromotionsSkeleton";

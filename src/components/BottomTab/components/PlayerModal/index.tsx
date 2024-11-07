@@ -140,7 +140,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
               isComercial
                 ?
                 <Image
-                  className="h-[47%] w-full flex rounded-md"
+                  className="flex w-[250px] h-[250px] rounded-md"
                   source={require('../../../../assets/logo.png')}
                 />
                 :
@@ -154,7 +154,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
                 isComercial ?
                   (
                     <Text className="text-xl font-medium text-black dark:text-white">
-                      103 FM Aracaju
+                      Playlist News
                     </Text>
                   )
                   :

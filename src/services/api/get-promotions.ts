@@ -1,5 +1,6 @@
-import {useQuery} from '@tanstack/react-query';
-import {api} from '../../config/axios';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../config/axios';
+import { PromotionPagination } from './get-account-by-auth-id';
 
 interface Rules {
   ageStart: number;
@@ -24,7 +25,7 @@ interface PromotionRules {
   station: string | null;
 }
 
-export interface GetPromotionsResponse {
+export interface Promotions {
   id: number;
   stationId: number;
   localId: number;
@@ -42,15 +43,14 @@ export interface GetPromotionsResponse {
   promotionRules: PromotionRules;
 }
 
-export async function getPromotions() {
-  const response = await api.get<GetPromotionsResponse[]>('api/v1/Promotion');
-
-  return response.data;
+interface PromotionsResponse {
+  data: Promotions[]
+  message: string
+  errors: object[]
 }
 
-export const usePromotions = () =>
-  useQuery({
-    queryKey: ['promotions'],
-    queryFn: getPromotions,
-    initialData: [],
-  });
+export async function getPromotions(page: string, lastId: string | undefined) {
+  const response = await api.get<PromotionsResponse>(`api/v1/Promotion?${lastId ? `LastId=${lastId}` : `CurrentPage=${page}`}&PageSize=20`);
+
+  return response.data.data;
+}

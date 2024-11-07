@@ -15,7 +15,7 @@ module.exports = {
           darkLight: '#202024',
         },
         base: {
-          primary: '#8257E5'
+          primary: '#005CC7'
         },
         success: {
           light: '#04D361',

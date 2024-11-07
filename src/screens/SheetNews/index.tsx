@@ -21,14 +21,10 @@ export const SheetNews: React.FC<SheetNewsProps> = ({navigation, route}) => {
   const {colorScheme} = useColorScheme();
   const [numberOfLines, setNumberOfLines] = useState<number | undefined>(23);
 
-  const {title, description, category, imageUrl} = route.params.news;
+  const {title, description, newsCategory, imageUrl} = route.params.news;
 
   function goBack() {
     navigation.goBack();
-  }
-
-  function handleNumberOfLines() {
-    numberOfLines ? setNumberOfLines(undefined) : setNumberOfLines(23);
   }
 
   return (
@@ -46,7 +42,7 @@ export const SheetNews: React.FC<SheetNewsProps> = ({navigation, route}) => {
         <View className="absolute bottom-0 flex flex-col items-start px-4 py-4 gap-y-3">
           <View className="bg-base-primary py-0.5 px-4 rounded-md flex">
             <Text className="font-medium text-white">
-              {category.charAt(0) + category.slice(1).toLowerCase()}
+              {newsCategory.name.charAt(0) + newsCategory.name.slice(1).toLowerCase()}
             </Text>
           </View>
           <View className="flex flex-row items-center pr-4 gap-x-2">

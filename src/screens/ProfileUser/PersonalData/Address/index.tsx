@@ -30,12 +30,7 @@ export const Address: React.FC<AddressProps> = ({ navigation }) => {
   const person = storage.getPerson();
   const address = person!.addresses[0];
 
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm<EditAddressFormData>({
+  const { control, handleSubmit, formState: { errors }, setValue } = useForm<EditAddressFormData>({
     resolver: zodResolver(editAddressSchema),
     defaultValues: {
       cep: address?.zip ? address.zip : '',
@@ -48,15 +43,7 @@ export const Address: React.FC<AddressProps> = ({ navigation }) => {
     },
   });
 
-  const onSubmit: SubmitHandler<EditAddressFormData> = ({
-    cep,
-    city,
-    number,
-    state,
-    street,
-    complement,
-    neighborhood,
-  }) => {
+  const onSubmit: SubmitHandler<EditAddressFormData> = ({ cep, city, number, state, street, complement, neighborhood }) => {
     setIsLoading(true);
     const updatePersonData: Person = {
       ...person!,
@@ -132,7 +119,7 @@ export const Address: React.FC<AddressProps> = ({ navigation }) => {
           </View>
           <View>
             <TouchableOpacity
-              onPress={() => handleSubmit(onSubmit)}
+              onPress={handleSubmit(onSubmit)}
               disabled={isLoading}
               className="flex items-center justify-center py-3 bg-white rounded-md dark:bg-background-darkLight">
               {isLoading ? (

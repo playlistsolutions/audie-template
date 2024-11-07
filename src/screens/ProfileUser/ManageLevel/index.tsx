@@ -1,4 +1,4 @@
-import { GetLevelResponse, getLevel } from '../../../services/api/get-level';
+import { LevelResponse, getLevel } from '../../../services/api/get-level';
 import storage from '../../../services/storage';
 import { NavigationProp } from '@react-navigation/native';
 import { AddCircle, ArrowLeft2, TickCircle } from 'iconsax-react-native';
@@ -24,10 +24,10 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({ navigation }) => {
   const [criteriaMet, setCriteriaMet] = useState<string[]>([]);
   const [maxLevel, setMaxLevel] = useState<boolean>(false);
   const [criteria, setCriteria] = useState<string[]>([]);
-  const [data, setData] = useState<GetLevelResponse>();
+  const [data, setData] = useState<LevelResponse>();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const criteriaFields = {
+  const criteriaFields: Record<string, string> = {
     cpf: 'CPF',
     number: 'Celular',
     rg: 'RG',
@@ -46,6 +46,10 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({ navigation }) => {
       setIsLoading(true);
       getLevel(person?.id)
         .then(response => {
+          if (response.level == null) {
+            setIsLoading(false);
+            return
+          }
           setData(response);
           handleLevel(response);
           setIsLoading(false);
@@ -63,14 +67,14 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({ navigation }) => {
     checkCriteria();
   }, []);
 
-  function handleLevel(data: GetLevelResponse) {
-    if (data.nextPromotionCriteria == 0) {
+  function handleLevel(data: LevelResponse) {
+    if (data.promotionCriterias == 0) {
       setMaxLevel(true);
     }
 
     // @ts-ignore: Unreachable code error
     setCriteria(
-      Object.keys(data?.nextPromotionCriteria).filter(item => {
+      Object.keys(data?.promotionCriterias).filter(item => {
         // @ts-ignore: Unreachable code error
         return data.nextPromotionCriteria[item] === true;
       }),
@@ -78,15 +82,7 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({ navigation }) => {
   }
 
   function checkCriteria() {
-    const {
-      nationalRegister,
-      cellPhone,
-      stateRegister,
-      addresses,
-      socialMedia,
-      contacts,
-      birthDate,
-    } = person!;
+    const { nationalRegister, cellPhone, stateRegister, addresses, socialMedia, contacts, birthDate } = person!;
     const updateCriteriaMet = [...criteriaMet];
 
     if (nationalRegister != '' && nationalRegister != null) {
@@ -160,7 +156,7 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({ navigation }) => {
                 <Image
                   className="flex w-32 h-32"
                   source={{
-                    uri: `${handleImage(data?.currentLevel.levelImage)}`,
+                    uri: `${handleImage(data?.level.levelImage)}`,
                   }}
                 />
               )}
@@ -181,7 +177,7 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({ navigation }) => {
               </View>
             ) : (
               <Text className="text-2xl font-extrabold text-black dark:text-white">
-                {data?.currentLevel.levelName}
+                {data?.level.levelName}
               </Text>
             )}
             {!maxLevel && (

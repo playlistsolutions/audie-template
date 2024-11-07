@@ -1,13 +1,13 @@
 import { states } from '@/utils';
-import {getViaCep} from '../../../../../services/api/get-via-cep';
-import {useColorScheme} from 'nativewind';
+import { getViaCep } from '../../../../../services/api/get-via-cep';
+import { useColorScheme } from 'nativewind';
 import {
   Control,
   Controller,
   FieldErrors,
   UseFormSetValue,
 } from 'react-hook-form';
-import {Text, TextInput, View} from 'react-native';
+import { Text, TextInput, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
 
 interface AddressFormProps {
@@ -43,18 +43,14 @@ interface AddressFormProps {
   }>;
 }
 
-export const AddressForm: React.FC<AddressFormProps> = ({
-  control,
-  errors,
-  setValue,
-}) => {
-  const {colorScheme} = useColorScheme();
+export const AddressForm: React.FC<AddressFormProps> = ({ control, errors, setValue }) => {
+  const { colorScheme } = useColorScheme();
 
   function getInfoByCep(Cep: string) {
     if (Cep.length != 8) return;
     getViaCep(Cep)
       .then(response => {
-        const {localidade, logradouro, uf, bairro} = response;
+        const { localidade, logradouro, uf, bairro } = response;
         setValue('city', localidade);
         setValue('neighborhood', bairro);
         setValue('street', logradouro);
@@ -72,7 +68,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
         <View>
           <Controller
             control={control}
-            render={({field: {onChange, value}}) => (
+            render={({ field: { onChange, value } }) => (
               <TextInput
                 maxLength={8}
                 keyboardType="numeric"
@@ -83,7 +79,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
               />
             )}
             name="cep"
-            rules={{required: true}}
+            rules={{ required: true }}
           />
         </View>
         {errors.cep && (
@@ -100,7 +96,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           <View>
             <Controller
               control={control}
-              render={({field: {onChange, onBlur, value}}) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   keyboardType="default"
                   className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
@@ -110,7 +106,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                 />
               )}
               name="city"
-              rules={{required: true}}
+              rules={{ required: true }}
             />
           </View>
           {errors.city && (
@@ -124,23 +120,23 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           <View className="text-xs text-black bg-white rounded-lg dark:bg-background-darkLight">
             <Controller
               control={control}
-              render={({field: {onChange, value}}) => (
+              render={({ field: { onChange, value } }) => (
                 <RNPickerSelect
                   style={{
-                    inputAndroid: {color: colorScheme ? 'black' : 'white'},
+                    inputAndroid: { color: colorScheme ? 'black' : 'white' },
                     inputIOS: {
                       color: colorScheme ? 'white' : 'black',
                       height: 55,
                     },
                   }}
-                  placeholder={{label: 'UF', value: null}}
+                  placeholder={{ label: 'UF', value: null }}
                   onValueChange={value => onChange(value)}
                   value={value}
                   items={states}
                 />
               )}
               name="state"
-              rules={{required: true}}
+              rules={{ required: true }}
             />
           </View>
           {errors.state && (
@@ -158,7 +154,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           <View>
             <Controller
               control={control}
-              render={({field: {onChange, onBlur, value}}) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   keyboardType="default"
                   className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
@@ -168,7 +164,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                 />
               )}
               name="neighborhood"
-              rules={{required: true}}
+              rules={{ required: true }}
             />
           </View>
           {errors.street && (
@@ -182,7 +178,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           <View>
             <Controller
               control={control}
-              render={({field: {onChange, onBlur, value}}) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   keyboardType="default"
                   className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
@@ -192,7 +188,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                 />
               )}
               name="street"
-              rules={{required: true}}
+              rules={{ required: true }}
             />
           </View>
           {errors.street && (
@@ -210,7 +206,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           <View>
             <Controller
               control={control}
-              render={({field: {onChange, onBlur, value}}) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   keyboardType="default"
                   className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
@@ -220,7 +216,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                 />
               )}
               name="number"
-              rules={{required: true}}
+              rules={{ required: true }}
             />
           </View>
           {errors.number && (
@@ -236,7 +232,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
           <View>
             <Controller
               control={control}
-              render={({field: {onChange, onBlur, value}}) => (
+              render={({ field: { onChange, onBlur, value } }) => (
                 <TextInput
                   keyboardType="default"
                   className="h-12 px-2 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
@@ -246,7 +242,7 @@ export const AddressForm: React.FC<AddressFormProps> = ({
                 />
               )}
               name="complement"
-              rules={{required: true}}
+              rules={{ required: true }}
             />
           </View>
           {errors.complement && (

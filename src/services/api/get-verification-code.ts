@@ -1,18 +1,11 @@
-import {api} from '../../config/axios';
+import { api } from '../../config/axios';
 
 interface GetVerificationCodePayload {
   To: string;
-  Message: string;
 }
 
-export async function getVerificationCode({
-  To,
-  Message,
-}: GetVerificationCodePayload) {
-  const response = await api.post('/api/v1/doLogin/VerificationCode/', {
-    To,
-    Message,
-  });
+export async function getVerificationCode({ To }: GetVerificationCodePayload) {
+  const response = await api.post('/api/v1/doLogin/VerificationCode/', { To });
 
-  return response.data;
+  return response.data.data;
 }

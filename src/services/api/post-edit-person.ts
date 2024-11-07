@@ -11,5 +11,5 @@ export interface UpdatePersonPayload {
 export async function updatePerson(id: number, payload: UpdatePersonPayload) {
   const response = await api.put('/api/v1/Person/' + id, payload);
 
-  return response.data;
+  return response.data.data;
 }

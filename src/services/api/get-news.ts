@@ -1,10 +1,17 @@
-import {useQuery} from '@tanstack/react-query';
-import {api} from '../../config/axios';
+import { useQuery } from '@tanstack/react-query';
+import { api } from '../../config/axios';
 
-export interface GetNewsResponse {
+interface NewsCategory {
+  createTime: Date;
+  deleted: boolean;
+  id: number;
+  isActive: boolean;
+  name: string;
+}
+
+export interface News {
   author: string;
-  category: string;
-  categoryId: number;
+  newsCategory: NewsCategory;
   deleted: boolean;
   description: string;
   id: number;
@@ -15,16 +22,14 @@ export interface GetNewsResponse {
   title: string;
 }
 
-export async function getNews() {
-  const response = await api.get<GetNewsResponse[]>('api/v1/News/');
-
-  return response.data;
+interface NewsResponse {
+  data: News[]
+  message: string
+  errors: object[]
 }
 
-export const useNews = () =>
-  useQuery({
-    queryKey: ['news'],
-    queryFn: getNews,
-    initialData: [],
-    refetchOnWindowFocus: false,
-  });
+export async function getNews(page: string, lastId: string | undefined) {
+  const response = await api.get<NewsResponse>(`api/v1/News?${lastId ? `LastId=${lastId}` : `CurrentPage=${page}`}&PageSize=20`);
+
+  return response.data.data;
+}

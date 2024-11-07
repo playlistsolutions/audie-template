@@ -1,7 +1,7 @@
-import {z} from 'zod';
-import {NavigationProp} from '@react-navigation/native';
-import {ArrowLeft2} from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
+import { z } from 'zod';
+import { NavigationProp } from '@react-navigation/native';
+import { ArrowLeft2 } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
 import {
   ActivityIndicator,
   SafeAreaView,
@@ -10,15 +10,15 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import {editPersonFormSchema} from '../../../../schemas/personData/personDataFormSchema';
-import {SubmitHandler, useForm} from 'react-hook-form';
-import {zodResolver} from '@hookform/resolvers/zod';
-import {ContactInformationForm} from './components';
+import { editPersonFormSchema } from '../../../../schemas/personData/personDataFormSchema';
+import { SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { ContactInformationForm } from './components';
 import storage from '../../../../services/storage';
-import {updatePerson} from '../../../../services/api/post-edit-person';
+import { updatePerson } from '../../../../services/api/post-edit-person';
 import Toast from 'react-native-toast-message';
-import {Person} from '../../../../services/api/get-account-by-auth-id';
-import {useState} from 'react';
+import { Person } from '../../../../services/api/get-account-by-auth-id';
+import { useState } from 'react';
 
 interface ContracInformationProps {
   navigation: NavigationProp<RootTabParamList>;
@@ -28,14 +28,14 @@ export const ContracInformation: React.FC<ContracInformationProps> = ({
   navigation,
 }) => {
   type EditPersonFormData = z.infer<typeof editPersonFormSchema>;
-  const {colorScheme} = useColorScheme();
+  const { colorScheme } = useColorScheme();
   const person = storage.getPerson();
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<EditPersonFormData>({
     resolver: zodResolver(editPersonFormSchema),
     defaultValues: {
@@ -62,7 +62,7 @@ export const ContracInformation: React.FC<ContracInformationProps> = ({
       nationalRegister: cpf,
       stateRegister: rg,
     })
-      .then(({name, nationalRegister, stateRegister, email}) => {
+      .then(() => {
         Toast.show({
           type: 'success',
           text1: 'Sucesso!',
@@ -72,12 +72,12 @@ export const ContracInformation: React.FC<ContracInformationProps> = ({
         const updatedPerson = {
           ...person,
           name,
-          nationalRegister,
-          stateRegister,
+          nationalRegister: cpf,
+          stateRegister: rg,
           email,
         };
         storage.savePerson(updatedPerson as Person);
-        navigation.navigate('PersonalData', {refresh: true});
+        navigation.navigate('PersonalData', { refresh: true });
         setIsLoading(false);
       })
       .catch(error => {
