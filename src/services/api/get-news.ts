@@ -11,25 +11,25 @@ interface NewsCategory {
 
 export interface News {
   author: string;
-  newsCategory: NewsCategory;
+  category: string;
   deleted: boolean;
   description: string;
   id: number;
   image: string;
-  imageUrl: string;
+  imageUri: string;
   publishedAt: string;
   summary: string;
   title: string;
 }
 
 interface NewsResponse {
-  data: News[]
+  data: { result: News[] }
   message: string
   errors: object[]
 }
 
-export async function getNews(page: string, lastId: string | undefined) {
-  const response = await api.get<NewsResponse>(`api/v1/News?${lastId ? `LastId=${lastId}` : `CurrentPage=${page}`}&PageSize=20`);
+export async function getNews(page: string, size: number) {
+  const response = await api.get<NewsResponse>(`api/v1/News?CurrentPage=${page}&PageSize=${size}`);
 
   return response.data.data;
 }

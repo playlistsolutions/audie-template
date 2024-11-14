@@ -1,6 +1,8 @@
 import {
+  ActivityIndicator,
   FlatList,
   Image,
+  Linking,
   ScrollView,
   TextInput,
   TouchableOpacity,
@@ -22,35 +24,36 @@ export const News: React.FC<NewsScreenProps> = ({ navigation }) => {
   const { colorScheme } = useColorScheme();
   const [input, setInput] = useState<string>('');
   const [filterData, setFilterData] = useState<INews[]>([]);
-  const [currentEndIndex, setCurrentEndIndex] = useState(10);
-  const [visibleData, setVisibleData] = useState<INews[]>([]);
   const [data, setData] = useState<INews[]>([])
+  const [isFetching, setIsFetching] = useState<boolean>(true)
 
   useEffect(() => {
-    getNews("1", undefined)
+    getNews("1", 10)
       .then((response) => {
-        setData(response)
-        setFilterData(response)
+        setData(response.result)
+        setFilterData(response.result)
+        setIsFetching(false)
       })
       .catch((error) => {
         console.log(error)
+        setIsFetching(false)
       })
   }, [])
 
-  useEffect(() => {
-    filterData && setVisibleData(filterData.slice(0, currentEndIndex));
-  }, [filterData]);
 
   function goToSheetNews(news: any) {
-    navigation.navigate('SheetNews', { news });
+    if (news.pubUri == null) {
+      return navigation.navigate('SheetNews', { news });
+    }
+    Linking.openURL(news.pubUri);
   }
 
-  function filterNewsByCategory(categoryId: number) {
+  function filterNewsByCategory(categoryId: number, categoryName: string) {
     if (categoryId == -1) {
       return setFilterData(data);
     }
     const filterByCategoryId = data.filter(
-      item => item.newsCategory.id === categoryId,
+      item => item.category === categoryName,
     );
     setFilterData(filterByCategoryId);
   }
@@ -58,7 +61,7 @@ export const News: React.FC<NewsScreenProps> = ({ navigation }) => {
   function handleFilterInputData(value: string) {
     const filteredResult = data?.filter(item => {
       const titleMatch = item.title.toLowerCase().includes(value.toLowerCase());
-      const categoryMatch = item.newsCategory.name.toLowerCase().includes(value.toLowerCase());
+      const categoryMatch = item.category.toLowerCase().includes(value.toLowerCase());
       return titleMatch || categoryMatch;
     });
     setFilterData(filteredResult);
@@ -66,13 +69,11 @@ export const News: React.FC<NewsScreenProps> = ({ navigation }) => {
   }
 
   function handlePaginationScrolling() {
-    const lastId = data[data.length - 1].id.toString()
-    getNews("1", lastId)
+    getNews("1", data.length + 10)
       .then((response) => {
-        const news = response
-        const updateNews = [...data, ...news]
-        setData(updateNews)
-        setFilterData(updateNews)
+        const news = response.result
+        setData(news)
+        setFilterData(news)
       })
       .catch((error) => {
         console.log(error)
@@ -100,37 +101,56 @@ export const News: React.FC<NewsScreenProps> = ({ navigation }) => {
           />
         </View>
         <View className="flex flex-col mb-[565px]">
-          <FlatList
-            showsVerticalScrollIndicator={false}
-            data={visibleData}
-            onEndReached={handlePaginationScrolling}
-            keyExtractor={news => news.id.toString()}
-            renderItem={({ item: news }) => {
-              return (
-                <TouchableOpacity
-                  className="my-2"
-                  onPress={() => goToSheetNews(news)}
-                  key={news.id}>
-                  <Image
-                    className="h-32 rounded-t-md"
-                    source={{ uri: news.imageUrl }}
-                  />
-                  <View className="relative flex flex-col px-2 py-3 space-y-2 bg-white rounded-b-lg dark:bg-background-darkLight">
-                    <View className="absolute py-0.5 px-4 rounded-md -top-4 left-2 flex bg-white">
-                      <Text className="font-medium text-black">
-                        {news.newsCategory.name.charAt(0) + news.newsCategory.name.slice(1).toLowerCase()}
-                      </Text>
+          {
+            isFetching
+              ?
+              Array.from({ length: 3 }, (_, index) => {
+                return (
+                  <View
+                    className="flex flex-row items-center w-full max-w-full p-3 my-1.5 space-x-2 bg-white rounded-md dark:bg-background-darkLight"
+                    key={index}>
+                    <View className="flex items-center justify-center w-full h-24">
+                      <ActivityIndicator size="large" color="#FFF" />
                     </View>
-                    <Text
-                      numberOfLines={2}
-                      className="text-xs font-Poppins-Medium text-neutral-700 dark:text-neutral-200">
-                      {news.title}
-                    </Text>
                   </View>
-                </TouchableOpacity>
-              );
-            }}
-          />
+                );
+              })
+              :
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={filterData}
+                onEndReached={handlePaginationScrolling}
+                keyExtractor={(_, index) => index.toString()}
+                renderItem={({ item: news }) => {
+                  return (
+                    <TouchableOpacity
+                      className="my-2"
+                      onPress={() => goToSheetNews(news)}
+                      key={Math.random()}>
+                      <Image
+                        className="h-32 rounded-t-md"
+                        source={{ uri: news.imageUri }}
+                      />
+                      <View className="relative flex flex-col px-2 py-3 space-y-2 bg-white rounded-b-lg dark:bg-background-darkLight">
+                        {
+                          news.category != "" &&
+                          <View className="absolute py-0.5 px-4 rounded-md -top-4 left-2 flex bg-white">
+                            <Text className="font-medium text-black">
+                              {news.category}
+                            </Text>
+                          </View>
+                        }
+                        <Text
+                          numberOfLines={2}
+                          className="text-xs font-Poppins-Medium text-neutral-700 dark:text-neutral-200">
+                          {news.title}
+                        </Text>
+                      </View>
+                    </TouchableOpacity>
+                  );
+                }}
+              />
+          }
         </View>
       </View>
     </View>

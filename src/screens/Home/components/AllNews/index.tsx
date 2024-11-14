@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import {
   ActivityIndicator,
   Image,
+  Linking,
   Text,
   TouchableOpacity,
   View,
@@ -18,10 +19,10 @@ export const AllNews: React.FC<AllNewsProps> = ({ navigation }) => {
   const [data, setData] = useState<News[]>([])
 
   useEffect(() => {
-    getNews("1", undefined)
+    getNews("1", 10)
       .then((response) => {
         setIsFetching(false)
-        setData(response)
+        setData(response.result)
       })
       .catch((error) => {
         console.log(error)
@@ -33,7 +34,10 @@ export const AllNews: React.FC<AllNewsProps> = ({ navigation }) => {
   }
 
   function goToSheetNews(news: any) {
-    navigation.navigate('SheetNews', { news });
+    if (news.pubUri == null) {
+      return navigation.navigate('SheetNews', { news });
+    }
+    Linking.openURL(news.pubUri);
   }
 
   return (
@@ -68,14 +72,11 @@ export const AllNews: React.FC<AllNewsProps> = ({ navigation }) => {
           :
           data && data.slice(0, 3).map((news: any, index: number) => {
             return (
-              <TouchableOpacity
-                key={index}
-                onPress={() => goToSheetNews(news)}
-                className="flex flex-row items-center w-full max-w-full p-3 space-x-2 bg-white rounded-md dark:bg-background-darkLight">
+              <TouchableOpacity key={index} onPress={() => goToSheetNews(news)} className="flex flex-row items-center w-full max-w-full p-3 space-x-2 bg-white rounded-md dark:bg-background-darkLight">
                 <View className="w-20 h-20">
                   <Image
                     className="w-full h-full rounded-md"
-                    source={{ uri: news.imageUrl }}
+                    source={{ uri: news.imageUri }}
                   />
                 </View>
                 <View className="flex flex-col flex-1 gap-y-2">
@@ -89,7 +90,7 @@ export const AllNews: React.FC<AllNewsProps> = ({ navigation }) => {
             );
           })
         }
-      </View>
-    </View>
+      </View >
+    </View >
   );
 };

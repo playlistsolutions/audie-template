@@ -75,7 +75,6 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ navigation, ro
         if (error.request.status == 404) {
           setIsLoading(false);
           setIsError(false);
-          console.log(error.response.data);
           if (error.response.data.codeError === 'userInactive') {
             Toast.show({
               type: 'warning',

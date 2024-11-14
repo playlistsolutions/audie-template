@@ -1,7 +1,7 @@
-import {NavigationProp} from '@react-navigation/native';
-import {ArrowCircleLeft} from 'iconsax-react-native';
-import {useColorScheme} from 'nativewind';
-import {useState} from 'react';
+import { NavigationProp } from '@react-navigation/native';
+import { ArrowCircleLeft } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
+import { useState } from 'react';
 import {
   Image,
   ScrollView,
@@ -17,11 +17,10 @@ interface SheetNewsProps {
   navigation: NavigationProp<RootTabParamList>;
 }
 
-export const SheetNews: React.FC<SheetNewsProps> = ({navigation, route}) => {
-  const {colorScheme} = useColorScheme();
-  const [numberOfLines, setNumberOfLines] = useState<number | undefined>(23);
+export const SheetNews: React.FC<SheetNewsProps> = ({ navigation, route }) => {
+  const { colorScheme } = useColorScheme();
 
-  const {title, description, newsCategory, imageUrl} = route.params.news;
+  const { title, contentEncoded, category, imageUri } = route.params.news;
 
   function goBack() {
     navigation.goBack();
@@ -37,14 +36,17 @@ export const SheetNews: React.FC<SheetNewsProps> = ({navigation, route}) => {
         </View>
         <Image
           className="object-cover w-full h-full"
-          source={{uri: imageUrl}}
+          source={{ uri: imageUri }}
         />
         <View className="absolute bottom-0 flex flex-col items-start px-4 py-4 gap-y-3">
-          <View className="bg-base-primary py-0.5 px-4 rounded-md flex">
-            <Text className="font-medium text-white">
-              {newsCategory.name.charAt(0) + newsCategory.name.slice(1).toLowerCase()}
-            </Text>
-          </View>
+          {
+            category != "" &&
+            <View className="bg-base-primary py-0.5 px-4 rounded-md flex">
+              <Text className="font-medium text-white">
+                {category}
+              </Text>
+            </View>
+          }
           <View className="flex flex-row items-center pr-4 gap-x-2">
             <View className="h-10 p-0.5 bg-white rounded-full" />
             <Text
@@ -58,10 +60,8 @@ export const SheetNews: React.FC<SheetNewsProps> = ({navigation, route}) => {
       <ScrollView showsVerticalScrollIndicator={false}>
         <View className="flex flex-col justify-around flex-1 w-full p-2">
           <HTMLView
-            textComponentProps={{
-              style: {color: colorScheme === 'dark' ? '#FFF' : '#000'},
-            }}
-            value={description}
+            textComponentProps={{ style: { color: colorScheme === 'dark' ? '#FFF' : '#000' } }}
+            value={contentEncoded}
           />
         </View>
       </ScrollView>
