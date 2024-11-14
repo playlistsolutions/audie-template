@@ -17,6 +17,7 @@ import { useUrls } from '../../services/api/get-url';
 import axios from 'axios';
 import { Tv } from 'lucide-react-native';
 import { useMetadata } from '@/services/api/get-metadata';
+import xmlJs from 'xml-js';
 
 export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   const { data } = useUrls();
@@ -71,12 +72,15 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
 
   async function LoadMetadata() {
     try {
-      if (xmlData.Playlist) {
-        if (xmlData.Playlist.OnAir.Break.Id._text != 'Comercial') {
-          const currentMusic = xmlData.Playlist.OnAir.CurMusic
-          const title = currentMusic.Title
-          const artist = currentMusic.Artist
-          const album = currentMusic.Album
+      if (xmlData) {
+        const response = await fetch(xmlData);
+        const xmlText = await response.text();
+        const parsed = xmlJs.xml2js(xmlText, { compact: true });
+        const currentMusic = parsed.Playlist.OnAir.CurMusic
+        if (parsed.Playlist.OnAir.Break.Id._text != 'Comercial') {
+          const title = currentMusic.Title._text ? currentMusic.Title._text : ""
+          const artist = currentMusic.Artist._text ? currentMusic.Title._text : ""
+          const album = currentMusic.Album._text ? currentMusic.Title._text : ""
           await getInfoMusic(album, artist);
           setIsComercial(false);
           return setInfoMusic(state => ({
@@ -243,10 +247,19 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
             ) : (
               <>
                 <View className="relative w-20 h-20">
-                  <Image
-                    className="absolute rounded-md left-2 h-14 w-14 top-4"
-                    source={{ uri: infoMusic.coverImg }}
-                  />
+                  {
+                    infoMusic.coverImg == ""
+                      ?
+                      <Image
+                        className="absolute rounded-md left-2 h-14 w-14 top-4"
+                        source={require('../../assets/logo.png')}
+                      />
+                      :
+                      <Image
+                        className="absolute rounded-md left-2 h-14 w-14 top-4"
+                        source={{ uri: infoMusic.coverImg }}
+                      />
+                  }
                 </View>
                 <View className="flex flex-col w-[60%] overflow-hidden">
                   <Text className="text-sm font-medium text-black dark:text-white">

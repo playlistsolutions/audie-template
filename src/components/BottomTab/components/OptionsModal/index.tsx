@@ -60,12 +60,23 @@ export const OptionsModal: React.FC<OptionsModalProps> = ({
               </View>
               :
               <View className="flex flex-row items-center space-x-3">
-                <View>
-                  <Image
-                    className="flex rounded-md h-14 w-14"
-                    source={{ uri: infoMusic.coverImg }}
-                  />
-                </View>
+                {
+                  infoMusic.coverImg == ""
+                    ?
+                    <View>
+                      <Image
+                        className="flex h-[45px] w-[45px]"
+                        source={require('../../../../assets/logo.png')}
+                      />
+                    </View>
+                    :
+                    <View>
+                      <Image
+                        className="flex rounded-md h-14 w-14"
+                        source={{ uri: infoMusic.coverImg }}
+                      />
+                    </View>
+                }
                 <View className="flex flex-col">
                   <>
                     <Text

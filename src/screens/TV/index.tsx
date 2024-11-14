@@ -1,22 +1,25 @@
 import { useEffect, useRef, useState } from 'react';
-import { Text, TouchableOpacity, View } from 'react-native';
+import { Text, TouchableOpacity, View, Platform } from 'react-native';
 import Video, { LoadError, OnBufferData } from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import { ChevronLeft, Volume2, VolumeX } from 'lucide-react-native';
 import { NavigationProp } from '@react-navigation/native';
 import { useUrls } from '@/services/api/get-url';
+import { VLCPlayer } from 'react-native-vlc-media-player';
 
 interface TVProps {
   navigation: NavigationProp<RootTabParamList>;
 }
 
 export const TV: React.FC<TVProps> = ({ navigation }) => {
-  const { data, isFetched, isError } = useUrls();
+  const { data } = useUrls();
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isMuted, setIsMuted] = useState<boolean>(false);
-  const [enableVideo, setEnableVideo] = useState<boolean>(false);
   const [urlStream, setUrlStream] = useState<string>('')
+  const [isStoped, setIsStoped] = useState<boolean>(false);
+  const [volume, setVolume] = useState<number>(60);
   const videoRef = useRef<any>(null);
+  const isAndroidPlatform = Platform.OS === 'android'
 
   useEffect(() => {
     Orientation.lockToLandscape();
@@ -37,7 +40,7 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
     console.log(data);
   }
 
-  function onError(error: LoadError) {
+  function onError(error: any) {
     console.log(error);
   }
 
@@ -50,12 +53,20 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
     setIsMuted(!isMuted);
   }
 
+  function stopLive() {
+    if (isAndroidPlatform) {
+      navigation.goBack()
+    }
+    else {
+      setVolume(0), setIsStoped(true)
+    }
+  }
+
   return (
     <>
       <View className="relative flex items-center justify-center w-full h-full">
         <View
-          className={`absolute z-10 flex items-center justify-center w-full h-full bg-black/50 ${isLoading && 'hidden'
-            }`}>
+          className={`absolute z-10 flex items-center justify-center w-full h-full bg-black/50 ${isLoading && 'hidden'}`}>
           <View className="">
             <Text className="text-black">Carregando...</Text>
           </View>
@@ -66,7 +77,7 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
               <View className="absolute z-50 left-5 top-5">
                 <View className="flex flex-row items-center gap-0 p-0 m-0 bg-gray-700/50 rounded-xl">
                   <TouchableOpacity
-                    onPress={() => navigation.goBack()}
+                    onPress={stopLive}
                     className="flex items-center justify-center p-3 px-4">
                     <ChevronLeft color={'white'} size={20} />
                   </TouchableOpacity>
@@ -92,17 +103,33 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
           {
             urlStream != ''
             &&
-            <Video
-              source={{ uri: urlStream }}
-              onBuffer={onBuffer}
-              onError={onError}
-              onLoad={handleLoad}
-              ref={videoRef}
-              muted={isMuted}
-              fullscreen
-              resizeMode="stretch"
-              className="w-full h-full"
-            />
+            (
+              isAndroidPlatform
+                ?
+                <Video
+                  source={{ uri: urlStream }}
+                  onBuffer={onBuffer}
+                  onError={onError}
+                  onLoad={handleLoad}
+                  ref={videoRef}
+                  muted={isMuted}
+                  fullscreen
+                  resizeMode="stretch"
+                  className="w-full h-full"
+                />
+                :
+                <VLCPlayer
+                  videoAspectRatio="16:9"
+                  style={{ width: '100%', height: '100%' }}
+                  onError={e => onError(e)}
+                  muted={isMuted}
+                  onLoad={handleLoad}
+                  paused={isStoped}
+                  volume={volume}
+                  playInBackground={false}
+                  source={{ uri: urlStream }}
+                />
+            )
           }
         </View>
       </View>

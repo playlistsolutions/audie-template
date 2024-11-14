@@ -137,7 +137,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
           </View>
           <View className="flex flex-col items-center justify-center w-full px-3 gap-y-3">
             {
-              isComercial
+              isComercial && infoMusic.coverImg == ""
                 ?
                 <Image
                   className="flex w-[250px] h-[250px] rounded-md"
