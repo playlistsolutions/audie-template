@@ -42,6 +42,7 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
 
   function onError(error: any) {
     console.log(error);
+    navigation.goBack()
   }
 
   function handleLoad(load: any) {

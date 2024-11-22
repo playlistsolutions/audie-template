@@ -11,6 +11,15 @@ class StorageService {
     });
   }
 
+  saveListener = (id: string | null) => {
+    this.storage.set('listener', JSON.stringify(id))
+  }
+
+  getListener = (): string => {
+    const id = this.storage.getString('listener');
+    return id ? JSON.parse(id) : null
+  }
+
   // Advertising Pagination
 
   saveAdvertisingPagination = (advertisingPagination: AdvertisingPagination) => {

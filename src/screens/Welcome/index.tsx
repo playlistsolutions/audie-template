@@ -1,6 +1,8 @@
 import { NavigationProp } from '@react-navigation/native';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
 import storage from '../../services/storage';
+import { ArrowLeft2 } from 'iconsax-react-native';
+import { useColorScheme } from 'nativewind';
 
 interface WelcomeProps {
   navigation: NavigationProp<RootTabParamList>;
@@ -8,6 +10,7 @@ interface WelcomeProps {
 
 export const Welcome: React.FC<WelcomeProps> = ({ navigation }) => {
   const userInfo = storage.getUserInfo();
+  const { colorScheme } = useColorScheme();
 
   function goToLoginOrRegister() {
     navigation.navigate('LoginOrRegister');
@@ -18,7 +21,16 @@ export const Welcome: React.FC<WelcomeProps> = ({ navigation }) => {
   }
 
   return (
-    <View className="flex flex-col items-center justify-center flex-1 p-2 space-y-5 dark:bg-background-dark">
+    <View className="flex flex-col items-center justify-around flex-1 p-5 space-y-5 dark:bg-background-dark">
+      <View className="flex flex-row items-center justify-start w-full">
+        <TouchableOpacity onPress={() => navigation.navigate('Home')}>
+          <ArrowLeft2
+            size="18"
+            color={colorScheme === 'dark' ? '#FFF' : '#000'}
+            variant="Linear"
+          />
+        </TouchableOpacity>
+      </View>
       <Image
         className="h-[50%] w-[100%]"
         source={require('../../assets/illustration.png')}

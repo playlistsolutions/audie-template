@@ -43,7 +43,10 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ navigation, ro
     verifyCode(Payload)
       .then((response) => {
         setIsError(false);
-        AccountByAuthId(response);
+        if (response != 0) {
+          return AccountByAuthId(response);
+        }
+        navigation.navigate('RegisterUser', { phoneNumber });
       })
       .catch(error => {
         setIsError(true);
@@ -94,7 +97,8 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ navigation, ro
           } else if (error.response.data.codeError === 'registerNotFound') {
             navigation.navigate('RegisterUser', { phoneNumber });
           }
-        } else {
+        }
+        else {
           setIsLoading(false);
           Toast.show({
             type: 'error',

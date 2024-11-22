@@ -110,7 +110,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
         isVisible={isShowPlayer}
         swipeDirection="down"
         className="m-0">
-        <View className="flex items-start justify-between flex-1 p-5 bg-white dark:bg-background-dark2">
+        <View className="flex items-start justify-between flex-1 p-5 my-3 bg-white dark:bg-background-dark2">
           <View className="flex flex-row items-center justify-between w-full">
             <TouchableOpacity onPress={onShowPlayer}>
               <ArrowDown2
@@ -137,7 +137,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
           </View>
           <View className="flex flex-col items-center justify-center w-full px-3 gap-y-3">
             {
-              isComercial && infoMusic.coverImg == ""
+              isComercial || infoMusic.coverImg == ""
                 ?
                 <Image
                   className="flex w-[250px] h-[250px] rounded-md"
@@ -204,8 +204,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
               onPress={handleLiveAudio}
               className="flex flex-row items-center justify-center w-full mt-3 gap-x-1">
               <View
-                className={`p-1 rounded-full ${isOnLive ? 'bg-red-600 animate-ping' : 'bg-neutral-600'
-                  }`}
+                className={`p-1 rounded-full ${isOnLive ? 'bg-red-600 animate-ping' : 'bg-neutral-600'}`}
               />
               <Text className="font-medium text-neutral-700 dark:text-white">
                 AO VIVO

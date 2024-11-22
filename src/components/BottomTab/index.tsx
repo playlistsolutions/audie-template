@@ -18,6 +18,9 @@ import axios from 'axios';
 import { Tv } from 'lucide-react-native';
 import { useMetadata } from '@/services/api/get-metadata';
 import xmlJs from 'xml-js';
+import storage from '@/services/storage';
+import { postActiveListener } from '@/services/api/post-active-listenet';
+import { updateListenerStatus } from '@/services/api/post-update-listener';
 
 export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   const { data } = useUrls();
@@ -30,6 +33,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   const [isOnLive, setIsOnLive] = useState<boolean>(true);
   const [isComercial, setIsComercial] = useState<boolean>(true);
   const [infoMusic, setInfoMusic] = useState<{ title: string; artist: string; coverImg: string; }>({ artist: '', title: '', coverImg: '' });
+  const person = storage.getPerson();
 
   useEffect(() => {
     if (data) {
@@ -124,12 +128,40 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   async function PlayAudio() {
     await TrackPlayer.play();
     setIsPlaying(true);
+    sendListener()
   }
 
   async function PauseAudio() {
     await TrackPlayer.pause();
     setIsPlaying(false);
     setIsOnLive(false);
+    updateStatusListener()
+  }
+
+  async function sendListener() {
+    const postData = {
+      personId: person ? person.id : null,
+    }
+
+    postActiveListener(postData)
+      .then(({ listenerId }) => {
+        storage.saveListener(listenerId)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
+  }
+
+  async function updateStatusListener() {
+    const listener = storage.getListener()
+
+    updateListenerStatus(listener)
+      .then(() => {
+        storage.saveListener(null)
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   function handlerShowPlayer() {
