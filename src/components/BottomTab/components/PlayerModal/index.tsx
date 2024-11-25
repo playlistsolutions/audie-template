@@ -1,4 +1,4 @@
-import { ArrowDown2, PauseCircle, PlayCircle } from 'iconsax-react-native';
+import { ArrowDown2, Dislike, Like1, PauseCircle, PlayCircle } from 'iconsax-react-native';
 import { Image, Text, TouchableOpacity, View } from 'react-native';
 import Modal from 'react-native-modal';
 import { MoreVertical } from 'lucide-react-native';
@@ -10,6 +10,8 @@ import { NavigationHelpers, ParamListBase } from '@react-navigation/native';
 import { BottomTabNavigationEventMap } from '@react-navigation/bottom-tabs';
 import { OptionsModal } from '../OptionsModal';
 import axios from 'axios';
+import storage from '@/services/storage';
+import { postMusicEvaluation } from '@/services/api/post-music-evaluation';
 
 interface PlayerModalProps {
   onShowPlayer(): void;
@@ -29,8 +31,11 @@ interface PlayerModalProps {
     title: string;
     artist: string;
     coverImg: string;
+    mD5: string;
   };
   isComercial: boolean
+  evaluation: number;
+  onUserEvaluations(): void
 }
 
 export const PlayerModal: React.FC<PlayerModalProps> = ({
@@ -48,12 +53,16 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
   setIsOnLive,
   navigation,
   infoMusic,
-  isComercial
+  isComercial,
+  evaluation,
+  onUserEvaluations
 }) => {
   const { colorScheme } = useColorScheme();
   const [showOptionsPlayer, setShowOptionsPlayer] = useState(false);
   const [selectedOptions, setSelectedOptions] = useState<string>('A SEGUIR');
   const [letter, setLetter] = useState<string>('');
+  const [isLogged, setIsLogged] = useState<boolean>(false);
+  const person = storage.getPerson();
 
   async function handleLiveAudio() {
     setIsLoading(true);
@@ -98,6 +107,24 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
       .catch(error => {
         console.log('error letra >>', error);
       });
+  }
+
+  function handlerMusicEvaluation(evaluation: number) {
+    const { title, artist, mD5 } = infoMusic
+    const payload = {
+      personId: person!.id,
+      name: title,
+      singer: artist,
+      mD5: mD5,
+      evaluation
+    }
+    postMusicEvaluation(payload)
+      .then(() => {
+        onUserEvaluations()
+      })
+      .catch((error) => {
+        console.log(error)
+      })
   }
 
   return (
@@ -175,7 +202,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
               }
             </View>
           </View>
-          <View className="relative flex items-center justify-center w-full">
+          <View className="relative flex items-center justify-center w-full mb-5">
             {isLoading ? (
               <WaveIndicator
                 style={{ position: 'absolute' }}
@@ -186,37 +213,53 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
               />
             ) : (
               <View className="absolute">
-                {isPlaying ? (
-                  <TouchableOpacity onPress={PauseAudio}>
-                    <PauseCircle size="100" color={'grey'} variant="Bulk" />
-                  </TouchableOpacity>
-                ) : (
-                  <TouchableOpacity onPress={PlayAudio}>
-                    <PlayCircle size="100" color={'grey'} variant="Bulk" />
-                  </TouchableOpacity>
-                )}
+                <View className='flex flex-row items-center justify-around w-full'>
+                  {
+                    person &&
+                    <TouchableOpacity onPress={() => handlerMusicEvaluation(1)}>
+                      <Like1 variant={`${evaluation == 1 ? 'Bulk' : 'Outline'}`} size="40" color={'white'} />
+                    </TouchableOpacity>
+                  }
+                  {isPlaying ? (
+                    <TouchableOpacity onPress={PauseAudio}>
+                      <PauseCircle size="100" color={'grey'} variant="Bulk" />
+                    </TouchableOpacity>
+                  ) : (
+                    <TouchableOpacity onPress={PlayAudio}>
+                      <PlayCircle size="100" color={'grey'} variant="Bulk" />
+                    </TouchableOpacity>
+                  )}
+                  {
+                    person &&
+                    <TouchableOpacity onPress={() => handlerMusicEvaluation(0)}>
+                      <Dislike variant={`${evaluation == 0 ? 'Bulk' : 'Outline'}`} size="40" color={'white'} />
+                    </TouchableOpacity>
+                  }
+                </View>
               </View>
             )}
           </View>
-          {isLoaded && (
-            <TouchableOpacity
-              disabled={isOnLive}
-              onPress={handleLiveAudio}
-              className="flex flex-row items-center justify-center w-full mt-3 gap-x-1">
-              <View
-                className={`p-1 rounded-full ${isOnLive ? 'bg-red-600 animate-ping' : 'bg-neutral-600'}`}
-              />
-              <Text className="font-medium text-neutral-700 dark:text-white">
-                AO VIVO
-              </Text>
-            </TouchableOpacity>
-          )}
-          <View className="flex flex-row items-center justify-around w-full px-3">
-            <TouchableOpacity onPress={() => handleSelectedOptions('LETRA')}>
-              <Text className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
-                LETRA
-              </Text>
-            </TouchableOpacity>
+          <View>
+            {isLoaded && (
+              <TouchableOpacity
+                disabled={isOnLive}
+                onPress={handleLiveAudio}
+                className="flex flex-row items-center justify-center w-full mt-3 gap-x-1">
+                <View
+                  className={`p-1 rounded-full ${isOnLive ? 'bg-red-600 animate-ping' : 'bg-neutral-600'}`}
+                />
+                <Text className="font-medium text-neutral-700 dark:text-white">
+                  AO VIVO
+                </Text>
+              </TouchableOpacity>
+            )}
+            <View className="flex flex-row items-center justify-around w-full px-3 mt-7">
+              <TouchableOpacity onPress={() => handleSelectedOptions('LETRA')}>
+                <Text className="text-sm font-medium text-neutral-600 dark:text-neutral-400">
+                  LETRA
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
       </Modal>

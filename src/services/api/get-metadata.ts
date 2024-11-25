@@ -1,16 +1,8 @@
+import axios from 'axios';
 import {api} from '../../config/axios';
-import {useQuery} from '@tanstack/react-query';
 
 export async function getMetadata() {
   const response = await api.get('/api/v1/Xml');
-
-  return response.data.data;
+  const xml = await axios.get(response.data.data).then((i) => i.data)
+  return xml;
 }
-
-export const useMetadata = () =>
-  useQuery({
-    queryKey: ['metadata'],
-    queryFn: () => getMetadata(),
-    refetchInterval: 120000,
-    refetchIntervalInBackground: true,
-  });

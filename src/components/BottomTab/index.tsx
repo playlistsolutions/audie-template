@@ -1,12 +1,5 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import {
-  DiscountShape,
-  Home,
-  Notepad2,
-  PauseCircle,
-  PlayCircle,
-  ProfileCircle,
-} from 'iconsax-react-native';
+import { DiscountShape, Home, Notepad2, PauseCircle, PlayCircle, ProfileCircle } from 'iconsax-react-native';
 import { Animated, Image, Text, TouchableOpacity, View } from 'react-native';
 import useBottomTabAnimation from '../../hooks/useBottomTabAnimation';
 import { useEffect, useState } from 'react';
@@ -16,15 +9,15 @@ import { PlayerModal } from './components/PlayerModal';
 import { useUrls } from '../../services/api/get-url';
 import axios from 'axios';
 import { Tv } from 'lucide-react-native';
-import { useMetadata } from '@/services/api/get-metadata';
+import { getMetadata } from '@/services/api/get-metadata';
 import xmlJs from 'xml-js';
 import storage from '@/services/storage';
 import { postActiveListener } from '@/services/api/post-active-listenet';
 import { updateListenerStatus } from '@/services/api/post-update-listener';
+import { postUserEvaluation } from '@/services/api/post-user-evaluations';
 
 export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   const { data } = useUrls();
-  const { data: xmlData } = useMetadata()
   const { translateValue } = useBottomTabAnimation();
   const [isShowPlayer, setShowPlayer] = useState<boolean>(false);
   const [isLoaded, setIsLoaded] = useState<boolean>(false);
@@ -32,7 +25,8 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   const [isPlaying, setIsPlaying] = useState<boolean>(false);
   const [isOnLive, setIsOnLive] = useState<boolean>(true);
   const [isComercial, setIsComercial] = useState<boolean>(true);
-  const [infoMusic, setInfoMusic] = useState<{ title: string; artist: string; coverImg: string; }>({ artist: '', title: '', coverImg: '' });
+  const [evaluation, setEvaluation] = useState<number>(3)
+  const [infoMusic, setInfoMusic] = useState<{ title: string; artist: string; coverImg: string; mD5: string; }>({ artist: '', title: '', coverImg: '', mD5: '' });
   const person = storage.getPerson();
 
   useEffect(() => {
@@ -40,10 +34,67 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
       const urlStream = data.find(({ urls }: any) => urls.typeId == 1).urls.url;
       LoadAudio(urlStream);
     }
-    if (xmlData) {
-      LoadMetadata()
-    }
   }, [data]);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    function fetchAndSchedule() {
+      getMetadata()
+        .then((response) => {
+          getUserEvaluations()
+          LoadMetadata(response);
+          const parsed = xmlJs.xml2js(response, { compact: true })
+          const schedTime = parsed.Playlist.Next.NextIns.Ins[0]._attributes.SchedTime
+          const timeOut = scheduleTimeout(schedTime);
+          if (timeOut > 0) {
+            timeoutId = setTimeout(fetchAndSchedule, timeOut);
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
+
+    fetchAndSchedule();
+
+    return () => clearTimeout(timeoutId);
+  }, []);
+
+  useEffect(() => {
+    if (person) {
+      getUserEvaluations()
+    }
+  }, [infoMusic])
+
+  function getUserEvaluations() {
+    const payload = {
+      personId: person!.id,
+      mD5: infoMusic.mD5
+    }
+    postUserEvaluation(payload)
+      .then(({ evaluation }) => {
+        setEvaluation(evaluation)
+      })
+      .catch((error) => {
+        setEvaluation(3)
+        console.log(error)
+      })
+  }
+
+  function scheduleTimeout(schedTime: string) {
+    const schedTimeFormated = new Date(convertDate(schedTime))
+    const now = new Date()
+    now.setHours(now.getHours() - 3)
+    const timeDifference = schedTimeFormated.getTime() - now.getTime();
+    return timeDifference
+  }
+
+  function convertDate(val: string) {
+    const splitTime = val.split(' ')
+    const splitDate = splitTime[0].split("/")
+    return `${splitDate[2]}-${splitDate[1]}-${splitDate[0]}T${splitTime[1]}`
+  }
 
   async function getInfoMusic(albumTitle: string, artistName: string) {
     const artist = encodeURIComponent(artistName);
@@ -74,27 +125,26 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
       });
   }
 
-  async function LoadMetadata() {
+  async function LoadMetadata(xmlData: any) {
     try {
       if (xmlData) {
-        const response = await fetch(xmlData);
-        const xmlText = await response.text();
-        const parsed = xmlJs.xml2js(xmlText, { compact: true });
+        const parsed = xmlJs.xml2js(xmlData, { compact: true })
         const currentMusic = parsed.Playlist.OnAir.CurMusic
         if (parsed.Playlist.OnAir.Break.Id._text != 'Comercial') {
           const title = currentMusic.Title._text ? currentMusic.Title._text : ""
           const artist = currentMusic.Artist._text ? currentMusic.Title._text : ""
           const album = currentMusic.Album._text ? currentMusic.Title._text : ""
+          const mD5 = parsed.Playlist.OnAir.CurIns.MD5._text
           await getInfoMusic(album, artist);
           setIsComercial(false);
           return setInfoMusic(state => ({
             ...state,
             title,
             artist,
+            mD5
           }));
         }
       }
-
       setIsComercial(true);
     } catch (error) {
       console.log(error)
@@ -243,8 +293,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
               variant={isCurrentRoute ? 'Bold' : 'Outline'}
             />
             <Text
-              className={`text-xs ${isCurrentRoute ? 'text-base-primary' : 'text-neutral-500'
-                }`}>
+              className={`text-xs ${isCurrentRoute ? 'text-base-primary' : 'text-neutral-500'}`}>
               Ouvinte
             </Text>
           </View>
@@ -360,6 +409,8 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
         navigation={navigation}
         infoMusic={infoMusic}
         isComercial={isComercial}
+        evaluation={evaluation}
+        onUserEvaluations={getUserEvaluations}
       />
     </>
   );

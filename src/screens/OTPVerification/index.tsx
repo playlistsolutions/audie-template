@@ -42,6 +42,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ navigation, ro
     };
     verifyCode(Payload)
       .then((response) => {
+        console.log(response)
         setIsError(false);
         if (response != 0) {
           return AccountByAuthId(response);
@@ -78,25 +79,32 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ navigation, ro
         if (error.request.status == 404) {
           setIsLoading(false);
           setIsError(false);
-          if (error.response.data.codeError === 'userInactive') {
-            Toast.show({
-              type: 'warning',
-              text1: 'Usuario Desativado',
-              text2: 'Seu usuário foi desativado, reativando usuario..',
-            });
-            postActiveUser(Id)
-              .then(() => {
-                return AccountByAuthId(Id)
-              })
-              .catch((error) => {
-                console.log(error)
-                setOTP(['', '', '', '', '', '']);
-                setIsLoading(false);
-                setIsError(false);
-              })
-          } else if (error.response.data.codeError === 'registerNotFound') {
-            navigation.navigate('RegisterUser', { phoneNumber });
-          }
+          error.response.data.Errors.map((item) => {
+            if (item.PropertyMessage == "NotFound") {
+              navigation.navigate('RegisterUser', { phoneNumber });
+            }
+          })
+        }
+        else if (error.request.status == 409) {
+          error.response.data.Errors.map((item) => {
+            if (item.PropertyMessage == "PersonRemoved") {
+              Toast.show({
+                type: 'warning',
+                text1: 'Usuario Desativado',
+                text2: 'Seu usuário foi desativado, reativando usuario..',
+              });
+              postActiveUser(Id)
+                .then(() => {
+                  return AccountByAuthId(Id)
+                })
+                .catch((error) => {
+                  console.log(error)
+                  setOTP(['', '', '', '', '', '']);
+                  setIsLoading(false);
+                  setIsError(false);
+                })
+            }
+          })
         }
         else {
           setIsLoading(false);

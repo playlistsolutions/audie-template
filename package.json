@@ -46,6 +46,7 @@
     "react-native-video": "^5.2.1",
     "react-native-vlc-media-player": "^1.0.70",
     "react-native-webview": "^13.10.3",
+    "xml-formatter": "^3.6.3",
     "xml-js": "^1.6.11",
     "zod": "^3.22.4"
   },
