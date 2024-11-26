@@ -68,8 +68,8 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({ navigation }) => {
   }, []);
 
   function handleLevel(data: LevelResponse) {
-    if (data.promotionCriterias == 0) {
-      setMaxLevel(true);
+    if (data.promotionCriterias == null) {
+      return setMaxLevel(true);
     }
 
     // @ts-ignore: Unreachable code error
@@ -156,7 +156,7 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({ navigation }) => {
                 <Image
                   className="flex w-32 h-32"
                   source={{
-                    uri: `${handleImage(data?.level.levelImage)}`,
+                    uri: `${handleImage(data?.level.currentLevel.levelImage)}`,
                   }}
                 />
               )}
@@ -177,7 +177,7 @@ export const ManageLevel: React.FC<ManageLevelProps> = ({ navigation }) => {
               </View>
             ) : (
               <Text className="text-2xl font-extrabold text-black dark:text-white">
-                {data?.level.levelName}
+                {data?.level.currentLevel.levelName}
               </Text>
             )}
             {!maxLevel && (

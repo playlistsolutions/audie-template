@@ -1,4 +1,4 @@
-import {api} from '../../config/axios';
+import { api } from '../../config/axios';
 
 interface Level {
   id: number;
@@ -10,7 +10,7 @@ interface Level {
 }
 
 export interface LevelResponse {
-  level: Level;
+  level: { currentLevel: Level };
   promotionCriterias: number;
 }
 
