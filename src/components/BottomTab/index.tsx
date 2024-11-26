@@ -132,7 +132,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
       if (xmlData) {
         const parsed = xmlJs.xml2js(xmlData, { compact: true }) as PlaylistXML
         const currentMusic = parsed.Playlist.OnAir.CurMusic
-        if (parsed.Playlist.OnAir.Break.Id._text != 'Comercial') {
+        if (parsed.Playlist.OnAir.Break.Type._text != 'C') {
           const title = currentMusic.Title._text ? currentMusic.Title._text : ""
           const artist = currentMusic.Artist._text ? currentMusic.Title._text : ""
           const album = currentMusic.Album?._text ? currentMusic.Title._text : ""

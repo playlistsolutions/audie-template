@@ -123,7 +123,7 @@ interface PlaylistXML {
         Op: string;
         SchedTime: string;
         StartedTime: string;
-        Type: string;
+        Type: { _text: string };
         InsCount: number;
         MusicCount: number;
         Dur: string;

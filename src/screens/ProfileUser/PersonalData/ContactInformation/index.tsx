@@ -55,13 +55,9 @@ export const ContracInformation: React.FC<ContracInformationProps> = ({
     rg,
   }) => {
     setIsLoading(true);
-    updatePerson(person!.id, {
-      name,
-      email,
-      cellphone,
-      nationalRegister: cpf,
-      stateRegister: rg,
-    })
+    const updatePersonData: Person = { ...person! };
+
+    updatePerson(person!.id, { ...updatePersonData, cellphone, name, email, nationalRegister: cpf, stateRegister: rg })
       .then(() => {
         Toast.show({
           type: 'success',

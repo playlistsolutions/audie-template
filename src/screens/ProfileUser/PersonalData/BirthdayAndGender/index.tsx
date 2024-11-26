@@ -90,15 +90,19 @@ export const BirthdayAndGender: React.FC<BirthdayAndGenderProps> = ({ navigation
               onPress={handleSubmit(onSubmit)}
               disabled={isLoading}
               className="flex items-center justify-center py-3 bg-white rounded-md dark:bg-background-darkLight">
-              {isLoading ? (
-                <View className="py-1">
-                  <ActivityIndicator size="small" color="#FFF" />
-                </View>
-              ) : (
-                <Text className="text-base text-black dark:text-gray-200 font-Poppins-Medium">
-                  Salvar
-                </Text>
-              )}
+              {
+                isLoading ?
+                  (
+                    <View className="py-1">
+                      <ActivityIndicator size="small" color="#FFF" />
+                    </View>
+                  )
+                  : (
+                    <Text className="text-base text-black dark:text-gray-200 font-Poppins-Medium">
+                      Salvar
+                    </Text>
+                  )
+              }
             </TouchableOpacity>
           </View>
         </View>
