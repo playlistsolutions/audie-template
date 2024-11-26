@@ -42,7 +42,9 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
     function fetchAndSchedule() {
       getMetadata()
         .then((response) => {
-          getUserEvaluations()
+          if (person) {
+            getUserEvaluations()
+          }
           LoadMetadata(response);
           const parsed = xmlJs.xml2js(response, { compact: true })
           const schedTime = parsed.Playlist.Next.NextIns.Ins[0]._attributes.SchedTime
@@ -158,10 +160,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
       await TrackPlayer.setupPlayer();
       TrackPlayer.updateOptions({
         capabilities: [Capability.Play, Capability.Pause],
-        android: {
-          appKilledPlaybackBehavior:
-            AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification,
-        },
+        android: { appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification },
       });
       await TrackPlayer.add({
         title: 'Playlist News',
@@ -189,17 +188,11 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   }
 
   async function sendListener() {
-    const postData = {
-      personId: person ? person.id : null,
-    }
+    const postData = { personId: person ? person.id : null }
 
     postActiveListener(postData)
-      .then(({ listenerId }) => {
-        storage.saveListener(listenerId)
-      })
-      .catch((error) => {
-        console.log(error)
-      })
+      .then(({ listenerId }) => { storage.saveListener(listenerId) })
+      .catch((error) => { console.log(error) })
   }
 
   async function updateStatusListener() {
