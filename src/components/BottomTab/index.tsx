@@ -46,7 +46,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
             getUserEvaluations()
           }
           LoadMetadata(response);
-          const parsed = xmlJs.xml2js(response, { compact: true })
+          const parsed = xmlJs.xml2js(response, { compact: true }) as PlaylistXML
           const schedTime = parsed.Playlist.Next.NextIns.Ins[0]._attributes.SchedTime
           const timeOut = scheduleTimeout(schedTime);
           if (timeOut > 0) {
@@ -130,12 +130,12 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   async function LoadMetadata(xmlData: any) {
     try {
       if (xmlData) {
-        const parsed = xmlJs.xml2js(xmlData, { compact: true })
+        const parsed = xmlJs.xml2js(xmlData, { compact: true }) as PlaylistXML
         const currentMusic = parsed.Playlist.OnAir.CurMusic
         if (parsed.Playlist.OnAir.Break.Id._text != 'Comercial') {
           const title = currentMusic.Title._text ? currentMusic.Title._text : ""
           const artist = currentMusic.Artist._text ? currentMusic.Title._text : ""
-          const album = currentMusic.Album._text ? currentMusic.Title._text : ""
+          const album = currentMusic.Album?._text ? currentMusic.Title._text : ""
           const mD5 = parsed.Playlist.OnAir.CurIns.MD5._text
           await getInfoMusic(album, artist);
           setIsComercial(false);

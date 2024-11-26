@@ -109,3 +109,105 @@ interface Promotiom {
   dateUndefined: boolean;
   promotionRules: PromotionRules;
 }
+
+interface PlaylistXML {
+  _attributes: { CurrentTime: string };
+  Playlist: {
+    OnAir: {
+      RDS: {
+        ProgrammeServiceName: string | null;
+        RadioText: string;
+      };
+      Break: {
+        Id: { _text: string };
+        Op: string;
+        SchedTime: string;
+        StartedTime: string;
+        Type: string;
+        InsCount: number;
+        MusicCount: number;
+        Dur: string;
+        SchedEnd: string;
+        ShedPause: string | null;
+      };
+      CurIns: {
+        StartedTime: string;
+        Id: string | null;
+        Name: string;
+        Type: string;
+        Folder: string;
+        Filename: string;
+        Dur: string;
+        Intro: string | null;
+        Bitrate: number;
+        MD5: { _text: string };
+        ID3: {
+          Title: string;
+          Subtitle: string;
+          Artist: string;
+          Album: string;
+          Track: string;
+          Publisher: string;
+          Year: string;
+          Comment: string;
+          Language: string;
+          Genre: string;
+          RingTone: string;
+          URLCover: string;
+        };
+      };
+      CurMusic: {
+        StartedTime: string;
+        Id: string | null;
+        Title: { _text: string };
+        Subtitle: string | null;
+        Artist: { _text: string };
+        Album: { _text: string } | null;
+        Track: string | null;
+        Publisher: string | null;
+        Year: string | null;
+        Comment: string | null;
+        Language: string | null;
+        Genre: string | null;
+        RingTone: string | null;
+        URLCover: string | null;
+      };
+    };
+    Next: {
+      NextIns: {
+        Ins: {
+          _attributes: {
+            SchedTime: string;
+            Id: string;
+            Type: string;
+            Name: string;
+            Folder: string;
+            Filename: string;
+            Dur: string;
+            Intro: string | null;
+            Bitrate: number;
+          }
+        }[]
+      };
+      NextMusic: {
+        Music: {
+          SchedTime: string;
+          Id: string | null;
+          Title: string;
+          Dur: string;
+          Intro: string | null;
+          Artist: string;
+          Album: string | null;
+          Track: string | null;
+          Publisher: string | null;
+          Year: string | null;
+          Comment: string | null;
+          Language: string | null;
+          Genre: string | null;
+          RingTone: string | null;
+          URLCover: string | null;
+        };
+      };
+    };
+  };
+}
