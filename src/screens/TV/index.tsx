@@ -36,6 +36,25 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
     }
   }, [data]);
 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('beforeRemove', () => {
+      if (videoRef.current) {
+        videoRef.current.seek(0)
+        videoRef.current.dismissFullscreenPlayer?.();
+      }
+    });
+
+    return () => {
+      if (videoRef.current) {
+        videoRef.current.seek(0);
+        videoRef.current.dismissFullscreenPlayer?.();
+        videoRef.current = null;
+      }
+
+      unsubscribe();
+    };
+  }, [navigation]);
+
   function onBuffer(data: OnBufferData) {
     console.log(data);
   }

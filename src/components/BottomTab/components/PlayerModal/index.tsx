@@ -203,41 +203,52 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
             </View>
           </View>
           <View className="relative flex items-center justify-center w-full mb-5">
-            {isLoading ? (
-              <WaveIndicator
-                style={{ position: 'absolute' }}
-                size={100}
-                count={2}
-                waveFactor={0.3}
-                color="white"
-              />
-            ) : (
-              <View className="absolute">
-                <View className='flex flex-row items-center justify-around w-full'>
-                  {
-                    person &&
-                    <TouchableOpacity onPress={() => handlerMusicEvaluation(1)}>
-                      <Like1 variant={`${evaluation == 1 ? 'Bulk' : 'Outline'}`} size="40" color={'white'} />
-                    </TouchableOpacity>
-                  }
-                  {isPlaying ? (
-                    <TouchableOpacity onPress={PauseAudio}>
-                      <PauseCircle size="100" color={'grey'} variant="Bulk" />
-                    </TouchableOpacity>
-                  ) : (
-                    <TouchableOpacity onPress={PlayAudio}>
-                      <PlayCircle size="100" color={'grey'} variant="Bulk" />
-                    </TouchableOpacity>
-                  )}
-                  {
-                    person &&
-                    <TouchableOpacity onPress={() => handlerMusicEvaluation(0)}>
-                      <Dislike variant={`${evaluation == 0 ? 'Bulk' : 'Outline'}`} size="40" color={'white'} />
-                    </TouchableOpacity>
-                  }
-                </View>
-              </View>
-            )}
+            {
+              isLoading ?
+                (
+                  <WaveIndicator
+                    style={{ position: 'absolute' }}
+                    size={100}
+                    count={2}
+                    waveFactor={0.3}
+                    color="white"
+                  />
+                )
+                :
+                (
+                  <View className="absolute">
+                    <View className='flex flex-row items-center justify-around w-full'>
+                      {
+                        (person && !isComercial) &&
+                        <TouchableOpacity onPress={() => handlerMusicEvaluation(1)}>
+                          <Like1 variant={`${evaluation == 1 ? 'Bulk' : 'Outline'}`} size="40" color={'white'} />
+                        </TouchableOpacity>
+                      }
+                      {
+                        isPlaying ?
+                          (
+                            <TouchableOpacity onPress={PauseAudio}>
+                              <PauseCircle size="100" color={'grey'} variant="Bulk" />
+                            </TouchableOpacity>
+                          )
+                          :
+                          (
+                            <TouchableOpacity onPress={PlayAudio}>
+                              <PlayCircle size="100" color={'grey'} variant="Bulk" />
+                            </TouchableOpacity>
+                          )
+                      }
+                      {
+                        (person && !isComercial) &&
+                        <TouchableOpacity onPress={() => handlerMusicEvaluation(0)}>
+                          <Dislike variant={`${evaluation == 0 ? 'Bulk' : 'Outline'}`} size="40" color={'white'} />
+                        </TouchableOpacity>
+                      }
+                    </View>
+                  </View>
+
+                )
+            }
           </View>
           <View>
             {isLoaded && (

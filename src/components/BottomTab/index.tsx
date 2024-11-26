@@ -109,16 +109,16 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
 
     await axios.get(url)
       .then(({ data }) => {
-        if (data) {
+        if (data.results.length > 0) {
           const coverImg = data.results[0].cover_image
           setInfoMusic(state => ({
             ...state,
-            coverImg
+            coverImg: coverImg
           }));
         } else {
           setInfoMusic(state => ({
             ...state,
-            coverImg: '../../assets/logo.png',
+            coverImg: "",
           }));
         }
       })
