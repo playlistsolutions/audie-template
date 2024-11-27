@@ -1,11 +1,11 @@
-import {useState} from 'react';
-import {Control, Controller, FieldErrors} from 'react-hook-form';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import { useState } from 'react';
+import { Control, Controller, FieldErrors } from 'react-hook-form';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DatePicker from 'react-native-date-picker';
 import RNPickerSelect from 'react-native-picker-select';
-import {format} from 'date-fns';
-import {ptBR} from 'date-fns/locale';
-import {useColorScheme} from 'nativewind';
+import { format } from 'date-fns';
+import { ptBR } from 'date-fns/locale';
+import { useColorScheme } from 'nativewind';
 
 interface BirthdayAndGenderFormProps {
   control: Control<
@@ -26,7 +26,7 @@ export const BirthdayAndGenderForm: React.FC<BirthdayAndGenderFormProps> = ({
   errors,
 }) => {
   const [open, setOpen] = useState(false);
-  const {colorScheme} = useColorScheme();
+  const { colorScheme } = useColorScheme();
 
   return (
     <View className="flex flex-col space-y-2">
@@ -37,14 +37,14 @@ export const BirthdayAndGenderForm: React.FC<BirthdayAndGenderFormProps> = ({
         <View>
           <Controller
             control={control}
-            render={({field: {onChange, value}}) => {
+            render={({ field: { onChange, value } }) => {
               return (
                 <>
                   <TouchableOpacity
                     className="text-xs text-black bg-white px-2 py-3.5 rounded-lg dark:bg-background-darkLight"
                     onPress={() => setOpen(true)}>
                     <Text className="text-black dark:text-white">
-                      {format(value, "dd 'de' MMMM 'de' yyyy", {locale: ptBR})}
+                      {format(value, "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
                     </Text>
                   </TouchableOpacity>
                   <DatePicker
@@ -66,7 +66,7 @@ export const BirthdayAndGenderForm: React.FC<BirthdayAndGenderFormProps> = ({
               );
             }}
             name="birthdate"
-            rules={{required: true}}
+            rules={{ required: true }}
           />
         </View>
         {errors.birthdate && (
@@ -80,29 +80,23 @@ export const BirthdayAndGenderForm: React.FC<BirthdayAndGenderFormProps> = ({
         <View className="text-xs text-black bg-white rounded-lg dark:bg-background-darkLight">
           <Controller
             control={control}
-            render={({field: {onChange, value}}) => (
+            render={({ field: { onChange, value } }) => (
               <RNPickerSelect
                 style={{
-                  inputAndroid: {
-                    color: colorScheme ? 'white' : 'black',
-                    height: 55,
-                  },
-                  inputIOS: {
-                    color: colorScheme ? 'white' : 'black',
-                    height: 55,
-                  },
+                  inputAndroid: { color: colorScheme == 'light' ? 'black' : 'white' },
+                  inputIOS: { color: colorScheme == 'light' ? 'black' : 'white', height: 55 },
                 }}
-                placeholder={{label: 'Prefiro não informar', value: 3}}
+                placeholder={{ label: 'Prefiro não informar', value: 3 }}
                 onValueChange={value => onChange(value)}
+                onDonePress={() => onChange(value)}
                 value={value}
                 items={[
-                  {label: 'Masculino', value: 1},
-                  {label: 'Feminino', value: 2},
+                  { label: 'Masculino', value: 1 },
+                  { label: 'Feminino', value: 2 },
                 ]}
               />
             )}
             name="gender"
-            rules={{required: true}}
           />
         </View>
         {errors.gender && (

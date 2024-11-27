@@ -147,7 +147,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
                 variant="Outline"
               />
             </TouchableOpacity>
-            <View className="flex flex-row items-center justify-center bg-gray-300 rounded-full dark:bg-background-dark">
+            <View className="flex flex-row items-center justify-center mt-4 bg-gray-300 rounded-full dark:bg-background-dark">
               <View>
                 <Text className="font-medium py-1.5 px-3 text-black dark:text-white rounded-full bg-gray-100 dark:bg-background-darkLight">
                   Rádio

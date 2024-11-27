@@ -147,6 +147,7 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
                   style={{ width: '100%', height: '100%' }}
                   onError={e => onError(e)}
                   muted={isMuted}
+                  ref={videoRef}
                   onLoad={handleLoad}
                   paused={isStoped}
                   volume={volume}

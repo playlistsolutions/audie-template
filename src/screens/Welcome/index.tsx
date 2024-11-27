@@ -22,7 +22,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ navigation }) => {
 
   return (
     <View className="flex flex-col items-center justify-around flex-1 p-5 space-y-5 dark:bg-background-dark">
-      <View className="flex flex-row items-center justify-start w-full">
+      <View className="flex flex-row items-center justify-start w-full mt-3">
         <TouchableOpacity onPress={() => navigation.navigate('Home')}>
           <ArrowLeft2
             size="18"

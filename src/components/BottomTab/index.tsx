@@ -134,8 +134,8 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
         const currentMusic = parsed.Playlist.OnAir.CurMusic
         if (parsed.Playlist.OnAir.Break.Type._text != 'C') {
           const title = currentMusic.Title._text ? currentMusic.Title._text : ""
-          const artist = currentMusic.Artist._text ? currentMusic.Title._text : ""
-          const album = currentMusic.Album?._text ? currentMusic.Title._text : ""
+          const artist = currentMusic.Artist._text ? currentMusic.Artist._text : ""
+          const album = currentMusic.Album?._text ? currentMusic.Album._text : ""
           const mD5 = parsed.Playlist.OnAir.CurIns.MD5._text
           await getInfoMusic(album, artist);
           setIsComercial(false);

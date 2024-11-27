@@ -142,7 +142,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ navigation, ro
   return (
     <ScrollView className="bg-background-light dark:bg-background-dark">
       <View className="flex items-start justify-start p-5 space-y-10">
-        <View className="flex flex-col items-start w-full space-y-5">
+        <View className="flex flex-col items-start w-full mt-3 space-y-5">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeft2
               size="18"
