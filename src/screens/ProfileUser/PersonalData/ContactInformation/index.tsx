@@ -55,9 +55,9 @@ export const ContracInformation: React.FC<ContracInformationProps> = ({
     rg,
   }) => {
     setIsLoading(true);
+    const { birthDate, gender } = person!
     const updatePersonData: Person = { ...person! };
-
-    updatePerson(person!.id, { ...updatePersonData, cellphone, name, email, nationalRegister: cpf, stateRegister: rg })
+    updatePerson(person!.id, { ...updatePersonData, cellphone, name, email, nationalRegister: cpf, stateRegister: rg, birthDate: birthDate ? new Date(birthDate) : new Date(), gender: gender ? gender : 3 })
       .then(() => {
         Toast.show({
           type: 'success',
@@ -92,7 +92,7 @@ export const ContracInformation: React.FC<ContracInformationProps> = ({
       showsVerticalScrollIndicator={false}
       className="bg-background-light dark:bg-background-dark">
       <View className="flex items-start justify-start p-5 space-y-5">
-        <View className="flex flex-row items-center justify-start w-full">
+        <View className="flex flex-row items-center justify-start w-full mt-3">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeft2
               size="18"

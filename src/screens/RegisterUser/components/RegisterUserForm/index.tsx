@@ -156,26 +156,20 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
             render={({ field: { onChange, value } }) => (
               <RNPickerSelect
                 style={{
-                  inputAndroid: {
-                    color: colorScheme ? 'white' : 'black',
-                    height: 55,
-                  },
-                  inputIOS: {
-                    color: colorScheme ? 'white' : 'black',
-                    height: 55,
-                  },
+                  inputAndroid: { color: colorScheme == 'light' ? 'black' : 'white' },
+                  inputIOS: { color: colorScheme == 'light' ? 'black' : 'white', height: 55 },
                 }}
-                placeholder={{label: 'Prefiro não informar', value: 3}}
+                placeholder={{ label: 'Prefiro não informar', value: 3 }}
                 onValueChange={value => onChange(value)}
+                onDonePress={() => onChange(value)}
                 value={value}
                 items={[
-                  {label: 'Masculino', value: 1},
-                  {label: 'Feminino', value: 2},
+                  { label: 'Masculino', value: 1 },
+                  { label: 'Feminino', value: 2 },
                 ]}
               />
             )}
             name="gender"
-            rules={{ required: true }}
           />
         </View>
         {errors.gender && (

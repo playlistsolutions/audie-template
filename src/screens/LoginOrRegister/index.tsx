@@ -55,7 +55,7 @@ export const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({
   return (
     <ScrollView className="bg-background-light dark:bg-background-dark">
       <View className="flex items-start justify-start p-5 space-y-5">
-        <View className="flex flex-row items-center justify-start w-full">
+        <View className="flex flex-row items-center justify-start w-full mt-3">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeft2
               size="18"

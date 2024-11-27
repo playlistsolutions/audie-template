@@ -123,20 +123,17 @@ export const AddressForm: React.FC<AddressFormProps> = ({ control, errors, setVa
               render={({ field: { onChange, value } }) => (
                 <RNPickerSelect
                   style={{
-                    inputAndroid: { color: colorScheme ? 'black' : 'white' },
-                    inputIOS: {
-                      color: colorScheme ? 'white' : 'black',
-                      height: 55,
-                    },
+                    inputAndroid: { color: colorScheme == 'light' ? 'black' : 'white' },
+                    inputIOS: { color: colorScheme == 'light' ? 'black' : 'white', height: 55 },
                   }}
                   placeholder={{ label: 'UF', value: null }}
                   onValueChange={value => onChange(value)}
+                  onDonePress={() => onChange(value)}
                   value={value}
                   items={states}
                 />
               )}
               name="state"
-              rules={{ required: true }}
             />
           </View>
           {errors.state && (

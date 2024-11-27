@@ -1,4 +1,4 @@
-import {api} from '../../config/axios';
+import { api } from '../../config/axios';
 
 export interface UpdatePersonPayload {
   name: string;
@@ -6,6 +6,8 @@ export interface UpdatePersonPayload {
   cellphone: string;
   nationalRegister: string;
   stateRegister: string;
+  birthDate: Date;
+  gender: number
 }
 
 export async function updatePerson(id: number, payload: UpdatePersonPayload) {

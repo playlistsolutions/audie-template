@@ -40,7 +40,7 @@ export const BirthdayAndGender: React.FC<BirthdayAndGenderProps> = ({ navigation
   const onSubmit: SubmitHandler<EditBirthdayAndGenderFormData> = ({ birthdate, gender }) => {
     setIsLoading(true);
     const updatePersonData: Person = { ...person!, birthDate: birthdate.toISOString(), gender };
-    updatePerson(person!.id, { ...updatePersonData, cellphone: person!.cellPhone })
+    updatePerson(person!.id, { ...updatePersonData, cellphone: person!.cellPhone, birthDate: birthdate, gender: gender ? gender : 3 })
       .then(() => {
         Toast.show({ type: 'success', text1: 'Sucesso!', text2: 'Alteração realizada com sucesso!' });
         storage.savePerson(updatePersonData);
@@ -61,7 +61,7 @@ export const BirthdayAndGender: React.FC<BirthdayAndGenderProps> = ({ navigation
   return (
     <ScrollView className="bg-background-light dark:bg-background-dark">
       <View className="flex items-start justify-start p-5 space-y-5">
-        <View className="flex flex-row items-center justify-start w-full">
+        <View className="flex flex-row items-center justify-start w-full mt-3">
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <ArrowLeft2
               size="18"

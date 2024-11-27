@@ -48,7 +48,7 @@ export const PersonalData: React.FC<PersonDataProps> = ({ navigation }) => {
 
   return (
     <View className="items-start justify-start min-h-screen p-5 bg-background-light dark:bg-background-dark">
-      <View className="flex flex-row items-center justify-start w-full">
+      <View className="flex flex-row items-center justify-start w-full mt-3">
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <ArrowLeft2
             size="18"
