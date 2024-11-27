@@ -173,8 +173,7 @@ export const OTPVerification: React.FC<OTPVerificationProps> = ({ navigation, ro
                 value={OTP[index]}
                 onChangeText={value => handleInput(value, index)}
                 keyboardType="number-pad"
-                className={`flex items-center h-12 justify-center w-12 text-center text-white transition-colors ease-in rounded-lg bg-background-darkLight focus:border-2 focus:border-neutral-300 ${isError && 'border-2 border-red-500'
-                  }`}
+                className={`flex items-center h-12 justify-center w-12 text-center text-white transition-colors ease-in rounded-lg bg-background-darkLight focus:border-2 focus:border-neutral-300 ${isError && 'border-2 border-red-500'}`}
               />
             ))}
           </View>

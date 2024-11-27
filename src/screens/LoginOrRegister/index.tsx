@@ -95,7 +95,7 @@ export const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({
                 onChangeText={handlePhoneChange}
                 placeholder="(XX) X XXXX-XXXX"
                 keyboardType="phone-pad"
-                className="px-3 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
+                className="h-12 px-3 text-xs text-black bg-white rounded-lg dark:text-white dark:bg-background-darkLight"
               />
             </View>
           </View>

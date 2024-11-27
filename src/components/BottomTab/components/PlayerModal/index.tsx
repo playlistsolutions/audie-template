@@ -90,6 +90,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
   }
 
   function goToTelevision() {
+    onShowPlayer();
     navigation.navigate('TV');
   }
 

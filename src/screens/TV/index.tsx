@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { Text, TouchableOpacity, View, Platform } from 'react-native';
-import Video, { LoadError, OnBufferData } from 'react-native-video';
+import Video, { OnBufferData } from 'react-native-video';
 import Orientation from 'react-native-orientation-locker';
 import { ChevronLeft, Volume2, VolumeX } from 'lucide-react-native';
 import { NavigationProp } from '@react-navigation/native';
@@ -24,10 +24,14 @@ export const TV: React.FC<TVProps> = ({ navigation }) => {
   useEffect(() => {
     Orientation.lockToLandscape();
 
+    if (isStoped) {
+      navigation.navigate('Home');
+    }
+
     return () => {
       Orientation.lockToPortrait();
     };
-  }, []);
+  }, [isStoped]);
 
   useEffect(() => {
     if (data) {
