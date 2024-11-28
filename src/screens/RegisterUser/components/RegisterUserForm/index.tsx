@@ -1,3 +1,4 @@
+import { genders } from '@/utils';
 import { format } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
 import { useColorScheme } from 'nativewind';
@@ -159,14 +160,11 @@ export const RegisterUserForm: React.FC<RegisterUserFormProps> = ({
                   inputAndroid: { color: colorScheme == 'light' ? 'black' : 'white' },
                   inputIOS: { color: colorScheme == 'light' ? 'black' : 'white', height: 55 },
                 }}
-                placeholder={{ label: 'Prefiro não informar', value: 3 }}
-                onValueChange={value => onChange(value)}
+                placeholder={{ label: 'Sexo', value: null }}
+                onValueChange={(value) => onChange(value)}
                 onDonePress={() => onChange(value)}
                 value={value}
-                items={[
-                  { label: 'Masculino', value: 1 },
-                  { label: 'Feminino', value: 2 },
-                ]}
+                items={genders}
               />
             )}
             name="gender"
