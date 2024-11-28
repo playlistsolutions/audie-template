@@ -30,11 +30,7 @@ export const RegisterUser: React.FC<RegisterUserProps> = ({
   const {phoneNumber} = route.params;
   type RegisterUserFormData = z.infer<typeof registerFormSchema>;
 
-  const {
-    control,
-    handleSubmit,
-    formState: {errors},
-  } = useForm<RegisterUserFormData>({
+  const {control,handleSubmit,formState: {errors}, } = useForm<RegisterUserFormData>({
     resolver: zodResolver(registerFormSchema),
     defaultValues: {
       cellphone: phoneNumber.slice(3, 14),
