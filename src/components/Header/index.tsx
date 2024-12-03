@@ -58,8 +58,10 @@ export const Header: React.FC<HeaderProps> = ({ onFilterNewsByCategory }) => {
     <View
       className={`w-full flex flex-col justify-between bg-white dark:bg-background-dark2 ${route.name == 'News' ? 'h-28 px-5 pt-5' : 'p-5'}`}>
       <Text className="text-base font-normal text-black uppercase font-QuickExpress dark:text-white">
-        Playlist{' '}
-        <Text className="text-base font-normal text-base-primary">News</Text>
+        Audie {' '}
+        <Text className="text-base font-normal text-base-primary">
+          Template
+        </Text>
       </Text>
       {route.name == 'News' && (
         <View>

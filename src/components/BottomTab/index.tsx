@@ -15,6 +15,7 @@ import storage from '@/services/storage';
 import { postActiveListener } from '@/services/api/post-active-listenet';
 import { updateListenerStatus } from '@/services/api/post-update-listener';
 import { postUserEvaluation } from '@/services/api/post-user-evaluations';
+import { DISCOGS_KEY, DISCOGS_SECRET } from '@env';
 
 export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
   const { data } = useUrls();
@@ -102,8 +103,6 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
     const artist = encodeURIComponent(artistName);
     const album = encodeURIComponent(albumTitle);
     const DISCOGS_BASE_URL = 'https://api.discogs.com/database/search'
-    const DISCOGS_KEY = 'TVckWiLVGVPQtuPGnOXy'
-    const DISCOGS_SECRET = 'NvptTAmnzoSCvWzvDUXaIHORhbznqvft'
 
     const url = `${DISCOGS_BASE_URL}?q=${album}&artist=${artist}&type=release&key=${DISCOGS_KEY}&secret=${DISCOGS_SECRET}`;
 
@@ -163,7 +162,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
         android: { appKilledPlaybackBehavior: AppKilledPlaybackBehavior.StopPlaybackAndRemoveNotification },
       });
       await TrackPlayer.add({
-        title: 'Playlist News',
+        title: 'Audie Template',
         url: urlStream,
       });
       setIsLoading(false);
@@ -314,7 +313,7 @@ export const BottomTab = ({ navigation, state }: BottomTabBarProps) => {
                 </View>
                 <View className="flex flex-col w-[60%] overflow-hidden">
                   <Text className="text-base font-medium text-black dark:text-white">
-                    Playlist News
+                    Audie Template
                   </Text>
                 </View>
               </>

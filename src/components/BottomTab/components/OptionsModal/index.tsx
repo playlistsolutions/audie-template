@@ -54,7 +54,7 @@ export const OptionsModal: React.FC<OptionsModalProps> = ({
                 </View>
                 <View className="flex flex-col">
                   <Text className="text-base font-medium text-black dark:text-white">
-                    Playlist News
+                    Audie Template
                   </Text>
                 </View>
               </View>

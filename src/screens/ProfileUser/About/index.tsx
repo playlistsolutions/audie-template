@@ -11,7 +11,7 @@ export const About: React.FC<AboutProps> = ({ navigation }) => {
   const { colorScheme } = useColorScheme();
 
   function goToPrivacyPolicy() {
-    Linking.openURL(`https://playlistsolutions.com/pt/privacy/`);
+    Linking.openURL(`POLÍTICA DE PRIVACIDADE`);
   }
 
   return (

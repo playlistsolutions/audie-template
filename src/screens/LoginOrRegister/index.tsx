@@ -49,7 +49,7 @@ export const LoginOrRegister: React.FC<LoginOrRegisterProps> = ({
   }
 
   function goToPrivacyPolicy() {
-    Linking.openURL(`https://playlistsolutions.com/pt/privacy/`);
+    Linking.openURL(`POLÍTICA DE PRIVACIDADE`);
   }
 
   return (

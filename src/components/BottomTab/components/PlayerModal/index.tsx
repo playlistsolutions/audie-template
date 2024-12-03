@@ -12,6 +12,7 @@ import { OptionsModal } from '../OptionsModal';
 import axios from 'axios';
 import storage from '@/services/storage';
 import { postMusicEvaluation } from '@/services/api/post-music-evaluation';
+import { VAGALUME_API_KEY } from '@env';
 
 interface PlayerModalProps {
   onShowPlayer(): void;
@@ -96,9 +97,8 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
 
   async function getLetter() {
     const VAGALUME_BASE_URL = 'https://api.vagalume.com.br/search.php'
-    const VAGALUME_KEY = 'e9c839b8f17971df258e205c44e1314b'
 
-    const url = `${VAGALUME_BASE_URL}?art=${infoMusic.artist}&mus=${infoMusic.title}&apikey=${VAGALUME_KEY}`
+    const url = `${VAGALUME_BASE_URL}?art=${infoMusic.artist}&mus=${infoMusic.title}&apikey=${VAGALUME_API_KEY}`
     await axios.get(url)
       .then(({ data }) => {
         if (data) {
@@ -182,7 +182,7 @@ export const PlayerModal: React.FC<PlayerModalProps> = ({
                 isComercial ?
                   (
                     <Text className="text-xl font-medium text-black dark:text-white">
-                      Playlist News
+                      Audie Template
                     </Text>
                   )
                   :

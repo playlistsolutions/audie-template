@@ -37,7 +37,7 @@ export const Welcome: React.FC<WelcomeProps> = ({ navigation }) => {
       />
       <View className="flex flex-col items-center justify-center">
         <Text className="flex text-lg text-black dark:text-white font-Poppins-Medium">
-          Bem-Vindo ao Playlist News
+          Bem-Vindo ao Audie Template
         </Text>
         <Text className="flex text-xs text-center text-gray-300 font-Poppins-Regular">
           Músicas, Noticias, Promoções e muito mais, tudo em um só lugar.

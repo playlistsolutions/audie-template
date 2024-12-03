@@ -1,8 +1,9 @@
 import axios from 'axios';
+import { AUDIE_API_URL, AUDIE_API_KEY } from '@env';
 
 const api = axios.create({
-  baseURL: 'https://audieappapi.playlistsolutions.com/',
-  headers: { 'X-Api-Key': 'AU-cklLn7pGtlW32HNcaI6x1VqNjW4UT' },
+  baseURL: AUDIE_API_URL,
+  headers: { 'X-Api-Key': AUDIE_API_KEY },
 });
 
 export { api };

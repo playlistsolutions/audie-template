@@ -1,6 +1,6 @@
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createNativeStackNavigator} from '@react-navigation/native-stack';
-import {BottomTab} from '../components/BottomTab';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { BottomTab } from '../components/BottomTab';
 import {
   About,
   Address,
@@ -67,7 +67,7 @@ const Navigation = () => {
   };
 
   return (
-    <Stack.Navigator screenOptions={{headerShown: false}}>
+    <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="MainScreen" component={TabsNavigation} />
       <Stack.Screen name="WelcomeScreen" component={TabsLoginRegister} />
       <Stack.Screen name="SheetNews" component={SheetNews} />
