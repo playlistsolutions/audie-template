@@ -28,6 +28,7 @@
     "react-hook-form": "^7.51.0",
     "react-native": "0.73.6",
     "react-native-date-picker": "^4.4.1",
+    "react-native-dotenv": "^3.4.11",
     "react-native-htmlview": "^0.17.0",
     "react-native-indicators": "^0.17.0",
     "react-native-masked-text": "^1.13.0",
