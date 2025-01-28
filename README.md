@@ -132,6 +132,18 @@ Certifique-se de preencher o arquivo `.env` corretamente antes de iniciar o proj
   ```env
   VAGALUME_API_KEY=sua-chave-aqui
   ```
+#### **3.1 Gerando a VAGALUME_API_KEY**
+- **Passo a Passo**:
+  1. Acesse o site oficial do [Vagalume API](https://api.vagalume.com.br/).
+  2. Acesse a documentação e acessa a aba de **credenciais de autorização** no informativo abaixo clique em **Cadastrar-se** ou faça login caso já tenha uma conta.
+  3. Após o login, acesse **Meus Dados** no painel do usuário.
+  4. Selecione a opção **API**.
+  5. Crie uma nova aplicação fornecendo as informações necessárias (nome, descrição, etc.).
+  6. Após salvar, sua chave de API estará disponível no painel. Copie a chave gerada.
+  7. Adicione a chave ao arquivo `.env`:
+     ```env
+     VAGALUME_API_KEY=sua-chave-aqui
+     ```
 
 #### **4. DISCOGS_KEY e DISCOGS_SECRET**  
 - **Descrição**: Chave e segredo para autenticação no Discogs, uma base de dados de músicas e artistas.  
@@ -142,6 +154,18 @@ Certifique-se de preencher o arquivo `.env` corretamente antes de iniciar o proj
   DISCOGS_KEY=sua-chave-aqui
   DISCOGS_SECRET=seu-segredo-aqui
   ```
+#### **4.1 Gerando DISCOGS_KEY e DISCOGS_SECRET**
+- **Passo a Passo**:
+  1. Acesse o site oficial do [Discogs Developers](https://www.discogs.com/developers).
+  2. Faça login com sua conta Discogs ou crie uma nova conta, se necessário - **Create an App**.
+  3. Após o login, clique em **Perfil** > **Configurações** na seção de **Desenvolvedor**.
+  4. Selecione criar uma aplicação preencha o formulário com as informações solicitadas (nome da aplicação, URL, descrição, etc.).
+  5. Ao criar a aplicação, você verá as chaves geradas: **Consumer Key** e **Consumer Secret**.
+  6. Copie essas informações e adicione-as ao arquivo `.env`:
+     ```env
+     DISCOGS_KEY=sua-chave-aqui
+     DISCOGS_SECRET=seu-segredo-aqui
+     ```
 
 ### **Passos para Configuração**
 - Solicite as chaves de acesso apropriadas com o administrador ou nos respectivos serviços das APIs.
